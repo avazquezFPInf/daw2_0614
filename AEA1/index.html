@@ -15,13 +15,13 @@
       <a class="aea active" href="#inici">AEA1 · RA6</a>
       <a class="sub" href="#objectius">Objectius i evidències</a>
       <a class="sub" href="#bones-practiques">Bones pràctiques</a>
-      <a class="sub" href="markdown/index.html">Markdown</a>
-      <a class="sub" href="#git-local">1 · Git local</a>
-      <a class="sub" href="#github">2 · GitHub i remots</a>
-      <a class="sub" href="#vscode">3 · VS Code i documentació</a>
-      <a class="sub" href="#branques">4 · Branques i col·laboració</a>
-      <a class="sub" href="#javadoc">5 · Javadoc</a>
-      <a class="sub" href="#publicacio">6 · Publicació i CI</a>
+      <a class="sub" href="00_Markdown.html">Markdown</a>
+      <a class="sub" href="01_GitLocal.html">1 · Git local</a>
+      <a class="sub" href="02_GitHub.html">2 · GitHub i remots</a>
+      <a class="sub" href="03_VSCode.html">3 · VS Code i documentació</a>
+      <a class="sub" href="04_Branques.html">4 · Branques i col·laboració</a>
+      <a class="sub" href="05_Javadoc.html">5 · Javadoc</a>
+      <a class="sub" href="06_PublicacioCI.html">6 · Publicació i CI</a>
       <span class="nav-label">Properament</span>
       <a class="disabled" href="#">AEA2 · Arquitectures web</a>
       <a class="disabled" href="#">AEA3 · Servidors web</a>
@@ -36,33 +36,6 @@
 
     <section id="bones-practiques" class="section tint"><p class="eyebrow">Introducció</p><h2>Bones pràctiques de programació</h2><p class="lead muted">El codi també comunica. Noms significatius, una estructura ordenada i comentaris útils permeten que l'equip pugui entendre, modificar i mantenir el projecte.</p><div class="cards two"><article><h3>Noms significatius</h3><p><code>preuFinal</code> explica més que <code>x</code>. Cada nom ha d'ajudar a entendre la finalitat de la variable, funció o classe.</p></article><article><h3>Comentaris que aporten context</h3><p>No repeteixen el codi: expliquen el perquè d'una decisió, una limitació o un comportament no evident.</p></article></div><div class="flow"><span>Fitxers del projecte</span><b>→</b><span>Commit</span><b>→</b><span>Historial</span><b>→</b><span>Repositori remot</span></div></section>
 
-    <section id="markdown" class="section"><p class="eyebrow">Bloc 0</p><h2>Markdown</h2><p class="lead muted">Un llenguatge de marcat lleuger per escriure documentació tècnica, README, incidències i apunts de projecte.</p><div class="cards three"><article><h3>Estructura i text</h3><pre><code># Títol
-## Apartat
-**negreta**
-*cursiva*</code></pre></article><article><h3>Llistes i enllaços</h3><pre><code>- Element
-1. Primer
-[Text](https://exemple.cat)</code></pre></article><article><h3>Codi i tasques</h3><pre><code>`ordre`
-```js
-const x = 1;
-```
-- [ ] Pendent</code></pre></article></div><h3>Activitat · crea <code>perfil.md</code></h3><ol><li>Escriu un títol, una presentació i les tecnologies que coneixes.</li><li>Afegeix llistes, un enllaç, una taula, un bloc de codi, una cita i una checklist.</li><li>No incloguis dades personals sensibles.</li><li>Previsualitza el fitxer a Visual Studio Code abans de fer commit.</li></ol></section>
-
-    <section id="git-local" class="section dark"><p class="eyebrow">1 · Sessions 3 i 4</p><h2>Git local</h2><p class="lead">Git evita carpetes com <code>projecte_final2</code>: guarda instantànies del projecte, permet revisar l'historial i recuperar versions anteriors.</p><div class="cards two"><article><h3>Repositori, working directory i staging</h3><p>El directori de treball és on edites. La staging area selecciona els canvis exactes del proper commit; el repositori desa l'historial.</p></article><article><h3>Del canvi al commit</h3><p>Un commit ha de ser petit, coherent i descriure la finalitat del canvi. Revisa sempre el canvi abans d'afegir-lo.</p></article></div><div class="commands"><code>git init</code><code>git status</code><code>git diff</code><code>git add nom-fitxer.md</code><code>git commit -m "Missatge descriptiu"</code><code>git log --oneline</code></div><p>Inclou un <code>.gitignore</code> per als fitxers temporals, generats o sensibles. Les contrasenyes i claus no s'han de versionar mai.</p></section>
-
-    <section id="github" class="section"><p class="eyebrow">2 · Sessió 5</p><h2>GitHub i remots</h2><p class="lead muted">Git manté l'historial al teu ordinador. GitHub allotja repositoris Git i afegeix eines de col·laboració, permisos, Pull Requests, Pages i Actions.</p><div class="cards two"><article><h3>Flux amb el remot</h3><p><code>push</code> envia commits a GitHub; <code>pull</code> incorpora canvis al teu ordinador; <code>clone</code> descarrega un repositori complet per primera vegada.</p></article><article><h3>Fork i seguretat</h3><p>Un fork crea una còpia d'un repositori aliè al teu compte. Revisa què és públic i evita pujar dades personals o credencials.</p></article></div><div class="commands light"><code>git remote -v</code><code>git remote add origin URL</code><code>git branch -M main</code><code>git push -u origin main</code><code>git pull</code><code>git clone URL</code></div></section>
-
-    <section id="vscode" class="section tint"><p class="eyebrow">3 · Sessió 6</p><h2>VS Code i documentació</h2><p class="lead muted">La vista Source Control mostra els fitxers modificats. Entén el flux abans d'usar els botons: modificar, revisar, afegir, commit i push.</p><div class="cards two"><article><h3>Control de canvis</h3><p>Compara el diff visual de VS Code amb <code>git diff</code>. El botó + fa staging, Commit crea una instantània i Sync sincronitza amb el remot.</p></article><article><h3>README.md</h3><p>És la porta d'entrada del repositori: títol, descripció, estructura, instruccions bàsiques i enllaços a la documentació.</p></article></div></section>
-
-    <section id="branques" class="section"><p class="eyebrow">4 · Sessions 7 i 8</p><h2>Branques i col·laboració</h2><p class="lead muted">La branca principal, normalment <code>main</code>, manté una versió estable. Crea una branca per a un canvi important i integra-la quan estigui preparada.</p><div class="commands light"><code>git switch -c feature/menu</code><code>git switch main</code><code>git merge feature/menu</code><code>git log --oneline --graph --all</code></div><div class="cards two"><article><h3>Merge i conflictes</h3><p>Si Git no pot decidir quina versió conservar, llegeix el conflicte, elimina els marcadors, deixa el fitxer coherent, fes <code>add</code> i crea el commit de resolució.</p></article><article><h3>Pull Request</h3><p>La persona autora explica el canvi; una altra el revisa i comenta abans d'integrar-lo. El canvi i la revisió queden registrats.</p></article></div></section>
-
-    <section id="javadoc" class="section tint"><p class="eyebrow">5 · Sessió 9</p><h2>Javadoc</h2><p class="lead muted">Javadoc genera una web de documentació HTML a partir dels comentaris del codi Java. El mateix principi existeix en molts altres llenguatges.</p><pre><code>/**
- * Calcula el preu final d'una comanda.
- * @param preu preu inicial
- * @param descompte percentatge aplicat
- * @return preu final
- */</code></pre><p>Un comentari de documentació explica què fa l'element, quines dades rep i què retorna; no repeteix línia per línia el codi.</p><div class="commands light"><code>javadoc -d docs src/*.java</code><code>Obre docs/index.html al navegador</code></div></section>
-
-    <section id="publicacio" class="section dark"><p class="eyebrow">6 · Sessió 10</p><h2>Publicació i integració contínua</h2><div class="cards two"><article><h3>GitHub Pages</h3><p>Publica una web estàtica des de la branca <code>main</code>. Comprova els enllaços en una finestra privada i afegeix l'adreça pública al README.</p></article><article><h3>GitHub Actions</h3><p>Executa comprovacions automàtiques a cada push o Pull Request. Localitza el workflow, entén quan s'executa i interpreta el resultat.</p></article></div><div class="activity"><p class="activity-tag">Tancament</p><ol><li>Comprova que <code>git status</code> no mostra canvis pendents.</li><li>Revisa que l'historial mostra una evolució real.</li><li>Verifica web publicada i workflow correcte.</li><li>Entrega a Moodle l'enllaç al repositori i a la web.</li></ol></div></section>
-    <footer>Institut Thos i Codina · Curs 2026–2027</footer>
+       <footer>Institut Thos i Codina · Curs 2026–2027</footer>
   </main>
 </body></html>
