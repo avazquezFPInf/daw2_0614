@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Guia bàsica de Markdown"><title>Markdown · AEA1 · DAW2</title>
+  <link rel="stylesheet" href="../../assets/styles.css"><script src="../app.js" defer></script>
+</head>
+<body class="module-page">
+  <button class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del mòdul</button>
+  <aside id="sidebar" class="sidebar">
+    <a class="brand" href="../../index.html"><b>0614</b> DAW2</a><p class="sidebar-title">Desplegament d'Aplicacions Web</p>
+    <nav aria-label="Navegació del mòdul">
+      <a href="../../index.html">Inici del mòdul</a><a class="aea active" href="../index.html">AEA1 · RA6</a>
+      <a class="sub" href="../index.html#objectius">Objectius i evidències</a><a class="sub" href="../index.html#bones-practiques">Bones pràctiques</a><a class="sub active" href="index.html">Markdown</a>
+      <a class="sub" href="../index.html#git-local">1 · Git local</a><a class="sub" href="../index.html#github">2 · GitHub i remots</a><a class="sub" href="../index.html#vscode">3 · VS Code i documentació</a><a class="sub" href="../index.html#branques">4 · Branques i col·laboració</a><a class="sub" href="../index.html#javadoc">5 · Javadoc</a><a class="sub" href="../index.html#publicacio">6 · Publicació i CI</a>
+      <span class="nav-label">Properament</span><a class="disabled" href="#">AEA2 · Arquitectures web</a><a class="disabled" href="#">AEA3 · Servidors web</a><a class="disabled" href="#">AEA4 · Servidors d'aplicacions</a>
+    </nav><p class="sidebar-footer">Curs 2026–2027<br>Institut Thos i Codina</p>
+  </aside>
+  <main>
+    <section class="cover compact-cover"><p class="eyebrow">AEA1 · Bloc 0</p><h1>Markdown</h1><p class="lead">Guia bàsica per crear documentació tècnica clara, portable i preparada per treballar amb Git.</p><a class="button" href="../01_Markdown.md" download>Descarrega la guia en Markdown ↓</a></section>
+    <section class="section"><h2>Què és Markdown?</h2><p class="lead muted">És un llenguatge de marcat lleuger que dona format al text de manera senzilla. És habitual en documentació tècnica, fitxers README, incidències i apunts de projecte. Aquesta pàgina és una guia de referència: no cal memoritzar tota la sintaxi.</p></section>
+    <section class="section tint"><h2>1. Encapsalaments</h2><p>Els encapsalaments estructuren el document. La quantitat de <code>#</code> defineix el nivell; deixa un espai entre el símbol i el text.</p><pre><code># Encapsalament 1
+## Encapsalament 2
+### Encapsalament 3</code></pre><p>Normalment utilitzem un únic títol de nivell 1 i organitzem la resta del document amb nivells inferiors.</p></section>
+    <section class="section"><h2>2. Text, llistes i enllaços</h2><div class="cards three"><article><h3>Formats</h3><pre><code>**Negreta**
+*Cursiva*
+~~Ratllat~~</code></pre></article><article><h3>Llistes</h3><pre><code>- Element
+  - Sub-element
+
+1. Primer
+2. Segon</code></pre></article><article><h3>Enllaços i imatges</h3><pre><code>[Web del Thos](https://...)
+
+![Text alternatiu](imatge.jpg)</code></pre></article></div><p>El text alternatiu d'una imatge descriu el seu contingut si no es pot carregar i millora l'accessibilitat. Utilitza imatges pròpies, amb llicència o d'una font segura.</p></section>
+    <section class="section tint"><h2>3. Codi, cites, taules i tasques</h2><div class="cards two"><article><h3>Codi en línia i blocs</h3><pre><code>El fitxer és `README.md`.
+
+```javascript
+console.log("Hola, món!");
+```</code></pre></article><article><h3>Cites i checklist</h3><pre><code>&gt; Aquesta és una cita.
+
+- [ ] Tasca pendent
+- [x] Tasca completada</code></pre></article></div><h3>Taules</h3><pre><code>| Tecnologia | Nivell | Recurs |
+|------------|--------|--------|
+| JavaScript | Inicial | MDN    |</code></pre><p>Una línia horitzontal es crea amb tres guions: <code>---</code>.</p></section>
+    <section class="section"><div class="activity"><p class="activity-tag">Activitat pràctica</p><h2>4. Crea <code>perfil.md</code></h2><p>És la teva carta de presentació en Markdown. Utilitza un to adequat per compartir-la amb companys i professorat; no hi incloguis dades personals sensibles.</p><ol><li>Afegeix un títol principal, dos subtítols i una presentació amb negreta i cursiva.</li><li>Inclou tecnologies que coneixes, tres pel·lícules i tres cantants o grups.</li><li>Afegeix un enllaç d'interès, una imatge opcional i una taula amb tecnologies que vulguis aprendre.</li><li>Inclou un bloc de codi, una cita, un objectiu del curs i una checklist amb elements assolits i pendents.</li><li>Previsualitza el document a Visual Studio Code abans de lliurar-lo.</li></ol></div><a class="button" href="../index.html#git-local">Continua amb Git local →</a></section>
+    <footer>Institut Thos i Codina · Curs 2026–2027</footer>
+  </main>
+</body></html>
