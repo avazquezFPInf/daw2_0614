@@ -1,10 +1,15 @@
 <!doctype html>
 <html lang="ca">
+
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="AEA1: documentació, Git i GitHub"><title>AEA1 · DAW2</title>
-  <link rel="stylesheet" href="../assets/styles.css"><script src="app.js" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AEA1: documentació, Git i GitHub">
+  <title>AEA1 · DAW2</title>
+  <link rel="stylesheet" href="../assets/styles.css">
+  <script src="app.js" defer></script>
 </head>
+
 <body class="module-page">
   <button class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del mòdul</button>
   <aside id="sidebar" class="sidebar">
@@ -30,12 +35,106 @@
     <p class="sidebar-footer">Curs 2026–2027<br>Institut Thos i Codina</p>
   </aside>
   <main id="content">
-    <section id="inici" class="cover compact-cover"><p class="eyebrow">AEA1 · RA6 · 10 hores</p><h1>Documentació,<br>Git i GitHub</h1><p class="lead">Creem un entorn de treball professional que farà de fil conductor de tot el mòdul.</p><p class="schedule">1 hora els dilluns · 1 hora els dijous</p></section>
+    <section id="inici" class="cover compact-cover">
+      <p class="eyebrow">AEA1 · RA6 · 10 hores</p>
+      <h1>Documentació,<br>Git i GitHub</h1>
+      <p class="lead">La primera AEA posa les bases del treball professional que aplicarem durant tot el mòdul:
+        documentar, versionar, compartir i comprovar els canvis d'una aplicació.</p>
+      <p class="schedule">5 sessions · 10 hores · treball principalment individual</p>
+    </section>
+    <section class="section">
+      <p class="eyebrow">Per què comencem aquí?</p>
+      <h2>Abans de desplegar, cal saber explicar i controlar el projecte</h2>
+      <p class="lead muted">Una aplicació web no és només el seu codi. També necessita documentació perquè altres
+        persones la puguin entendre, un historial per saber què ha canviat i eines que ajudin a comprovar que el
+        projecte continua funcionant. Aquest bloc introdueix aquests hàbits abans de treballar amb servidors i
+        desplegaments.</p>
+      <div class="cards three">
+        <article>
+          <h3>Documentar</h3>
+          <p>Crearem documentació tècnica amb Markdown, README i comentaris Javadoc, MK per explicar el projecte i el
+            codi.</p>
+        </article>
+        <article>
+          <h3>Controlar canvis</h3>
+          <p>Utilitzarem Git i GitHub per crear repositoris, registrar commits, treballar amb branques i compartir el
+            treball.</p>
+        </article>
+        <article>
+          <h3>Comprovar</h3>
+          <p>Publicarem documentació i entendrem com una integració contínua verifica automàticament els canvis.</p>
+        </article>
+      </div>
+    </section>
+    <section class="section tint">
+      <p class="eyebrow">Al final de l'AEA</p>
+      <h2>Què hauries de poder fer?</h2>
+      <div class="cards two">
+        <article>
+          <h3>Gestionar el teu repositori</h3>
+          <p>Crear-lo, revisar l'estat, preparar canvis, fer commits descriptius, sincronitzar-lo amb GitHub i
+            participar en una Pull Request.</p>
+        </article>
+        <article>
+          <h3>Deixar evidències clares</h3>
+          <p>Presentar un README útil, documentació de codi, un historial coherent, una web publicada i una comprovació
+            automàtica interpretable.</p>
+        </article>
+      </div>
+      <p class="lead muted">L'avaluació combina les pràctiques de documentar el codi i GitHub amb un qüestionari final.
+        Es valoren tant el resultat com el procés i la capacitat d'explicar les eines utilitzades.</p>
+    </section>
 
-    <section id="objectius" class="section"><p class="eyebrow">Full de ruta</p><h2>Objectius i evidències</h2><p class="lead muted">Al final de l'AEA hauràs de poder explicar què aporten Markdown, Git, GitHub, un generador de documentació i la integració contínua a un projecte web.</p><div class="table"><div><b>Àmbit</b><b>Activitat</b><b>Evidència</b></div><div><strong>Documentació</strong><span>Markdown, README i Javadoc</span><span>README complet i documentació comentada o generada</span></div><div><strong>Control de versions</strong><span>status, add, commit, log i .gitignore</span><span>Historial coherent i repositori net</span></div><div><strong>Repositori remot</strong><span>push, pull, branques i Pull Request</span><span>Repositori individual i PR integrada</span></div><div><strong>Publicació i CI</strong><span>GitHub Pages i GitHub Actions</span><span>Web publicada i comprovació en verd</span></div></div><div class="activity"><p class="activity-tag">Abans d'entregar</p><ul><li>README amb descripció, estructura, instruccions i enllaç a la web publicada.</li><li>Commits petits, descriptius i repartits durant l'AEA.</li><li>Sense contrasenyes ni dades sensibles; amb <code>.gitignore</code>.</li><li>Una branca integrada, una Pull Request revisada, GitHub Pages i Actions funcionant.</li></ul></div></section>
+    <section id="objectius" class="section">
+      <p class="eyebrow">Full de ruta</p>
+      <h2>Objectius i evidències</h2>
+      <p class="lead muted">Al final de l'AEA hauràs de poder explicar què aporten Markdown, Git, GitHub, un generador
+        de documentació i la integració contínua a un projecte web.</p>
+      <div class="table">
+        <div><b>Àmbit</b><b>Activitat</b><b>Evidència</b></div>
+        <div><strong>Documentació</strong><span>Markdown, README i Javadoc</span><span>README complet i documentació
+            comentada o generada</span></div>
+        <div><strong>Control de versions</strong><span>status, add, commit, log i .gitignore</span><span>Historial
+            coherent i repositori net</span></div>
+        <div><strong>Repositori remot</strong><span>push, pull, branques i Pull Request</span><span>Repositori
+            individual i PR integrada</span></div>
+        <div><strong>Publicació i CI</strong><span>GitHub Pages i GitHub Actions</span><span>Web publicada i comprovació
+            en verd</span></div>
+      </div>
+      <div class="activity">
+        <p class="activity-tag">Abans d'entregar</p>
+        <ul>
+          <li>README amb descripció, estructura, instruccions i enllaç a la web publicada.</li>
+          <li>Commits petits, descriptius i repartits durant l'AEA.</li>
+          <li>Sense contrasenyes ni dades sensibles; amb <code>.gitignore</code>.</li>
+          <li>Una branca integrada, una Pull Request revisada, GitHub Pages i Actions funcionant.</li>
+        </ul>
+      </div>
+    </section>
 
-    <section id="bones-practiques" class="section tint"><p class="eyebrow">Introducció</p><h2>Bones pràctiques de programació</h2><p class="lead muted">El codi també comunica. Noms significatius, una estructura ordenada i comentaris útils permeten que l'equip pugui entendre, modificar i mantenir el projecte.</p><div class="cards two"><article><h3>Noms significatius</h3><p><code>preuFinal</code> explica més que <code>x</code>. Cada nom ha d'ajudar a entendre la finalitat de la variable, funció o classe.</p></article><article><h3>Comentaris que aporten context</h3><p>No repeteixen el codi: expliquen el perquè d'una decisió, una limitació o un comportament no evident.</p></article></div><div class="flow"><span>Fitxers del projecte</span><b>→</b><span>Commit</span><b>→</b><span>Historial</span><b>→</b><span>Repositori remot</span></div></section>
+    <section id="bones-practiques" class="section tint">
+      <p class="eyebrow">Introducció</p>
+      <h2>Bones pràctiques de programació</h2>
+      <p class="lead muted">El codi també comunica. Noms significatius, una estructura ordenada i comentaris útils
+        permeten que l'equip pugui entendre, modificar i mantenir el projecte.</p>
+      <div class="cards two">
+        <article>
+          <h3>Noms significatius</h3>
+          <p><code>preuFinal</code> explica més que <code>x</code>. Cada nom ha d'ajudar a entendre la finalitat de la
+            variable, funció o classe.</p>
+        </article>
+        <article>
+          <h3>Comentaris que aporten context</h3>
+          <p>No repeteixen el codi: expliquen el perquè d'una decisió, una limitació o un comportament no evident.</p>
+        </article>
+      </div>
+      <div class="flow"><span>Fitxers del
+          projecte</span><b>→</b><span>Commit</span><b>→</b><span>Historial</span><b>→</b><span>Repositori remot</span>
+      </div>
+    </section>
 
-       <footer>Institut Thos i Codina · Curs 2026–2027</footer>
+    <footer>Institut Thos i Codina · Curs 2026–2027</footer>
   </main>
-</body></html>
+</body>
+
+</html>
