@@ -1,1 +1,106 @@
-<!doctype html><html lang="ca"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Git local · AEA1</title><link rel="stylesheet" href="../assets/styles.css"><script src="app.js" defer></script></head><body class="module-page lesson-page" data-active="01_GitLocal.html"><main><section class="cover compact-cover"><p class="eyebrow">1 · Sessions 3 i 4</p><h1>Git local</h1><p class="lead">Registra l'evolució real del projecte abans de connectar-lo a Internet.</p></section><section class="section"><h2>Del canvi al commit</h2><p>El directori de treball és on edites, staging selecciona els canvis i el repositori desa l'historial.</p><div class="commands light"><code>git init</code><code>git status</code><code>git diff</code><code>git add fitxer.md</code><code>git commit -m "Missatge"</code><code>git log --oneline</code></div><p>Utilitza <code>.gitignore</code> per a fitxers temporals, generats o sensibles.</p></section><footer>Institut Thos i Codina · Curs 2026–2027</footer></main></body></html>
+<!doctype html>
+<html lang="ca">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Git local · WIP</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page" data-active="01_GitLocal.html">
+    <main>
+        <section class="cover compact-cover">
+            <p class="eyebrow">1 · Git local · WIP</p>
+            <h1>Git local</h1>
+            <p class="lead">Registra la evolución de un proyecto antes de compartirlo en Internet.</p>
+        </section>
+        <section class="section">
+            <h2>1. Control de versiones</h2>
+            <p class="lead muted">Un control de versiones registra los cambios de los archivos a lo largo del tiempo. En lloc de
+                crear carpetes com <code>projecte_final2</code>, Git conserva versiones identificables del mismo
+                projecte.</p>
+            <div class="cards three">
+                <article>
+                    <h3>¿Qué resuelve?</h3>
+                    <p>Permite saber qué ha cambiado, comparar versiones y recuperar una anterior si es necesario.</p>
+                </article>
+                <article>
+                    <h3>Commit</h3>
+                    <p>Es una instantánea con autor, fecha y mensaje; representa un cambio pequeño y coherente.</p>
+                </article>
+                <article>
+                    <h3>Local</h3>
+                    <p>Git funciona en tu ordenador sin conexión. GitHub llegará después.</p>
+                </article>
+            </div>
+            <div>
+                <img src="../assets/GitLocalWorkflox.png" alt="Workflow de git" class="fullwidth">
+            </div>
+        </section>
+        <section class="section tint">
+            <h2>2. Instalar y configurar</h2>
+            <p>Windows: <a href="https://git-scm.com/downloads">git-scm.com</a>. macOS: executa
+                <code>git --version</code> i acepta las herramientas si las solicita. Ubuntu/Debian:
+                <code>sudo apt install git</code>.</p>
+            <pre><code>git --version
+# Comprueba que Git está instalado.
+git config --global user.name "Nom Cognom"
+# Define la autoría de los commits.
+git config --global user.email "correu@exemple.com"
+# Define el correu de la autoría.</code></pre>
+        </section>
+        <section class="section">
+            <h2>3. Iniciar, añadir y confirmar</h2>
+            <p>El directori de treball és on edites; <em>staging</em> selecciona els canvis del proper commit; el
+                repositori desa l'historial.</p>
+            <pre><code>cd ruta/de/la/carpeta
+# Entra en la carpeta donde está perfil.md.
+git init
+# Crea el repositorio local.
+git status
+# Muestra los archivos nuevos o modificados.
+git add perfil.md
+# Prepara perfil.md per al commit.
+git commit -m "Crea el perfil en Markdown"
+# Guarda la primera versión.</code></pre>
+        </section>
+        <section class="section tint">
+            <h2>4. Trabajar y ver el historial</h2>
+            <pre><code>git status
+# Revisa el estado antes de trabajar.
+git diff
+# Muestra cambios todavía no preparados.
+git add perfil.md
+# Selecciona el cambio.
+git commit -m "Añade taula de tecnologies"
+# Crea una nueva versión coherente.
+git log --oneline
+# Muestra el historial resumido.
+git show
+# Muestra el detalle del último commit.</code></pre>
+        </section>
+        <section class="section">
+            <div class="activity">
+                <p class="activity-tag">Ejercicio práctico</p>
+                <h2>Versiona tu <code>perfil.md</code></h2>
+                <ol>
+                    <li>Guarda <code>perfil.md</code> en una carpeta nueva y ejecuta <code>git init</code>.</li>
+                    <li>Haz un primer commit: <code>Crea el perfil en Markdown</code>.</li>
+                    <li>Añade la taula de tecnologies i fes un segon commit.</li>
+                    <li>Añade la checklist y haz un tercer commit.</li>
+                    <li>Executa <code>git log --oneline</code>: has de veure tres versiones con mensajes claros.</li>
+                    <li>Crea un documento nuevo, por ejemplo <code>chuleta-git.md</code>, i comença-hi a recollir les
+                        instruccions de Git importants que aprenguis. Añade-lo al repositori i crea un quart commit.
+                    </li>
+                </ol>
+                <p>Termina con <code>git status</code>: el resultado esperado es <em>nothing to commit, working tree
+                        clean</em>.</p>
+            </div>
+        </section>
+        <footer>Institut Thos i Codina · Curs 2026–2027</footer>
+    </main>
+</body>
+
+</html>
