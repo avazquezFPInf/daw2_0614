@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ca">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
@@ -12,7 +12,7 @@
 <body class="module-page lesson-page" data-active="02_GitHub.html">
     <main>
         <section class="cover compact-cover">
-            <p class="eyebrow">2 · GitHub i remots · WIP</p>
+            <p class="eyebrow">2 · GitHub y remotos · WIP</p>
             <h1>GitHub</h1>
             <p class="lead">Llevamos el historial local de Git a un espacio web para conservarlo, consultarlo y
                 compartirlo.</p>
@@ -20,49 +20,96 @@
         <section class="section">
             <p class="eyebrow">0 · Contextualización</p>
             <h2>Git es local; GitHub es el espacio compartido</h2>
-            <p class="lead muted">GitHub és una plataforma web que allotja repositoris Git. Va aparèixer el 2008,
-                després d'altres plataformes de control de versions, i es va popularitzar perquè fa visible la història
-                del projecte i facilita la col·laboració des del navegador.</p>
+            <p class="lead muted">GitHub es una plataforma web que aloja repositorios Git. Apareció en 2008 y se
+                popularizó porque permite ver el historial de un proyecto, compartirlo y colaborar desde el navegador.
+            </p>
             <div class="cards three">
                 <article>
                     <h3>Git</h3>
-                    <p>És l'eina que crea commits i manté l'historial al teu ordinador, fins i tot sense connexió.</p>
+                    <p>Es la herramienta que crea commits y mantiene el historial en tu ordenador, incluso sin conexión.
+                    </p>
                 </article>
                 <article>
                     <h3>GitHub</h3>
-                    <p>És un repositori remot: rep una còpia de l'historial i afegeix interfície web, permisos, Pull
-                        Requests, Pages i Actions.</p>
+                    <p>Es el repositorio remoto que recibe una copia del historial y añade una interfaz web, permisos,
+                        Pull Requests, Pages y Actions.</p>
                 </article>
                 <article>
-                    <h3>Objectiu d'avui</h3>
-                    <p>Publicar de forma segura el teu repositori local perquè el professorat en pugui revisar el
-                        procés.</p>
+                    <h3>Objetivo</h3>
+                    <p>Publicar de forma segura el repositorio local para poder revisar archivos, cambios y versiones.
+                    </p>
                 </article>
             </div>
+
+
         </section>
+            <section class="section">
+                <p class="eyebrow"></p>
+                <h2>Qué aporta GitHub al repositorio local</h2>
+                <div class="cards three">
+                    <article>
+                        <h3>Copia remota</h3>
+                        <p>GitHub guarda una copia del repositorio y de su historial. No sustituye Git: ambos deben
+                            estar sincronizados.</p>
+                    </article>
+                    <article>
+                        <h3>Interfaz web</h3>
+                        <p>Permite leer archivos Markdown, explorar commits, comparar cambios y consultar quién hizo
+                            cada modificación sin abrir la terminal.</p>
+                    </article>
+                    <article>
+                        <h3>Espacio de equipo</h3>
+                        <p>Permite compartir un proyecto, gestionar permisos y revisar propuestas de cambio cuando haya
+                            varias personas trabajando.</p>
+                    </article>
+                </div>
+            </section>
+
         <section class="section tint">
+            <h2>El diálogo entre local y remoto</h2>
+                        <div class="image-container">
+                <img src="../assets/git-workflow1.png" alt="Workflow de git" class="fullwidth">
+            </div>
+
+            <p>Antes de empezar una sesión de trabajo compartida, usa <code>git pull</code>. Al acabar, revisa
+                <code>git status</code>, crea el commit y usa <code>git push</code>.</p>
+
+            <pre><code>git remote -v
+# Muestra la dirección del repositorio remoto llamado origin.
+
+git push
+# Envía tus commits locales a GitHub.
+
+git pull
+# Descarga e integra los commits que existen en GitHub.
+
+git fetch
+# Descarga la información remota, pero no modifica tus archivos todavía.</code></pre>
+            
+        </section>
+        <section class="section">
             <p class="eyebrow">1 · Cuenta personal</p>
-            <h2>Date de alta i cuida la identitat digital</h2>
+            <h2>Date de alta y cuida tu identidad digital</h2>
             <ol>
-                <li>Crea un compte a <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a> amb un
-                    correu que puguis consultar.</li>
-                <li>Tria un nom d'usuari adequat i reconeixible; el necessitaràs per compartir el repositori.</li>
-                <li>Verifica el correu electrònic i activa l'autenticació de dos factors si tens l'opció disponible.
+                <li>Crea una cuenta en <a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a> con un
+                    correo que puedas consultar.</li>
+                <li>Elige un nombre de usuario adecuado y reconocible; lo necesitarás para compartir tu repositorio.
                 </li>
-                <li>Revisa el perfil: no cal publicar dades personals innecessàries.</li>
+                <li>Verifica el correo electrónico y activa la autenticación de dos factores si está disponible.</li>
+                <li>No publiques datos personales innecesarios en tu perfil ni dentro de los repositorios.</li>
             </ol>
         </section>
         <section class="section">
             <p class="eyebrow">2 · Repositorio remoto</p>
             <h2>Crea el espacio del proyecto</h2>
-            <p>Des de la pàgina principal de GitHub, selecciona <strong>New repository</strong> i crea un repositori
-                anomenat <code>DAW2_M08_NombreApellido</code>. Per exemple: <code>DAW2_M08_MariaGarcia</code>.</p>
+            <p>Desde GitHub selecciona <strong>New repository</strong> y crea un repositorio llamado
+                <code>DAW2_M08_NombreApellido</code>, por ejemplo <code>DAW2_M08_MariaGarcia</code>.
+            </p>
             <div class="cards two">
                 <article>
-                    <h3>Visibilitat</h3>
-                    <p>Per a esta primera entrega, puede ser público si no contiene datos sensibles. Si se prefiere
-                        privado, se podrá compartir después mediante una invitación o el mecanismo que indique el
-                        profesorado.</p>
+                    <h3>Visibilidad</h3>
+                    <p>Puede ser público si no contiene datos sensibles. Si es privado, tendrás que dar acceso al
+                        profesorado antes de que pueda revisarlo.</p>
                 </article>
                 <article>
                     <h3>Importante</h3>
@@ -76,7 +123,7 @@
             <p class="eyebrow">3 · Primer push</p>
             <h2>Conecta Git local con GitHub</h2>
             <p>Abre la terminal dentro de la carpeta que ya contiene <code>perfil.md</code>, <code>chuleta-git.md</code>
-                y su historial de commits.</p>
+                y los commits creados en la actividad anterior.</p>
             <pre><code>git remote add origin URL_DEL_REPOSITORIO
 # Conecta el repositorio local con la URL HTTPS de GitHub.
 
@@ -88,8 +135,8 @@ git branch -M main
 
 git push -u origin main
 # Envía todos los commits locales a GitHub y configura el seguimiento remoto.</code></pre>
-            <p>GitHub puede abrir el navegador para iniciar sesión. Si pide una contraseña en la terminal, no uses la
-                contraseña de la cuenta: completa la autenticación en el navegador o sigue la indicación de GitHub.</p>
+            <p>Si GitHub abre el navegador, inicia sesión allí. Nunca escribas una contraseña o token dentro de un
+                archivo del proyecto.</p>
         </section>
         <section class="section">
             <p class="eyebrow">4 · Comprueba el resultado</p>
@@ -98,28 +145,88 @@ git push -u origin main
                 <li>Actualiza la página del repositorio en GitHub.</li>
                 <li>Comprueba que aparecen <code>perfil.md</code> y <code>chuleta-git.md</code>.</li>
                 <li>Abre la lista de commits y compara los mensajes con <code>git log --oneline</code>.</li>
-                <li>Abre <code>perfil.md</code>: GitHub lo renderiza automáticamente como documento Markdown.</li>
-                <li>Revisa que no hayas publicado contraseñas, tokens, direcciones ni otros datos personales sensibles.
-                </li>
+                <li>Abre <code>perfil.md</code>: GitHub lo muestra automáticamente como un documento Markdown.</li>
+                <li>Revisa que no hayas publicado contraseñas, tokens, direcciones u otros datos sensibles.</li>
             </ol>
         </section>
+               <section class="section">
+            <h2>5 · Visibilidad, permisos y seguridad</h2>
+            <div class="cards two">
+                <article>
+                    <h3>Repositorio público</h3>
+                    <p>Cualquier persona puede ver el contenido y el historial. Es útil para mostrar un portfolio, pero
+                        nunca debe incluir datos personales, claves, contraseñas ni archivos internos.</p>
+                </article>
+                <article>
+                    <h3>Repositorio privado</h3>
+                    <p>Solo las personas invitadas pueden acceder. Para la primera entrega, el enlace en Moodle es
+                        suficiente si el repositorio es visible para el profesorado; las invitaciones se pueden
+                        introducir después.</p>
+                </article>
+            </div>
+            <p>Un archivo <code>.gitignore</code> evita añadir archivos generados, configuraciones locales o secretos
+                por error. Comprueba siempre con <code>git status</code> antes de hacer <code>git add .</code>.</p>
+        </section>
         <section class="section tint">
-            <p class="eyebrow">5 · Entrega inicial</p>
+            <p class="eyebrow">6 · Entrega inicial</p>
             <h2>Comparte el enlace por Moodle</h2>
-            <p>Para esta primera práctica, entrega en Moodle la URL completa de tu repositorio de GitHub. Es la opción
-                más simple: el profesorado puede consultar los archivos y la historia de commits, y tú mantienes la
+            <p>Para esta primera práctica, entrega en Moodle la URL completa de tu repositorio. Es la opción más
+                sencilla: el profesorado puede consultar los archivos y la historia de commits, y tú mantienes la
                 propiedad del proyecto.</p>
             <div class="activity">
                 <p class="activity-tag">Antes de entregar</p>
                 <ul>
-                    <li>El enlace abre tu repositorio correcto.</li>
+                    <li>El enlace abre el repositorio correcto.</li>
                     <li>Se ven <code>perfil.md</code>, <code>chuleta-git.md</code> y sus commits.</li>
                     <li>El nombre del repositorio sigue el formato acordado.</li>
                     <li>No contiene información sensible.</li>
                 </ul>
             </div>
         </section>
-        <footer>Institut Thos i Codina · Curs 2026–2027</footer>
+        <!--section class="section">
+            <p class="eyebrow">Opcional · Más adelante</p>
+            <h2>Organización de GitHub para el aula</h2>
+            <p>Una organización permite agrupar los repositorios de una clase en un mismo espacio. Es útil para
+                centralizar permisos, proyectos compartidos y revisiones, pero no es necesaria para el primer push.</p>
+            <ol>
+                <li>Abre tu foto de perfil en GitHub y elige <strong>Your organizations</strong> → <strong>New
+                        organization</strong>.</li>
+                <li>Selecciona el plan gratuito y un nombre claro, por ejemplo <code>DAW2-Thos-2026</code>.</li>
+                <li>Invita al alumnado cuando sea necesario y crea repositorios desde la organización.</li>
+                <li>Para esta AEA, mantén la entrega mediante Moodle: evita gestionar permisos antes de que comprendan
+                    Git y GitHub.</li>
+            </ol>
+        </section-->
+
+ 
+        <section class="section tint">
+            <h2>Herramientas que veremos después</h2>
+            <div class="cards three">
+                <article>
+                    <h3>Ramas</h3>
+                    <p>Permiten desarrollar un cambio aislado sin modificar <code>main</code>.</p>
+                </article>
+                <article>
+                    <h3>Pull Requests</h3>
+                    <p>Sirven para explicar, revisar y aprobar un cambio antes de integrarlo.</p>
+                </article>
+                <article>
+                    <h3>Issues y Actions</h3>
+                    <p>Organizan tareas y automatizan comprobaciones cada vez que se publica un cambio.</p>
+                </article>
+            </div>
+            <div class="activity">
+                <p class="activity-tag">Checklist de inicio</p>
+                <ul>
+                    <li>Cuenta y correo verificados.</li>
+                    <li>Repositorio con nombre acordado y sin README inicial si ya existe el proyecto local.</li>
+                    <li><code>perfil.md</code> y <code>chuleta-git.md</code> publicados.</li>
+                    <li>Historial de commits visible en GitHub.</li>
+                    <li>Enlace correcto entregado por Moodle.</li>
+                </ul>
+            </div>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
     </main>
 </body>
 
