@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Gestión diaria del repositorio · AEA1</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page" data-active="03_GestionRepositorio.html">
+    <main>
+        <section class="cover compact-cover">
+            <p class="eyebrow">3 · Git local · Gestión diaria</p>
+            <h1>Cuida el historial y controla cada cambio</h1>
+            <p class="lead">Después de iniciar un repositorio y crear commits, Git permite revisar qué ha cambiado,
+                preparar solo lo necesario, corregir errores y mantener fuera los archivos que no deben publicarse.</p>
+        </section>
+        <section class="section">
+            <h2>El ciclo diario de trabajo</h2>
+            <p>Antes de hacer un commit conviene comprobar el estado. Así evitamos incluir archivos por error y el
+                historial explica realmente la evolución del proyecto.</p>
+            <div class="cards three">
+                <article>
+                    <h3>1. Observar</h3>
+                    <p>Usa <code>git status</code> y <code>git diff</code> para saber qué has modificado.</p>
+                </article>
+                <article>
+                    <h3>2. Seleccionar</h3>
+                    <p>Añade al área de preparación solo los cambios que forman una unidad de trabajo.</p>
+                </article>
+                <article>
+                    <h3>3. Confirmar</h3>
+                    <p>Haz un commit con un mensaje breve que describa el resultado conseguido.</p>
+                </article>
+            </div>
+            <div class="commands light">
+                <code>git status</code><code>git add archivo</code><code>git commit -m "docs: actualiza el perfil"</code>
+            </div>
+        </section>
+        <section class="section">
+            <h2>Consultar antes de actuar</h2>
+            <div class="cards two">
+                <article>
+                    <h3><code>git status</code></h3>
+                    <p>Muestra los archivos modificados, los nuevos, los preparados para el próximo commit y los que Git
+                        no sigue. Es el comando que debes ejecutar más a menudo.</p>
+                    <div class="commands light"><code>git status</code><code>git status -s</code></div>
+                    <div class="image-container"><img src="../assets/git-status-ejemplo.png"
+                            alt="Ejemplo de salida de git status y git status -s"></div>
+                    <p>Una vez hacemos <code>git add</code> de un archivo, el <em>staging</em> cambia:
+                        <code>git status</code> muestra qué archivos están preparados para incluirse en el próximo
+                        commit.</p>
+                    <div class="image-container"><img src="../assets/git-status-staged-ejemplo.png"
+                            alt="Ejemplo de git status después de ejecutar git add"></div>
+                </article>
+                <article>
+                    <h3><code>git diff</code></h3>
+                    <p>Enseña línea a línea lo que has cambiado y todavía no está preparado. Con <code>--staged</code>
+                        revisa justo lo que entrará en el próximo commit.</p>
+                    <div class="commands light"><code>git diff</code><code>git diff --staged</code></div>
+                    <div class="image-container"><img src="../assets/git-diff-ejemplo.png"
+                            alt="Ejemplo de git diff antes y después de preparar cambios"></div>
+                </article>
+                <article>
+                    <h3><code>git log</code></h3>
+                    <p>Consulta los commits ya guardados. El formato corto ayuda a leer la historia;
+                        <code>git show</code> abre el detalle de un commit concreto.</p>
+                    <div class="commands light"><code>git log --oneline</code><code>git show HASH</code></div>
+                    <div class="image-container"><img src="../assets/git-log-ejemplo.png"
+                            alt="Ejemplo de git log, git log --oneline y git show"></div>
+                </article>
+                <article>
+                    <h3><code>git log --oneline --graph --all</code></h3>
+                    <p>Dibuja la historia de forma compacta. Más adelante servirá para entender ramas y fusiones.</p>
+                    <div class="commands light"><code>git log --oneline --graph --all</code></div>
+                </article>
+            </div>
+        </section>
+        <section class="section">
+            <h2>Corregir un error antes del commit</h2>
+            <p>Git separa el directorio de trabajo y el área de preparación. Por eso podemos sacar un archivo del
+                <em>staging</em> sin borrar los cambios que hemos escrito.</p>
+            <div class="cards two">
+                <article>
+                    <h3>Sacar del staging</h3>
+                    <p>Al hacer <code>git add .</code> se han añadido también cambios de <code>01_Markdown.md</code> que
+                        no nos interesan en este commit. Con <code>git restore --staged 01_Markdown.md</code>
+                        recuperamos el estado del <em>staging</em>: el archivo deja de estar preparado, pero sus cambios
+                        continúan en el directorio de trabajo para poder revisarlos o descartarlos después.</p>
+                    <div class="commands light"><code>git restore --staged 01_Markdown.md</code></div>
+                    <div class="image-container"><img src="../assets/git-restore-staged-ejemplo.png"
+                            alt="Ejemplo de git restore staged para sacar 01_Markdown.md del área de preparación"></div>
+                </article>
+                <article>
+                    <h3>Descartar cambios sin confirmar</h3>
+                    <p>Recupera la última versión confirmada de un archivo. <strong>Se pierden los cambios locales de
+                            ese archivo</strong>; revisa primero con <code>git diff</code>.</p>
+                    <div class="commands light"><code>git restore nombre-archivo</code></div>
+                    <div class="image-container"><img src="../assets/git-restore-ejemplo.png"
+                            alt="Ejemplo de git restore para descartar cambios locales no confirmados"></div>
+                </article>
+            </div>
+            <div class="cards one">
+                <article>
+                    <h3>Recuperar cambios directamente del repositorio local (confirmados)</h3>
+                    <p>Si quieres recuperar la versión de un archivo tal como estaba en un commit anterior, primero
+                        localiza su identificador con <code>git log --oneline</code>. Después recupera ese contenido en
+                        el directorio de trabajo:</p>
+                    <div class="commands light"><code>git restore --source id_commit nombre_archivo</code></div>
+                    <p>Este comando <strong>no actualiza el staging</strong>. El área de preparación conserva lo que ya
+                        tenía; por eso, al ejecutar <code>git status</code>, pueden aparecer a la vez cambios preparados
+                        y cambios no preparados en el mismo archivo.</p>
+                    <div class="image-container"><img src="../assets/git-restore-source-ejemplo.png"
+                            alt="Ejemplo de recuperar un archivo desde un commit anterior sin modificar el staging">
+                    </div>
+                </article>
+            </div>
+            <div class="higthligth">
+                <p class="activity-tag">Idea clave</p>
+                <p><code>git restore --staged</code> cambia la selección del próximo commit. <code>git restore</code>
+                    cambia el contenido del archivo. No son equivalentes.</p>
+                <div class="image-container"><img src="../assets/git-flujo-restore.png"
+                        alt="Diagrama del flujo entre directorio de trabajo, staging y repositorio local"></div>
+            </div>
+        </section>
+        <section class="section">
+            <h2>Borrar y mover archivos con seguimiento</h2>
+            <p>Cuando un archivo ya forma parte del repositorio, usa comandos de Git para que la operación y el área de
+                preparación queden sincronizadas.</p>
+            <div class="cards two">
+                <article>
+                    <h3><code>git rm</code></h3>
+                    <p>Borra el archivo del equipo y prepara su eliminación para el próximo commit. Después confirma el
+                        cambio.</p>
+                    <div class="commands light">
+                        <code>git rm borrador.txt</code><code>git commit -m "docs: elimina borrador"</code></div>
+                    <div class="image-container"><img src="../assets/git-rm-ejemplo.png"
+                            alt="Ejemplo de git rm y del estado de eliminación preparada para confirmar"></div>
+                </article>
+                <article>
+                    <h3><code>git mv</code></h3>
+                    <p>Mueve o renombra un archivo y deja el cambio preparado. Git detecta normalmente los renombrados,
+                        pero este comando hace explícita la intención.</p>
+                    <div class="commands light">
+                        <code>git mv perfil.mk perfil.md</code><code>git commit -m "docs: renombra el perfil"</code>
+                    </div>
+                </article>
+            </div>
+        </section>
+        <section class="section">
+            <p class="eyebrow">Archivos que no se publican</p>
+            <h2>Protege el repositorio con <code>.gitignore</code></h2>
+            <p>Este archivo indica a Git qué archivos nuevos debe ignorar: datos privados, archivos temporales del
+                sistema o configuraciones locales. No sustituye a la seguridad: una contraseña que ya se ha compartido
+                debe cambiarse.</p>
+            <div class="cards two">
+                <article>
+                    <h3>Ejemplo sencillo de fichero .gitignore</h3>
+                    <pre><code># Sistema y editor
+.DS_Store
+.vscode/
+
+# Datos privados
+.env
+secrets.txt
+
+# Archivos generados
+*.log
+node_modules/</code></pre>
+                </article>
+                <article>
+                    <h3>Reglas importantes</h3>
+                    <p><code>*.log</code> ignora una extensión. Una barra final como <code>dist/</code> representa una
+                        carpeta. Las reglas solo afectan a archivos que aún no estaban siendo seguidos.</p>
+                    <div class="commands">
+                        <code>git add .gitignore</code><code>git commit -m "chore: añade reglas de ignore"</code></div>
+                </article>
+            </div>
+            <div class="higthligth">
+                <p class="activity-tag">Ten en cuenta</p>
+                <p>Si un archivo ya fue añadido antes, <code>.gitignore</code> no lo elimina del control de versiones.
+                    Revísalo con la docente antes de usar <code>git rm --cached nombre-archivo</code>: deja el archivo
+                    en tu equipo, pero prepara su salida del repositorio.</p>
+            </div>
+        </section>
+        <section class="section">
+            <h2>Mensajes que cuentan la historia</h2>
+            <p>Un commit no es una copia de seguridad al azar: representa un cambio comprensible. Escribe el mensaje en
+                imperativo o como resultado, sin puntos finales y con la información suficiente para entenderlo semanas
+                después.</p>
+            <div class="cards two">
+                <article>
+                    <h3>Evita</h3>
+                    <p><code>git commit -m "cambios"</code><br><code>git commit -m "final"</code><br><code>git commit -m "arreglo"</code>
+                    </p>
+                </article>
+                <article>
+                    <h3>Mejor</h3>
+                    <p><code>git commit -m "docs: añade intereses al perfil"</code><br><code>git commit -m "docs: crea chuleta de Git"</code><br><code>git commit -m "chore: añade .gitignore"</code>
+                    </p>
+                </article>
+            </div>
+        </section>
+        <section class="section">
+            <p class="eyebrow">Ejercicio práctico</p>
+            <h2>Ordena el repositorio de tu perfil</h2>
+            <p>Continúa con el repositorio local donde creaste <code>perfil.md</code> y <code>chuleta-git.md</code>. El
+                objetivo es practicar el ciclo completo y terminar con un historial claro y un repositorio limpio.</p>
+            <div class="activity">
+                <ol>
+                    <li>Abre la carpeta del repositorio en la terminal. Ejecuta <code>git status</code> y explica con
+                        una frase qué significa cada grupo de archivos que aparece.</li>
+                    <li>Modifica <code>perfil.md</code>: añade una sección “Herramientas que estoy aprendiendo” con
+                        Markdown. Antes de añadirla, consulta el cambio con <code>git diff</code>.</li>
+                    <li>Prepara únicamente <code>perfil.md</code> con <code>git add perfil.md</code>. Comprueba con
+                        <code>git diff --staged</code> que el contenido preparado es el correcto y crea el commit
+                        <code>docs: añade herramientas al perfil</code>.</li>
+                    <li>Crea en la raíz un archivo <code>.gitignore</code>. Añade al menos <code>.DS_Store</code>,
+                        <code>.vscode/</code> y <code>*.log</code> y un fichero especifico tuyo<code>secreto.txt</code>. Confírmalo en un commit separado:
+                        <code>chore: añade .gitignore</code>.</li>
+                    <li>Crea un archivo temporal llamado <code>pruebas.log</code>. Ejecuta <code>git status</code> y
+                        verifica que Git no lo muestra. No lo añadas ni lo confirmes.</li> Haz lo mismo con un archivo tuyo de extensión <code>.txt</code> que quieras ignorar, por ejemplo <code>secreto.txt</code>.
+                    <li>En <code>chuleta-git.md</code>, añade las parejas de comandos de este apartado:
+                        <code>status/diff</code>, <code>restore --staged/restore</code> y <code>rm/mv</code>, con una
+                        frase propia para cada uno. Confirma el cambio con <code>docs: amplía chuleta de Git</code>.
+                    </li>
+                    <li>Guardate una captura o copia del resultado de <code>git log --oneline</code> y de
+                        <code>git status</code>. El estado final debe indicar que no hay nada pendiente de confirmar.
+                    </li>
+                </ol>
+            </div>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Markdown · AEA1 · WIP</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page" data-active="WIP00_Markdown.html">
+    <main>
+        <section class="cover compact-cover">
+            <p class="eyebrow">AEA1 · Bloc 0 · WIP</p>
+            <h1>Markdown</h1>
+            <p class="lead">Una manera simple, portable i professional d'escriure documentació tècnica preparada per
+                treballar amb Git.</p><a class="button" href="https://markdown.es/sintaxis-markdown/" target="_blank" rel="noreferrer">Enlace a guía completa</a>  <a class="button" href="01_Markdown.md" download>Descarrega el fichero ejemplo</a>
+                
+                
+        </section>
+        <section class="section">
+            <h2>Qui el fa servir i per què?</h2>
+            <p class="lead muted">Markdown és habitual entre desenvolupadores, equips de programari, docents i
+                comunitats de codi obert. S'utilitza en README, incidències, notes de versió, manuals i pàgines de
+                projecte perquè és text pla: es pot editar amb qualsevol editor, llegir sense eines especials i comparar
+                amb Git línia a línia.</p>
+            <div class="cards two">
+                <article>
+                    <h3>Quan utilitzar-lo</h3>
+                    <p>Per a documentació viva al costat del codi: instruccions, guies d'ús, canvis de versió, apunts
+                        tècnics i GitHub Pages.</p>
+                </article>
+                <article>
+                    <h3>Quan no</h3>
+                    <p>Per a documents amb maquetació complexa, formularis o disseny editorial precís, és preferible
+                        complementar-lo amb PDF, Word o una eina de disseny.</p>
+                </article>
+            </div>
+            <p class="muted">No existeix un percentatge únic i fiable sobre l'ús de Markdown en tota la documentació de
+                codi; sí que és el format habitual de documentació inicial en repositoris, especialment del README.</p>
+        </section>
+        <section class="section tint">
+            <h2>Sintaxi bàsica</h2>
+            
+            <p>Consulta la <a href="https://markdown.es/sintaxis-markdown/" target="_blank" rel="noreferrer">guia de
+                    sintaxi de Markdown</a>. També pots enganxar aquest codi a <a href="https://dillinger.io/"
+                    target="_blank" rel="noreferrer">Dillinger.io</a> per veure com es renderitza.</p>
+            <div class="cards two">
+                <article>
+                    <h3>El que escrivim</h3>
+                    <p>El bloc de codi és el contingut del fitxer <code>.md</code>: lleuger, llegible i versionable.
+                    </p>
+                    <pre><code># Títol
+## Apartat
+**Negreta** i *cursiva*
+- Element
+1. Primer element
+[Enllaç](https://exemple.cat)
+`README.md`</code></pre>
+                </article>
+                <article>
+                    <h3>El resultat visual</h3>
+                    <p>Exemple de la previsualització del mateix contingut en un editor Markdown com Dillinger.</p><a
+                        href="../assets/markdown-exemple-dillinger.png" target="_blank"><img
+                            src="../assets/markdown-exemple-dillinger.png"
+                            alt="Previsualització del títol, apartat, formats, llistes, enllaç i codi de l'exemple Markdown"
+                            style="width:100%;height:auto;border:1px solid #dce4e4"></a>
+                </article>
+            </div>
+        </section>
+        <section class="section">
+            <div class="activity">
+                <p class="activity-tag">Activitat pràctica</p>
+                <h2>Crea <code>perfil.md</code></h2>
+                <p>Crea un fitxer nou anomenat <code>perfil.md</code>. Serà la teva carta de presentació en Markdown i
+                    ha d'estar escrit amb un to adequat per compartir-lo amb companys i professorat. No hi incloguis
+                    dades personals sensibles, com l'adreça, el telèfon o contrasenyes.</p>
+                <p>El document ha d'incloure, com a mínim:</p>
+                <ol>
+                    <li>Un títol principal amb el teu nom o àlies professional i, com a mínim, dos subtítols.</li>
+                    <li>Una breu presentació personal amb text en <strong>negreta</strong> i <em>cursiva</em>.</li>
+                    <li>Una llista dels llenguatges de programació i/o tecnologies que coneixes.</li>
+                    <li>Una llista ordenada amb tres pel·lícules que t'agraden.</li>
+                    <li>Una llista no ordenada amb tres cantants o grups musicals que t'agraden.</li>
+                    <li>Un enllaç a una web professional, educativa o tecnològica que t'interessi.</li>
+                    <li>Una imatge opcional, pròpia o d'una font segura.</li>
+                    <li>Una taula amb tres tecnologies que t'agradaria aprendre, el nivell actual i un recurs per
+                        consultar.</li>
+                    <li>Un bloc de codi amb una ordre o un petit fragment de codi.</li>
+                    <li>Una cita amb una frase que t'agradi o et motivi.</li>
+                    <li>Un objectiu personal, professional o acadèmic per a aquest curs.</li>
+                    <li>Una checklist amb objectius assolits (<code>- [x]</code>) i pendents (<code>- [ ]</code>);
+                        ratlla almenys un objectiu aconseguit amb <code>~~ ~~</code>.</li>
+                </ol>
+                <p>Abans de lliurar-lo, comprova que el document es visualitza correctament a la previsualització de
+                    Markdown de Visual Studio Code i que tots els elements demanats hi apareixen.</p>
+            </div>
+        </section>
+        <footer>Institut Thos i Codina · Curs 2026–2027</footer>
+    </main>
+</body>
+
+</html>

@@ -295,6 +295,14 @@ h2 {
     background: #fff
 }
 
+.higthligth {
+    margin-top: 30px;
+    padding: 28px;
+    border: 2px solid var(--coral);
+    border-radius: 14px;
+    background: #fff
+}
+
 .dark .activity {
     color: var(--ink)
 }
