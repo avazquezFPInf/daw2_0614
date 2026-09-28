@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Ramas y merge · AEA1</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page" data-active="03_Ramas.html">
+    <main>
+        <section class="cover compact-cover">
+            <p class="eyebrow">3 · Git local · Ramas y merge</p>
+            <h1>Trabaja en paralelo sin romper la versión estable</h1>
+            <p class="lead">Una rama es una línea de trabajo independiente. Permite probar una mejora o resolver un
+                error sin modificar la rama principal hasta que el cambio está preparado.</p>
+        </section>
+
+        <section class="section">
+            <h2>¿Qué es una rama?</h2>
+            <p>Imagina que <code>master</code> es la versión estable de tu proyecto. Al crear una rama, Git parte del
+                mismo commit y abre otro camino de trabajo. Los commits nuevos de esa rama no aparecen en
+                <code>master</code> hasta que decidimos fusionarlos.
+            </p>
+            <div class="cards three">
+                <article>
+                    <h3>Rama principal</h3>
+                    <p>Suele llamarse <code>master</code>; en repositorios antiguos puede llamarse <code>master</code>.
+                        Contiene la versión que queremos mantener estable.</p>
+                </article>
+                <article>
+                    <h3>Rama de trabajo</h3>
+                    <p>Por ejemplo, <code>rama-feature</code>. Aquí desarrollamos una mejora de forma aislada y
+                        hacemos sus commits.</p>
+                </article>
+                <article>
+                    <h3>Merge</h3>
+                    <p>Es la operación que incorpora los commits de una rama de trabajo en otra rama, normalmente desde
+                        una <em>feature</em> hacia <code>master</code>.</p>
+                </article>
+            </div>
+            <div class="higthligth">
+                <p class="activity-tag">Idea clave</p>
+                <p>Una rama no es una copia completa de la carpeta: es una referencia a un punto de la historia. Git
+                    comparte los commits comunes y registra solo los cambios nuevos.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Antes de crear una rama</h2>
+            <p>Comprueba siempre dónde estás y que no dejas trabajo a medias. Cambiar de rama modifica los archivos
+                visibles de tu carpeta para mostrar la versión correspondiente a la rama elegida.</p>
+            <div class="cards two">
+                <article>
+                    <h3>Estado limpio</h3>
+                    <p><code>git status</code> debería indicar que no hay nada pendiente de confirmar. Si hay cambios,
+                        confírmalos o guárdalos antes de continuar.</p>
+                    <div class="commands light"><code>git status</code></div>
+                </article>
+                <article>
+                    <h3>Rama actual</h3>
+                    <p>El asterisco de <code>git branch</code> marca la rama en la que estás. También puedes consultar
+                        solo su nombre.</p>
+                    <div class="commands light"><code>git branch</code><!--code>git branch --show-current</code--></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Crear y cambiar de rama</h2>
+            <p>Para una nueva funcionalidad usamos nombres cortos, en minúsculas y separados con guiones. El prefijo
+                <code>feature/</code> deja clara la finalidad. También se usan <code>bugfix/</code> para correcciones y
+                <code>chore/</code> para mantenimiento.
+            </p>
+            <div class="cards two">
+                <article>
+                    <h3>Crear sin cambiar</h3>
+                    <p>Crea la rama a partir de la rama actual, pero te mantiene donde estabas.</p>
+                    <div class="commands light"><code>git branch rama-nueva</code></div>
+                </article>
+                <article>
+                    <h3>Crear y cambiar</h3>
+                    <p>Es la opción habitual: crea la rama y te sitúa en ella en un solo paso.</p>
+                    <div class="commands light"><code>git switch -c rama-nueva</code></div>
+                </article>
+                <article>
+                    <h3>Cambiar de rama</h3>
+                    <p>Cuando la rama ya existe, úsala para moverte entre ella y la principal.</p>
+                    <div class="commands light"><code>git switch master</code><code>git switch rama-nueva</code></div>
+                    <p>Antes se usaba <code>git checkout</code> para salir de la rama actual e ir a la indicada.</p>
+                    <div class="commands light"><code>git checkout -</code><code>git checkout rama-nueva</code></div>
+                </article>
+                <article>
+                    <h3>Comprobar el resultado</h3>
+                    <p>Después de cambiar, verifica la rama activa y revisa los archivos de la carpeta.</p>
+                    <div class="commands light"><code>git branch</code><code>git status</code></div>
+                </article>
+            </div>
+            <div class="image-container"><img src="../assets/git-ramas-crear-cambiar.png"
+                    alt="Ejemplo de creación de una rama, cambio de rama y modificación de perfil-profesora.md"></div>
+        </section>
+
+
+
+        <section class="section">
+            <h2>Ver la historia de todas las ramas</h2>
+            <p>El historial gráfico muestra dónde se separaron las ramas y dónde se han unido. Ejecuta este comando
+                antes y después del merge para comprobar qué ha ocurrido.</p>
+            <div class="commands light"><code>git log --oneline --graph --all</code></div>
+            <p>También es interesante observar el los cambios realizados entre ramas y en cada fichero o uno en
+                concreto.</p>
+            <div class="commands light"><code>git log rama1 rama2 archivo</code></div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">El flujo esencial</p>
+            <h2>Haz el merge desde la rama de destino</h2>
+            <div class="cards two">
+                <article>
+                    <h3>Antes del merge</h3>
+                    <p>La rama de trabajo tendrá uno o más commits que <code>master</code> todavía no tiene.</p>
+                </article>
+                <article>
+                    <h3>Después del merge</h3>
+                    <p>Los commits de la rama de trabajo pasan a formar parte de la historia de <code>master</code>.</p>
+                </article>
+            </div>
+            <p>Esta regla evita el error más habitual: si quieres incorporar <code>rama-feature</code> a
+                <code>master</code>, primero debes situarte en <code>master</code>. Después ejecutas el merge indicando la
+                rama que quieres incorporar.
+            </p>
+            <div class="commands light"><code>git switch master</code><code>git merge rama-feature</code></div>
+            <div class="higthligth">
+                <p class="activity-tag">Lee el comando como una frase</p>
+                <p>“Estoy en <code>master</code> y traigo aquí los cambios de <code>rama-feature</code>”. Nunca al
+                    revés.</p>
+            </div>
+            <div class="image-container"><img src="../assets/git-ramas-merge.png"
+                    alt="Ejemplo de merge de ramaAlternativa en master y del historial resultante"></div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">Práctica guiada</p>
+            <h2>Crea y fusiona una mejora del perfil</h2>
+            <p>Haz la práctica sobre el repositorio local de <code>perfil.md</code>. No necesitas GitHub todavía.</p>
+            <div class="activity">
+                <ol>
+                    <li>Comprueba que estás en la rama principal y que el repositorio está
+                        limpio:<br><code>git status</code><br><code>git branch</code></li>
+                    <li>Crea una rama para la mejora y cámbiate a
+                        ella:<br><code>git switch -c feature/mejora-perfil</code></li>
+                    <li>Abre <code>perfil.md</code> y añade una sección breve titulada <strong>Objetivo
+                            profesional</strong>. Guarda el archivo.</li>
+                    <li>Comprueba, prepara y confirma solo ese
+                        cambio:<br><code>git status</code><br><code>git add perfil.md</code><br><code>git commit -m "docs: añade objetivo profesional al perfil"</code>
+                    </li>
+                    <li>Mira el historial completo:<br><code>git log --oneline --graph --all</code></li>
+                    <li>Vuelve a la rama principal y verifica que esa sección no aparece todavía en
+                        <code>perfil.md</code>:<br><code>git switch master</code>
+                    </li>
+                    <li>Fusiona la mejora en la rama principal:<br><code>git merge feature/mejora-perfil</code></li>
+                    <li>Comprueba que la sección ya aparece en <code>perfil.md</code>, revisa el historial y elimina la
+                        rama ya
+                        fusionada:<br><code>git log --oneline --graph --all</code><br><code>git branch -d feature/mejora-perfil</code>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>¿Por qué a veces no aparece un commit de merge?</h2>
+            <p>En esta práctica es normal que Git indique <em>fast-forward</em>. Significa que <code>master</code> no
+                recibió cambios propios desde que creaste la rama, así que Git puede avanzar su referencia hasta el
+                último commit de <code>rama-feature</code> sin crear un commit adicional. Los cambios se han
+                fusionado correctamente.</p>
+            <div class="cards two">
+                <article>
+                    <h3>Eliminar una rama fusionada</h3>
+                    <p>Usa <code>-d</code>. Git te protege si la rama contiene commits que aún no se han integrado.</p>
+                    <div class="commands light"><code>git branch -d rama-feature</code></div>
+                </article>
+                <article>
+                    <h3>Forzar la eliminación</h3>
+                    <p><code>-D</code> puede hacer perder trabajo que no está fusionado. No lo uses en esta práctica.
+                    </p>
+                    <div class="commands light"><code>git branch -D nombre-rama</code></div>
+                </article>
+            </div>
+            <p class="muted">Los conflictos de merge los trabajaremos en el punto 4, junto con la colaboración y las
+                Pull Requests.</p>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Colaboración y Pull Requests · AEA1</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="app.js" defer></script>
+</head>
+<body class="module-page lesson-page" data-active="05_Colaboracion.html">
+    <main>
+        <section class="cover compact-cover">
+            <p class="eyebrow">5 · Colaboración</p>
+            <h1>Colabora sin perder el control del proyecto</h1>
+            <p class="lead">Las ramas permiten que varias personas trabajen en paralelo. Los conflictos y las Pull Requests ayudan a integrar esos cambios de forma consciente y revisable.</p>
+        </section>
+
+        <section class="section">
+            <h2>El problema que resuelve la colaboración</h2>
+            <p>Si dos personas modifican directamente la misma versión del proyecto, es fácil sobrescribir cambios sin querer. El flujo profesional separa el trabajo en ramas y revisa la integración antes de que llegue a la versión principal.</p>
+            <div class="cards three">
+                <article><h3>Una tarea, una rama</h3><p>Cada mejora o corrección se desarrolla en una rama con un objetivo claro: <code>feature/menu</code> o <code>bugfix/login</code>.</p></article>
+                <article><h3>Commits pequeños</h3><p>Un historial comprensible permite revisar qué se ha hecho, detectar errores y entender la intención de cada cambio.</p></article>
+                <article><h3>Integración revisada</h3><p>Antes de fusionar, comprobamos que los cambios encajan con el trabajo de las demás personas y no rompen el proyecto.</p></article>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>¿Qué es un conflicto?</h2>
+            <p>Un conflicto aparece cuando Git no puede decidir automáticamente qué contenido conservar. Suele ocurrir si dos ramas han modificado las mismas líneas de un archivo. No es un error de Git: es una decisión que debe tomar una persona.</p>
+            <div class="higthligth">
+                <p class="activity-tag">Antes de resolver</p>
+                <p>Lee el mensaje de Git y ejecuta <code>git status</code>. Te indicará qué archivos están “both modified” o en conflicto. No hagas un commit hasta haber revisado cada archivo afectado.</p>
+            </div>
+            <div class="commands light"><code>git status</code><code>git merge --abort</code></div>
+            <p><code>git merge --abort</code> cancela el merge en curso y devuelve el repositorio al estado anterior al intento de fusión. Úsalo si necesitas parar y entender qué está ocurriendo.</p>
+        </section>
+
+        <section class="section dark">
+            <p class="eyebrow">Las marcas de un conflicto</p>
+            <h2>Lee, decide, edita y confirma</h2>
+            <p>Git marca en el archivo las dos versiones para que puedas compararlas. No deben quedar estas marcas en el archivo final.</p>
+            <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Texto de la rama en la que estás
+=======
+Texto de la rama que intentas integrar
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature/mensaje</code></pre>
+            <div class="cards two">
+                <article><h3>HEAD</h3><p>Es el contenido de la rama actual, es decir, de la rama destino donde ejecutaste <code>git merge</code>.</p></article>
+                <article><h3>La otra rama</h3><p>Es el contenido que llega desde la rama indicada en el comando <code>git merge nombre-rama</code>.</p></article>
+            </div>
+            <div class="higthligth"><p class="activity-tag">Resolución</p><p>Edita el archivo y conserva una versión coherente: la de <code>HEAD</code>, la de la otra rama o una combinación de ambas. Elimina siempre las tres marcas <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>, <code>=======</code> y <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>.</p></div>
+        </section>
+
+        <section class="section">
+            <h2>Completar una fusión con conflicto</h2>
+            <p>Cuando el archivo ya contiene la versión que hemos decidido, Git necesita que confirmemos que el conflicto está resuelto. El orden es siempre el mismo:</p>
+            <div class="cards three">
+                <article><h3>1. Editar</h3><p>Abre los archivos marcados y deja su contenido final sin marcas de conflicto.</p></article>
+                <article><h3>2. Preparar</h3><p>Añade cada archivo resuelto al <em>staging</em>. Eso informa a Git de que ya no está en conflicto.</p><div class="commands light"><code>git add nombre-archivo</code></div></article>
+                <article><h3>3. Confirmar</h3><p>Crea el commit que completa la fusión. Puedes aceptar el mensaje que propone Git o escribir uno descriptivo.</p><div class="commands light"><code>git commit</code></div></article>
+            </div>
+            <div class="commands light"><code>git status</code><code>git log --oneline --graph --all</code></div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">Práctica local y segura</p>
+            <h2>Provoca y resuelve tu primer conflicto</h2>
+            <p>Haz esta prueba en el repositorio donde trabajas con Git. Usaremos un archivo nuevo para no alterar <code>perfil.md</code>. Todavía no necesitas GitHub.</p>
+            <div class="activity">
+                <ol>
+                    <li>En la rama principal, crea desde el editor un archivo <code>colaboracion.txt</code> con el texto <code>Versión inicial</code>. Guárdalo, añádelo y confirma el cambio:<br><code>git add colaboracion.txt</code><br><code>git commit -m "docs: crea archivo para practicar conflictos"</code></li>
+                    <li>Crea una rama de trabajo y cambia la única línea del archivo por <code>Cambio desde feature</code>:<br><code>git switch -c feature/mensaje</code><br><code>git add colaboracion.txt</code><br><code>git commit -m "docs: cambia mensaje desde feature"</code></li>
+                    <li>Vuelve a la rama principal y cambia esa misma línea por <code>Cambio desde main</code>. Confírmalo:<br><code>git switch main</code><br><code>git add colaboracion.txt</code><br><code>git commit -m "docs: cambia mensaje desde main"</code></li>
+                    <li>Intenta integrar la rama: <code>git merge feature/mensaje</code>. Git debería detenerse e indicar un conflicto.</li>
+                    <li>Ejecuta <code>git status</code>, abre <code>colaboracion.txt</code> y sustituye todo el bloque de marcas por una única línea: <code>Mensaje integrado desde main y feature</code>.</li>
+                    <li>Marca el archivo como resuelto y termina el merge:<br><code>git add colaboracion.txt</code><br><code>git commit -m "docs: resuelve conflicto de colaboración"</code></li>
+                    <li>Comprueba el resultado con <code>git log --oneline --graph --all</code>. Después puedes eliminar la rama: <code>git branch -d feature/mensaje</code>.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Pull Request: la revisión antes de fusionar</h2>
+            <p>Una Pull Request (PR) es una propuesta para integrar una rama en otra dentro de GitHub. No sustituye a Git: aporta un espacio compartido para revisar los cambios, comentar líneas concretas, ejecutar comprobaciones y decidir si se integra el trabajo.</p>
+            <div class="cards two">
+                <article><h3>Qué incluye una buena PR</h3><p>Un título claro, una descripción breve de lo que cambia, la rama de origen y la rama destino. También debe indicar cómo se ha comprobado el cambio.</p></article>
+                <article><h3>Qué hace quien revisa</h3><p>Lee el cambio, deja comentarios si tiene dudas, comprueba que cumple el objetivo y aprueba o solicita cambios antes de hacer el merge.</p></article>
+            </div>
+            <div class="higthligth"><p class="activity-tag">Más adelante, con GitHub</p><p>En los puntos 5 y 6 subiremos ramas al repositorio remoto, crearemos una Pull Request real y veremos cómo sincronizar la rama principal después de integrarla.</p></div>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
+    </main>
+</body>
+</html>
