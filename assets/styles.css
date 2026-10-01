@@ -202,6 +202,10 @@ h2 {
     border-color: var(--line)
 }
 
+.purple {
+    color: var(--purple)
+}
+
 .section {
     padding: 64px clamp(38px, 7vw, 110px);
     border-bottom: 1px solid var(--line);
