@@ -1,31 +1,101 @@
 <!doctype html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>VS Code · AEA1</title>
+    <title>VS Code como interfaz de Git · AEA1</title>
     <link rel="stylesheet" href="../assets/styles.css">
     <script src="app.js" defer></script>
 </head>
-
 <body class="module-page lesson-page" data-active="07_VSCode.html">
     <main>
         <section class="cover compact-cover">
             <p class="eyebrow">7 · VS Code como interfaz de Git</p>
-            <h1>VS Code y documentación</h1>
-            <p class="lead">Utiliza el editor como interfaz de Git sin perder de vista el flujo de trabajo.</p>
+            <h1>Git sin salir del editor</h1>
+            <p class="lead">Visual Studio Code ofrece una interfaz visual para el mismo repositorio Git que utilizas desde el terminal: cambios, staging, commits, ramas y sincronización.</p>
         </section>
+
         <section class="section">
-            <h2>Source Control i README</h2>
-            <p>Modifica, revisa, afegeix, crea el commit i sincronitza. Compara el diff visual amb
-                <code>git diff</code>.</p>
-            <div class="activity">
-                <p>README.md ha d'incloure títol, descripció, estructura, instruccions i enllaços a la documentació.</p>
+            <h2>La interfaz no sustituye a Git</h2>
+            <p>VS Code utiliza la instalación de Git de tu ordenador. No crea un repositorio distinto ni una copia especial: los comandos del terminal y la interfaz gráfica trabajan sobre los mismos archivos, staging, ramas y commits.</p>
+            <div class="cards three">
+                <article><h3>Source Control</h3><p>La vista de control de código fuente reúne los archivos modificados, preparados y los comandos habituales.</p></article>
+                <article><h3>Diff visual</h3><p>Al pulsar un archivo modificado, puedes comparar su versión guardada con tus cambios línea a línea.</p></article>
+                <article><h3>Rama activa</h3><p>En la barra inferior aparece la rama actual. Desde ahí puedes crear o cambiar de rama.</p></article>
+            </div>
+            <div class="higthligth">
+                <p class="activity-tag">Idea clave</p>
+                <p>Si haces un commit desde VS Code, aparecerá al ejecutar <code>git log</code>. Si haces <code>git add</code> desde el terminal, VS Code mostrará el archivo en la sección <strong>Staged Changes</strong>.</p>
             </div>
         </section>
-        <footer>Institut Thos i Codina · Curs 2026–2027</footer>
+
+        <section class="section">
+            <p class="eyebrow">1 · Abrir el repositorio</p>
+            <h2>Empieza siempre por la carpeta correcta</h2>
+            <p>Abre en VS Code la carpeta raíz del proyecto, aquella que contiene la carpeta oculta <code>.git</code>. Ve a <strong>File → Open Folder…</strong> y selecciónala. Al detectarla, VS Code activará automáticamente el icono de <strong>Source Control</strong> en la barra lateral.</p>
+            <div class="commands light"><code>code .</code><code>git status</code></div>
+            <p>Si tienes el comando <code>code</code> disponible, puedes abrir el proyecto desde su carpeta con <code>code .</code>. Comprueba después que VS Code y <code>git status</code> muestran la misma rama y los mismos cambios.</p>
+            <div class="cards two">
+                <article><h3>No aparece Source Control</h3><p>Comprueba que Git está instalado ejecutando <code>git --version</code> en el terminal integrado y que abriste la carpeta del repositorio, no solo un archivo.</p></article>
+                <article><h3>Proyecto ajeno</h3><p>Si has descargado un proyecto de Internet, lee el aviso de confianza del espacio de trabajo antes de ejecutar tareas o extensiones.</p></article>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">2 · Cambios, staging y commit</p>
+            <h2>El flujo de Git, con botones</h2>
+            <p>Abre la vista <strong>Source Control</strong>. Los archivos aparecen agrupados según su estado, igual que en <code>git status</code>.</p>
+            <div class="cards three">
+                <article><h3>Changes</h3><p>Son cambios sin preparar: equivalen a archivos modificados o sin seguimiento en tu directorio de trabajo.</p></article>
+                <article><h3>Staged Changes</h3><p>Pulsa el símbolo <strong>+</strong> junto a un archivo para añadirlo al staging. Es equivalente a <code>git add nombre-archivo</code>.</p></article>
+                <article><h3>Commit</h3><p>Escribe un mensaje descriptivo en la caja superior y pulsa <strong>Commit</strong>. Es equivalente a <code>git commit -m "mensaje"</code>.</p></article>
+            </div>
+            <p>Pulsa un archivo para abrir el comparador: las líneas eliminadas aparecen a un lado y las añadidas al otro. Revisa ese diff antes de añadir un archivo al staging.</p>
+            <div class="higthligth">
+                <p class="activity-tag">No pulses “Stage All” por costumbre</p>
+                <p>Antes revisa los archivos. Preparar solo lo que pertenece al siguiente commit mantiene el historial claro y evita publicar cambios accidentales.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">3 · Ramas e historial</p>
+            <h2>Trabaja en una rama desde la barra inferior</h2>
+            <p>Haz clic en el nombre de la rama de la barra de estado, en la parte inferior izquierda. Puedes seleccionar una rama existente o elegir <strong>Create new branch…</strong>. VS Code cambia los archivos del proyecto igual que <code>git switch nombre-rama</code>.</p>
+            <div class="commands light"><code>git branch</code><code>git switch -c feature/mejora-readme</code><code>git log --oneline --graph --all</code></div>
+            <p>El gráfico de Source Control permite consultar los commits y las relaciones entre ramas. Aun así, usa el terminal cuando quieras comprobar con precisión el historial, resolver un problema o aprender qué orden ha seguido Git.</p>
+            <div class="cards two">
+                <article><h3>Antes de cambiar</h3><p>Confirma, guarda temporalmente o descarta los cambios pendientes. Cambiar de rama con archivos modificados puede impedir el cambio o trasladar cambios no confirmados.</p></article>
+                <article><h3>Conflictos</h3><p>VS Code muestra acciones para aceptar el cambio actual, el entrante o ambos. Lee el resultado final: resolver no consiste en pulsar un botón sin revisar.</p></article>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">4 · GitHub desde VS Code</p>
+            <h2>Sincronizar, publicar y Pull Requests</h2>
+            <p>Las acciones básicas de Git —clonar, pull y push— ya están integradas. Para crear o revisar Pull Requests desde el editor instala la extensión oficial <strong>GitHub Pull Requests and Issues</strong> e inicia sesión con tu cuenta de GitHub.</p>
+            <div class="cards two">
+                <article><h3>Sincronizar cambios</h3><p>El botón <strong>Sync Changes</strong> primero trae los cambios remotos y después publica los tuyos. Si prefieres controlar el orden, usa las opciones separadas <strong>Pull</strong> y <strong>Push</strong>.</p></article>
+                <article><h3>Publicar rama</h3><p>Cuando una rama no existe todavía en GitHub, usa <strong>Publish Branch</strong>. Equivale a <code>git push -u origin nombre-rama</code>.</p></article>
+            </div>
+            <div class="commands light"><code>git pull</code><code>git push</code><code>git push -u origin feature/mejora-readme</code></div>
+            <p>La extensión de Pull Requests es útil, pero no obligatoria: también puedes crear la PR desde la web de GitHub. Elige una sola interfaz para cada paso y comprueba siempre la rama origen y la rama destino.</p>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">Práctica</p>
+            <h2>Repite un flujo de Git usando VS Code</h2>
+            <div class="activity">
+                <ol>
+                    <li>Abre en VS Code el repositorio que ya utilizas en clase y entra en <strong>Source Control</strong>.</li>
+                    <li>Modifica una línea de tu <code>README.md</code> o añade una breve sección de tecnologías.</li>
+                    <li>Abre el archivo desde <strong>Changes</strong>, revisa el diff y añádelo al staging pulsando <strong>+</strong>.</li>
+                    <li>Escribe un mensaje de commit claro y confirma el cambio desde VS Code.</li>
+                    <li>Comprueba en el terminal integrado que el commit existe con <code>git log --oneline -3</code>.</li>
+                    <li>Publica el commit con <strong>Push</strong> o <strong>Sync Changes</strong> y verifica en GitHub que aparece en el historial.</li>
+                </ol>
+            </div>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
     </main>
 </body>
-
 </html>

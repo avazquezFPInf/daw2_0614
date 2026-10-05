@@ -126,6 +126,7 @@ git push -u origin main
 # Envía todos los commits locales a GitHub y configura el seguimiento remoto.</code></pre>
             <p>Si GitHub abre el navegador, inicia sesión allí. Nunca escribas una contraseña o token dentro de un
                 archivo del proyecto.</p>
+           
         </section>
         <section class="section">
             <p class="eyebrow">4 · Comprueba el resultado</p>
@@ -135,40 +136,40 @@ git push -u origin main
                 <li>Comprueba que aparecen <code>perfil.md</code> y <code>chuleta-git.md</code>.</li>
                 <li>Abre la lista de commits y compara los mensajes con <code>git log --oneline</code>.</li>
                 <li>Abre <code>perfil.md</code>: GitHub lo muestra automáticamente como un documento Markdown.</li>
-                <li>Revisa que no hayas publicado contraseñas, tokens, direcciones u otros datos sensibles.</li>
+                
             </ol>
+             <figure class="image-container">
+                <img src="../assets/github-primer-push-historial.png" alt="Historial de commits del repositorio mostrado en GitHub después del primer push">
+            </figure>
         </section>
                <section class="section">
-            <h2>5 · Visibilidad, permisos y seguridad</h2>
+                <p class="eyebrow">5 · Visibilidad, permisos y seguridad</p>
+            <h2>Repositorios públicos y privados</h2>
             <div class="cards two">
                 <article>
                     <h3>Repositorio público</h3>
                     <p>Cualquier persona puede ver el contenido y el historial. Es útil para mostrar un portfolio, pero
-                        nunca debe incluir datos personales, claves, contraseñas ni archivos internos.</p>
+                        nunca debe incluir datos personales, claves, contraseñas ni archivos internos. Con el plan gratuito de GitHub puedes publicar tu página web si el repositorio es público.</p>
                 </article>
                 <article>
                     <h3>Repositorio privado</h3>
-                    <p>Solo las personas invitadas pueden acceder. Para la primera entrega, el enlace en Moodle es
-                        suficiente si el repositorio es visible para el profesorado; las invitaciones se pueden
-                        introducir después.</p>
+                    <p>Solo las personas invitadas pueden acceder. Con el plan gratuito de GitHub, puedes tener hasta tres repositorios privados, pero no puedes publicar la web y esta es nuestra intención.</p>
                 </article>
             </div>
-            <p>Un archivo <code>.gitignore</code> evita añadir archivos generados, configuraciones locales o secretos
-                por error. Comprueba siempre con <code>git status</code> antes de hacer <code>git add .</code>.</p>
+            <p>Recuerda que en el archivo <code class="purple">.gitignore</code> indicamos que archivos queremos evitar añadir en el repositorio tales como configuraciones locales o ficheros con información sensible. 
+                Esto es especialemnte importante para evitar subir información confidencial en un repositorio público. Como buen práxis, comprueba siempre con <code class="purple">git status</code> antes de hacer <code class="purple">git add .</code>.</p>
         </section>
         <section class="section tint">
-            <p class="eyebrow">6 · Entrega inicial</p>
-            <h2>Comparte el enlace por Moodle</h2>
-            <p>Para esta primera práctica, entrega en Moodle la URL completa de tu repositorio. Es la opción más
-                sencilla: el profesorado puede consultar los archivos y la historia de commits, y tú mantienes la
-                propiedad del proyecto.</p>
+            <p class="eyebrow">Entrega enlace Github</p>
+            <p>Para esta primera práctica, entrega en Moodle la URL completa de tu repositorio. De esta manera podré consultar los archivos y la historia de commits, y tú mantienes la
+                propiedad del proyecto. Iremos revisando el progreso a lo largo del curso.</p>
             <div class="activity">
                 <p class="activity-tag">Antes de entregar</p>
                 <ul>
-                    <li>El enlace abre el repositorio correcto.</li>
-                    <li>Se ven <code>perfil.md</code>, <code>chuleta-git.md</code> y sus commits.</li>
-                    <li>El nombre del repositorio sigue el formato acordado.</li>
-                    <li>No contiene información sensible.</li>
+                <li>El enlace abre el repositorio correcto.</li>
+                <li>Revisa que el nombre del repositorio sigue el formato acordado.</li>    
+                <li>Se ven <code class="purple">perfil.md</code>, <code class="purple">chuleta-git.md</code> (o los ficheros que tengas) y sus commits.</li>
+                    
                 </ul>
             </div>
         </section>

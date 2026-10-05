@@ -195,11 +195,14 @@ h2 {
 .commands code {
     padding: 8px 10px;
     border: 1px solid rgba(255, 255, 255, .45);
-    border-radius: 6px
+    border-radius: 6px;
+    margin: 4px 4px;
+    color: var(--purple);
 }
 
 .commands.light code {
-    border-color: var(--line)
+    border-color: var(--line);
+    color: var(--purple)
 }
 
 .purple {
@@ -267,6 +270,23 @@ h2 {
 .cards p {
     margin: 0;
     color: var(--muted)
+}
+
+.remote-flow {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(0, 2fr);
+    gap: 18px;
+    align-items: center;
+    margin: 30px 0
+}
+
+.remote-flow-steps {
+    grid-template-columns: 1fr;
+    margin: 0
+}
+
+.remote-flow .image-container {
+    margin: 0
 }
 
 .tint {
@@ -422,6 +442,7 @@ footer {
 
     .cards.two,
     .cards.three,
+    .remote-flow,
     .table>div {
         grid-template-columns: 1fr
     }

@@ -1,7 +1,113 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Publicación y CI · AEA1</title><link rel="stylesheet" href="../assets/styles.css"><script src="app.js" defer></script></head>
-<body class="module-page lesson-page" data-active="08_PublicacionCI.html"><main>
-<section class="cover compact-cover"><p class="eyebrow">8 · Publicación y automatización</p><h1>GitHub Pages y GitHub Actions</h1><p class="lead">Publica una web desde el repositorio e identifica las comprobaciones automáticas que se ejecutan con cada cambio.</p></section>
-<section class="section"><div class="cards two"><article><h3>GitHub Pages</h3><p>Publica la web desde <code>main</code>, compruébala en una ventana privada y añade el enlace al README.</p></article><article><h3>GitHub Actions</h3><p>Identifica el workflow, cuándo se ejecuta y el resultado de la comprobación después de cada push o Pull Request.</p></article></div><div class="activity"><h2>Cierre</h2><p>Revisa <code>git status</code>, el historial, el README, la web publicada y el workflow antes de entregar.</p></div></section>
-<footer>Institut Thos i Codina · Curso 2026–2027 Alicia Vázquez</footer></main></body></html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>GitHub Pages · AEA1</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <script src="app.js" defer></script>
+</head>
+<body class="module-page lesson-page" data-active="08_PublicacionCI.html">
+    <main>
+        <section class="cover compact-cover">
+            <p class="eyebrow">8 · Publicación con GitHub Pages</p>
+            <h1>Convierte tu repositorio en una web</h1>
+            <p class="lead">GitHub Pages publica los archivos HTML, CSS y JavaScript de tu repositorio para que tu proyecto tenga una URL pública.</p>
+        </section>
+
+        <section class="section">
+            <h2>¿Qué es GitHub Pages?</h2>
+            <p>Es un servicio de alojamiento para sitios estáticos. Toma los archivos de una rama o de una carpeta de tu repositorio y genera una web sin que tengas que contratar un servidor.</p>
+            <div class="cards three">
+                <article><h3>Sí puede publicar</h3><p>HTML, CSS, JavaScript, imágenes, fuentes y archivos estáticos de una web.</p></article>
+                <article><h3>No ejecuta</h3><p>PHP, Node.js en servidor, bases de datos ni formularios con lógica propia de servidor.</p></article>
+                <article><h3>Se actualiza con Git</h3><p>Cuando haces <code>push</code> a la fuente de publicación, GitHub vuelve a generar el sitio.</p></article>
+            </div>
+            <div class="higthligth">
+                <p class="activity-tag">Antes de publicar</p>
+                <p>La web quedará accesible desde Internet. No subas contraseñas, tokens, datos personales de terceros ni archivos que no deban ser públicos.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">Dos tipos de dirección</p>
+            <h2>La URL depende del nombre del repositorio</h2>
+            <div class="cards two">
+                <article><h3>Web de proyecto</h3><p>Es la opción que usarás normalmente. Si tu usuario es <code>alumna</code> y el repositorio se llama <code>portfolio</code>, la dirección será:</p><div class="commands light"><code>https://alumna.github.io/portfolio/</code></div></article>
+                <article><h3>Web personal</h3><p>Solo se crea si el repositorio se llama exactamente <code>usuario.github.io</code>. En ese caso, la dirección será:</p><div class="commands light"><code>https://usuario.github.io/</code></div></article>
+            </div>
+            <p>Para los proyectos de clase utilizaremos una <strong>web de proyecto</strong>. Recuerda este detalle al escribir enlaces: una ruta que empieza por <code>/</code> apunta al dominio completo y puede perder el nombre del repositorio.</p>
+            <pre><code>&lt;!-- Recomendado dentro de un proyecto publicado --&gt;
+&lt;link rel="stylesheet" href="css/styles.css"&gt;
+&lt;img src="assets/foto.png" alt="Descripción"&gt;
+
+&lt;!-- Evítalo si la web está en /nombre-repositorio/ --&gt;
+&lt;link rel="stylesheet" href="/css/styles.css"&gt;</code></pre>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">1 · Preparar el repositorio</p>
+            <h2>Comprueba que la web puede abrirse</h2>
+            <p>GitHub Pages busca un archivo de inicio llamado <code>index.html</code> en la carpeta que selecciones como fuente. Antes de publicar, abre ese archivo en el navegador desde tu ordenador y revisa:</p>
+            <div class="cards three">
+                <article><h3>Archivo inicial</h3><p>Existe un <code>index.html</code> en la raíz del proyecto o en la carpeta que vas a publicar.</p></article>
+                <article><h3>Rutas relativas</h3><p>Las hojas de estilo, imágenes, scripts y enlaces entre páginas usan rutas relativas correctas.</p></article>
+                <article><h3>Cambios confirmados</h3><p>Todo está guardado, añadido, confirmado y enviado a GitHub con <code>git push</code>.</p></article>
+            </div>
+            <div class="commands light"><code>git status</code><code>git add .</code><code>git commit -m "feat: publica la web inicial"</code><code>git push</code></div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">2 · Activar GitHub Pages</p>
+            <h2>Publicar desde una rama</h2>
+            <ol class="steps">
+                <li>En GitHub, abre el repositorio que contiene la web.</li>
+                <li>Entra en <strong>Settings</strong> y, en el menú lateral, pulsa <strong>Pages</strong>.</li>
+                <li>En <strong>Build and deployment</strong>, selecciona <strong>Deploy from a branch</strong>.</li>
+                <li>Elige la rama <code>main</code> —o la rama que utilices— y la carpeta <code>/(root)</code>.</li>
+                <li>Pulsa <strong>Save</strong>. GitHub preparará la publicación.</li>
+                <li>Espera a que aparezca la URL del sitio y ábrela en una pestaña nueva.</li>
+            </ol>
+            <div class="higthligth">
+                <p class="activity-tag">No aparece la web de inmediato</p>
+                <p>La primera publicación puede tardar unos minutos. En la pestaña <strong>Actions</strong> puedes comprobar si el proceso de despliegue ha terminado correctamente o si informa de algún error.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">3 · Actualizar el sitio</p>
+            <h2>Tu flujo habitual ya publica la nueva versión</h2>
+            <p>Una vez configurada la fuente, no tienes que volver a activar Pages. Trabaja como siempre: modifica, revisa, confirma y publica los cambios. Cada <code>push</code> a la rama y carpeta seleccionadas inicia una nueva publicación.</p>
+            <div class="commands light"><code>git status</code><code>git add .</code><code>git commit -m "feat: actualiza portada"</code><code>git push origin main</code></div>
+            <p>Después abre la URL de GitHub Pages y recarga la página. Si no ves la versión nueva, espera a que finalice el proceso de Actions y haz una recarga forzada del navegador.</p>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">Introducción a GitHub Actions</p>
+            <h2>La automatización que hay detrás</h2>
+            <p>GitHub Actions ejecuta tareas automáticas cuando ocurre algo en el repositorio, por ejemplo al hacer <code>push</code> o al abrir una Pull Request. Para publicar desde una rama no necesitas escribir ningún archivo de configuración: GitHub gestiona el despliegue de Pages.</p>
+            <div class="cards two">
+                <article><h3>Ahora</h3><p>Usa la pestaña <strong>Actions</strong> para comprobar el estado de la publicación y entender que cada ejecución tiene un resultado.</p></article>
+                <article><h3>Más adelante</h3><p>Un workflow puede validar enlaces, ejecutar pruebas o construir un proyecto antes de publicarlo. Se define en archivos YAML dentro de <code>.github/workflows/</code>.</p></article>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">Práctica final</p>
+            <h2>Publica tu portfolio o proyecto web</h2>
+            <div class="activity">
+                <ol>
+                    <li>Comprueba que el repositorio contiene un <code>index.html</code> y que la web funciona localmente.</li>
+                    <li>Revisa las rutas de CSS, JavaScript, imágenes y enlaces. Usa rutas relativas.</li>
+                    <li>Confirma y publica los cambios en la rama <code>main</code>.</li>
+                    <li>Activa GitHub Pages desde <strong>Settings → Pages</strong>, seleccionando <code>main</code> y <code>/(root)</code>.</li>
+                    <li>Espera a que termine el despliegue, visita la URL y comprueba cada página y cada imagen.</li>
+                    <li>Añade al <code>README.md</code> un enlace con el texto <strong>Ver la web publicada</strong>.</li>
+                    <li>Entrega por Moodle el enlace del repositorio y el enlace de GitHub Pages.</li>
+                </ol>
+            </div>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
+    </main>
+</body>
+</html>

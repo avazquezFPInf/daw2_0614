@@ -1,48 +1,208 @@
 <!doctype html>
 <html lang="es">
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>GitHub: trabajo remoto · AEA1</title>
+    <title>GitHub: clone, pull y Pull Request · AEA1</title>
     <link rel="stylesheet" href="../assets/styles.css">
     <script src="app.js" defer></script>
 </head>
-
 <body class="module-page lesson-page" data-active="06_GitHubFlujoRemoto.html">
     <main>
         <section class="cover compact-cover">
             <p class="eyebrow">6 · GitHub · Trabajo remoto</p>
-            <h1>Clona, sincroniza y comparte</h1>
-            <p class="lead">Trabaja con un repositorio remoto, revisa su historial y entrega el enlace por Moodle.</p>
+            <h1>Clona, actualiza y propone cambios</h1>
+            <p class="lead">Aprende a traer un repositorio a tu equipo, mantenerlo sincronizado y publicar una rama para revisarla mediante una Pull Request.</p>
         </section>
+
         <section class="section">
-            <h2>Flujo de trabajo remoto</h2>
-            <div class="commands light"><code>git clone URL</code><code>git pull</code><code>git push</code></div>
-            <div class="cards two">
-                <article>
-                    <h3>Visibilidad</h3>
-                    <p>Decide si el repositorio es público o privado y comparte el acceso necesario con el profesorado.
-                    </p>
-                </article>
-                <article>
-                    <h3>Entrega</h3>
-                    <p>Entrega en Moodle el enlace del repositorio y comprueba que se ven los archivos y el historial de
-                        commits.</p>
-                </article>
+            <h2>Un repositorio, dos ubicaciones</h2>
+            <p>GitHub guarda el <strong>repositorio remoto</strong> en Internet. En tu ordenador trabajas con una copia local. Ambos tienen el historial completo de commits, pero pueden avanzar de forma independiente hasta que los sincronizas.</p>
+            <div class="remote-flow">
+                <div class="cards remote-flow-steps">
+                    <article><h3>Clonar</h3><p>Crea la primera copia local de un repositorio remoto.</p></article>
+                    <article><h3>Pull</h3><p>Trae a tu copia local los commits que ya existen en GitHub.</p></article>
+                    <article><h3>Push</h3><p>Publica en GitHub los commits que has creado localmente.</p></article>
+                </div>
+                <figure class="image-container">
+                    <img src="../assets/git-flujo-local-remoto.png" alt="Diagrama del flujo entre copia de trabajo, staging, repositorio local y repositorio remoto con los comandos clone, fetch, pull y push">
+                </figure>
+            </div>
+            <div class="higthligth">
+                <p class="activity-tag">Idea clave</p>
+                <p>Antes decide desde dónde empiezas:</p>
+                <ul>
+                    <li>Si el repositorio ya existe en GitHub y todavía no lo tienes en tu ordenador, usa <code class="purple">git clone URL</code>. El clone crea la copia local y configura automáticamente el remoto llamado <code>origin</code>.</li>
+                    <li>Si ya tienes un repositorio local con commits y acabas de crear el repositorio vacío en GitHub, conéctalos así: <code class="purple">git remote add origin https://github.com/usuario/nombre-repositorio.git</code>.</li>
+                </ul>
+                <p>Una vez existe esa conexión, usa <code class="purple">git pull</code> para traer cambios y <code class="purple">git push</code> para publicar los tuyos. <code class="purple">git add</code> y <code class="purple">git commit</code> siempre trabajan solo en local.</p>
             </div>
         </section>
-                <section class="section">
-            <h2>Pull Request: la revisión antes de fusionar</h2>
-            <p>Una Pull Request (PR) es una propuesta para integrar una rama en otra dentro de GitHub. No sustituye a Git: aporta un espacio compartido para revisar los cambios, comentar líneas concretas, ejecutar comprobaciones y decidir si se integra el trabajo.</p>
+
+        <section class="section">
+            <p class="eyebrow">1 · Descargar un proyecto</p>
+            <h2>Clonar un repositorio</h2>
+            <p>En GitHub abre el repositorio, pulsa <strong>Code</strong>, selecciona <strong>HTTPS</strong> y copia la URL. En la carpeta donde quieras guardar el proyecto, ejecuta:</p>
+            <pre><code>git clone https://github.com/usuario/nombre-repositorio.git
+# Descarga el repositorio y crea una carpeta con su nombre.
+
+cd nombre-repositorio
+# Entra en la carpeta del repositorio que acabas de clonar.</code></pre>
+            <p>El comando crea la carpeta, descarga archivos e historial, y configura automáticamente el remoto con el nombre <code>origin</code>.</p>
+            <pre><code>git remote -v
+# Muestra la URL guardada para el remoto llamado origin.
+
+git branch -a
+# Lista las ramas locales y las ramas remotas conocidas.
+
+git log --oneline --decorate -5
+# Muestra los cinco últimos commits e indica las ramas y remotos.</code></pre>
             <div class="cards two">
-                <article><h3>Qué incluye una buena PR</h3><p>Un título claro, una descripción breve de lo que cambia, la rama de origen y la rama destino. También debe indicar cómo se ha comprobado el cambio.</p></article>
-                <article><h3>Qué hace quien revisa</h3><p>Lee el cambio, deja comentarios si tiene dudas, comprueba que cumple el objetivo y aprueba o solicita cambios antes de hacer el merge.</p></article>
+                <article><h3><code>origin</code></h3><p>Es el apodo habitual del repositorio remoto desde el que clonaste. Puedes comprobar su URL con <code class="purple">git remote -v</code>.</p></article>
+                <article><h3><code>origin/main</code></h3><p>Es la referencia local que Git guarda para recordar el último estado conocido de la rama <code>main</code> en GitHub.</p></article>
             </div>
-            <div class="higthligth"><p class="activity-tag">Más adelante, con GitHub</p><p>En los puntos 5 y 6 subiremos ramas al repositorio remoto, crearemos una Pull Request real y veremos cómo sincronizar la rama principal después de integrarla.</p></div>
+            <p class="small">Si tu repositorio usa <code>master</code> en lugar de <code>main</code>, sustituye el nombre de la rama en los comandos.</p>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">2 · Antes de empezar a editar</p>
+            <h2>Actualizar con <code>git pull</code></h2>
+            <p>Antes de comenzar una tarea, y antes de subir cambios, comprueba que tu rama esté actualizada. <code>git pull</code> descarga los commits del remoto y trata de integrarlos en la rama actual.</p>
+            <pre><code>git switch main
+# Cambia a la rama principal antes de actualizarla.
+
+git pull origin main
+# Descarga los commits de main en GitHub y los integra en tu main local.
+
+git status
+# Comprueba que no hay cambios pendientes ni conflictos.</code></pre>
+            <p>En una rama que ya está enlazada con su remota, normalmente basta con <code>git pull</code>. Indicar <code>origin main</code> hace visible de dónde y hacia qué rama se sincroniza.</p>
+            <div class="higthligth">
+                <p class="activity-tag">Rutina recomendada</p>
+                <p>Primero guarda o confirma tu trabajo local. Después usa <code class="purple">git pull</code>. Si Git no puede integrar los cambios automáticamente, detendrá la operación para que resuelvas el conflicto, igual que en un merge local.</p>
+            </div>
+            <pre><code>git fetch origin
+# Descarga la información nueva del remoto, sin modificar tus archivos.
+
+git log --oneline HEAD..origin/main
+# Muestra los commits que están en GitHub pero todavía no están en tu rama local.</code></pre>
+            <p><code>git fetch origin</code> solo descarga información y no modifica tus archivos. Es útil para mirar qué hay nuevo antes de integrar los cambios con <code>git pull</code>.</p>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">3 · Publicar una rama</p>
+            <h2>De commit local a <code>git push</code></h2>
+            <p>Después de crear commits en una rama, publícala para que otras personas puedan verla y revisarla en GitHub.</p>
+            <pre><code>git switch -c feature/mejora-readme
+# Crea la rama de trabajo y cambia a ella.
+
+git add README.md
+# Añade al staging la mejora del README.
+
+git commit -m "docs: mejora el README"
+# Guarda la mejora como un commit en la rama local.
+
+git push -u origin feature/mejora-readme
+# Publica la rama en GitHub y la enlaza con la rama remota.</code></pre>
+            <p>La opción <code>-u</code> enlaza por primera vez la rama local con la rama remota. Desde ese momento, mientras trabajes en esa rama, normalmente podrás usar solo <code>git push</code> y <code>git pull</code>.</p>
+            <div class="cards two">
+                <article><h3>Antes de hacer push</h3><p>Revisa <code class="purple">git status</code>, confirma los cambios con un mensaje claro y actualiza la rama si han trabajado otras personas.</p></article>
+                <article><h3>Si Git rechaza el push</h3><p>Normalmente el remoto tiene commits que tú no tienes. Ejecuta <code class="purple">git pull</code>, resuelve cualquier conflicto si aparece y vuelve a hacer <code class="purple">git push</code>.</p></article>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">4 · Revisar antes de integrar</p>
+            <h2>Crear una Pull Request</h2>
+            <p>Una <strong>Pull Request</strong> (PR) es una petición que dice: <strong>«He terminado este cambio en mi rama; revisémoslo antes de incorporarlo a la versión principal»</strong>. Es una página de GitHub para comparar dos ramas, hablar sobre el cambio y decidir si se hace el merge.</p>
+            <div class="commands light"><code>feature/readme</code><code>Pull Request en GitHub</code><code>main</code></div>
+            <p>Por ejemplo, has mejorado el README en <code>feature/readme</code>. La PR enseña exactamente qué líneas cambiarían si incorporas esa rama a <code>main</code>. Mientras la PR está abierta, <code>main</code> no cambia.</p>
+            <div class="cards three">
+                <article><h3>1. Quien desarrolla</h3><p>Crea una rama, hace commits y la publica con <code>git push</code>. Después abre la Pull Request.</p></article>
+                <article><h3>2. Quien revisa</h3><p>Lee la descripción y el diff, deja comentarios o pide cambios. Puede ser una compañera, el profesor o la propia persona autora en una práctica individual.</p></article>
+                <article><h3>3. Quien integra</h3><p>Cuando el cambio es correcto, pulsa <strong>Merge pull request</strong>. Solo entonces los commits pasan a <code>main</code>.</p></article>
+            </div>
+            <div class="higthligth">
+                <p class="activity-tag">Una PR no crea ni mueve tus commits</p>
+                <p>Primero creas los commits en tu ordenador y haces <code>push</code>. La PR solo propone incorporarlos. Si después corriges algo en la misma rama y haces otro <code>push</code>, la PR se actualiza automáticamente con esos nuevos commits.</p>
+            </div>
+            <ol class="steps">
+                <li>Publica la rama con <code class="purple">git push -u origin nombre-rama</code>.</li>
+                <li>En GitHub aparecerá el botón <strong>Compare &amp; pull request</strong>. También puedes entrar en <strong>Pull requests</strong> y pulsar <strong>New pull request</strong>.</li>
+                <li>Comprueba la rama destino: normalmente <code>main</code>. La rama origen será tu <code>feature/...</code>.</li>
+                <li>Escribe un título claro, explica brevemente el cambio y revisa la pestaña <strong>Files changed</strong>.</li>
+                <li>Crea la PR. Otra persona puede comentarla, pedir cambios o aprobarla.</li>
+                <li>Cuando esté revisada, se hace el merge desde GitHub. Después actualiza tu copia local con <code>git switch main</code> y <code>git pull origin main</code>.</li>
+            </ol>
+            <div class="higthligth">
+                <p class="activity-tag">No confundas</p>
+                <p><strong>Pull</strong> descarga e integra cambios del remoto en tu ordenador. Una <strong>Pull Request</strong> es una propuesta de revisión entre ramas en GitHub. Son acciones distintas, aunque compartan la palabra <em>pull</em>.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">5 · Marcar una versión</p>
+            <h2>Tags y releases en GitHub</h2>
+            <p>Una <strong>etiqueta</strong> o <em>tag</em> es un nombre que señala un commit concreto. Sirve para identificar una versión estable, por ejemplo <code>v1.0.0</code>, sin crear una rama nueva ni modificar archivos.</p>
+            <pre><code>git switch main
+# Cambia a la rama principal, donde está la versión que vas a marcar.
+
+git pull origin main
+# Actualiza la rama principal con los últimos cambios de GitHub.
+
+git tag -a v1.0.0 -m "Primera versión estable"
+# Crea una etiqueta anotada llamada v1.0.0 en el commit actual.
+
+git push origin v1.0.0
+# Publica únicamente esa etiqueta en GitHub.
+
+git tag
+# Lista las etiquetas que existen en el repositorio local.
+
+git show v1.0.0
+# Muestra el commit y el mensaje asociados a la etiqueta v1.0.0.</code></pre>
+            <p>Crea la etiqueta cuando la rama principal esté actualizada y el proyecto funcione correctamente. El último comando publica <strong>esa etiqueta</strong> en GitHub; los commits ya deben haberse publicado antes.</p>
+            <div class="cards two">
+                <article><h3>Comprobar en local</h3><p>Lista las etiquetas y consulta el commit al que apunta cada una para confirmar que has marcado la versión correcta.</p></article>
+                <article><h3>Comprobar en GitHub</h3><p>En el repositorio abre <strong>Releases</strong> y después <strong>Tags</strong>. Allí verás la etiqueta y podrás consultar el código de esa versión.</p></article>
+            </div>
+            <div class="higthligth">
+                <p class="activity-tag">Tag no es lo mismo que Release</p>
+                <p>El tag marca un commit. Una <strong>Release</strong> de GitHub presenta esa etiqueta con un título, notas de versión y, si hace falta, archivos descargables. Para crearla: <strong>Releases → Draft a new release</strong>, elige el tag y escribe una breve descripción.</p>
+            </div>
+            <div class="activity">
+                <p class="activity-tag">Ejemplo · Trabajar desde una versión anterior</p>
+                <p>El proyecto ya tiene las versiones <code>v1.0.0</code> y <code>v1.0.1</code>, pero quieres empezar un trabajo nuevo exactamente desde <code>v1.0.0</code>. No cambies la etiqueta: crea una rama nueva que parta de ella.</p>
+                <pre><code>git clone https://github.com/usuario/nombre-repositorio.git
+# Descarga el repositorio completo, incluido el historial y sus etiquetas.
+
+cd nombre-repositorio
+# Entra en la copia local del proyecto.
+
+git switch -c feature-desde-v1.0.0 v1.0.0
+# Crea una rama de trabajo que comienza en el commit marcado con v1.0.0.
+
+git status
+# Comprueba que estás en feature-desde-v1.0.0 y ya puedes trabajar.</code></pre>
+                <p>La rama <code>feature-desde-v1.0.0</code> contiene el código de la versión <code>v1.0.0</code>, aunque el proyecto continúe por <code>v1.0.1</code> o versiones posteriores. Si ya habías clonado el repositorio antes de que se publicara la etiqueta, ejecuta primero <code>git fetch --tags origin</code>.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <p class="eyebrow">Práctica</p>
+            <h2>Publica una mejora y crea una Pull Request</h2>
+            <div class="activity">
+                <ol>
+                    <li>Clona tu repositorio de clase en una carpeta nueva, o asegúrate de que tu copia local está vinculada a GitHub.</li>
+                    <li>En <code>main</code>, ejecuta <code>git pull origin main</code>.</li>
+                    <li>Crea la rama <code>feature/readme</code> y añade una sección breve al <code>README.md</code> explicando el contenido del repositorio.</li>
+                    <li>Haz <code>git add</code>, <code>git commit</code> y publica la rama con <code>git push -u origin feature/readme</code>.</li>
+                    <li>En GitHub crea una Pull Request desde <code>feature/readme</code> hacia <code>main</code>. Incluye un título y una descripción de dos o tres líneas.</li>
+                    <li>Cuando la PR esté revisada, intégrala. Vuelve al terminal y actualiza tu <code>main</code> con <code>git pull origin main</code>.</li>
+                </ol>
+            </div>
         </section>
         <footer>Institut Thos i Codina · Curso 2026–2027</footer>
     </main>
 </body>
-
 </html>
