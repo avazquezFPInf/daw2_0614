@@ -209,6 +209,11 @@ h2 {
     color: var(--purple)
 }
 
+.coral {
+    color: var(--coral-dark);
+    font-weight: 800
+}
+
 .section {
     padding: 64px clamp(38px, 7vw, 110px);
     border-bottom: 1px solid var(--line);
