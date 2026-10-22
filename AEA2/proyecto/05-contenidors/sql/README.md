@@ -1,0 +1,1 @@
+Colocad aquí 01-esquema.sql y 02-dades.sql escritos por vosotros. No incluyáis CREATE DATABASE ni CREATE USER: los prepara la imagen. Los scripts solo se ejecutan automáticamente con un volumen de datos nuevo.

@@ -1,0 +1,167 @@
+/* AEA2 shares typography, palette, sidebar and components with AEA1. */
+.sidebar {
+    overflow-y: auto
+}
+
+.sidebar .sidebar-footer {
+    flex-shrink: 0
+}
+
+.lesson-page .section>h2 {
+    margin-bottom: 24px
+}
+
+.activity h3 {
+    font-size: 23px;
+    margin: 12px 0 18px;
+    line-height: 1.2
+}
+
+figure {
+    margin: 28px 0
+}
+
+figcaption {
+    padding: 12px 0;
+    font-size: 14px;
+    color: var(--muted)
+}
+
+.table-scroll {
+    overflow-x: auto
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 24px 0;
+    font-size: 15px
+}
+
+th,
+td {
+    padding: 14px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--line)
+}
+
+th {
+    color: var(--purple-dark);
+    background: #f5e6fa
+}
+
+.section li {
+    margin: 8px 0
+}
+
+details {
+    margin: 18px 0;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fff
+}
+
+summary {
+    font-weight: 750;
+    cursor: pointer
+}
+
+.checkpoint {
+    border-left: 5px solid var(--coral);
+    padding: 12px 20px;
+    background: #fff
+}
+
+.skip-link {
+    position: absolute;
+    left: -10000px
+}
+
+.skip-link:focus {
+    left: 12px;
+    top: 12px;
+    z-index: 5;
+    background: white;
+    padding: 12px
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+    outline: 3px solid var(--coral);
+    outline-offset: 4px
+}
+
+@media print {
+
+    .sidebar,
+    .menu-button,
+    .skip-link {
+        display: none
+    }
+
+    .module-page {
+        display: block
+    }
+
+    .cover {
+        min-height: 0;
+        padding: 28px
+    }
+
+    .section {
+        padding: 24px;
+        break-inside: avoid
+    }
+
+    pre {
+        white-space: pre-wrap
+    }
+
+    details {
+        display: block
+    }
+}
+/* Texto e imagen del proceso de implantación. */
+.deployment-layout {
+    display: grid;
+    grid-template-columns: minmax(230px, 300px) minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+}
+.deployment-layout .image-container { margin: 0; }
+.deployment-layout > div { min-width: 0; }
+.deployment-layout ul { margin-top: 0; padding-left: 22px; }
+@media (max-width: 800px) {
+    .deployment-layout { grid-template-columns: 1fr; }
+    .deployment-layout .image-container { max-width: 320px; }
+}
+
+/* La imagen termina en la línea horizontal; el texto continúa por debajo. */
+.client-server-section { display: flow-root; }
+.client-server-section .client-server-image {
+    float: right;
+    width: 45%;
+    max-width: 479px;
+    margin: 0 0 24px 28px;
+}
+.client-server-crop {
+    aspect-ratio: 479 / 458;
+    overflow: hidden;
+}
+.client-server-crop img { width: 100%; height: auto; }
+@media (max-width: 800px) {
+    .client-server-section .client-server-image {
+        float: none;
+        width: 100%;
+        margin: 0 auto 24px;
+    }
+}
+
+/* Estado de los bloques que se están preparando. */
+.title-with-status { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.title-with-status h1 { flex: 1 1 280px; min-width: 0; }
+.title-with-status img { width: 100px; height: auto; flex: 0 0 auto; border-radius: 8px; }
+

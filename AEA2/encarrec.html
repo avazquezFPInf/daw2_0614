@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Punto de Juego · Encargo y evidencias · DAW2</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page assignment-page"><a class="skip-link" href="#contenido">Saltar al contenido</a><button
+        class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del módulo</button>
+    <aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a>
+        <p class="sidebar-title">Despliegue de Aplicaciones Web</p>
+        <nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea" href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" href="index.html">AEA2 · Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory" href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory" href="03-http.html">HTTP y comunicación web</a><a class="sub nav-theory" href="04-contenidors.html">Fundamentos · Contenedores</a><span class="nav-label nav-label-assignment">Proyecto y encargos</span><a class="sub nav-assignment active" aria-current="page" href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment" href="encargo-1-estatica.html">Encargo 1 · Página estática</a></nav>
+        <p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p>
+    </aside>
+    <main id="contenido">
+        <section class="cover compact-cover">
+            <p class="eyebrow">Caso práctico · Punto de Juego</p>
+            <h1>Punto de Juego · Encargo y evidencias</h1>
+            <p class="lead">Un caso práctico: de una asociación local a una plataforma preparada para crecer.</p>
+        <div class="assignment-meta" aria-label="Características del encargo"><span>Cliente: Punto de Juego</span><span>Equipos de 3</span><span>Despliegue individual</span></div></section>
+        <section class="section">
+            <h2>El cliente: una asociación de Mataró</h2>
+            <div class="activity">
+                <p class="activity-tag">El encargo del cliente</p>
+                <p>«Somos <strong>Punto de Juego</strong>, una asociación de Mataró que organiza encuentros y torneos
+                    presenciales de juegos de mesa. Hasta ahora nos hemos dado a conocer mediante recomendaciones y
+                    mensajes en grupos, pero queremos llegar a más personas.</p>
+                <p>Queremos extender nuestras actividades al <strong>Maresme</strong> y, más adelante, a toda
+                    <strong>Cataluña</strong>. Necesitamos una web que nos dé a conocer, explique qué hacemos y permita
+                    consultar dónde y cuándo se celebran nuestras actividades.</p>
+                <p>A medida que crezcamos, también necesitaremos gestionar participantes, resultados y clasificaciones.
+                    Buscamos un equipo que prepare y despliegue esa plataforma, compruebe que funciona y documente cómo
+                    mantenerla».</p>
+            </div>
+        </section>
+        <section class="section tint">
+            <h2>Qué necesita Punto de Juego</h2>
+            <p>La plataforma deberá responder a estos requisitos, que se incorporarán progresivamente:</p>
+            <ul>
+                <li><strong>Presentación:</strong> explicar quiénes somos, qué ofrecemos y dónde organizamos
+                    actividades, con la identidad de Punto de Juego.</li>
+                <li><strong>Actividades:</strong> mostrar juego, descripción, fecha, municipio, lugar, plazas y estado
+                    de encuentros y torneos.</li>
+                <li><strong>Participantes:</strong> consultar y, en las fases correspondientes, gestionar las
+                    inscripciones.</li>
+                <li><strong>Torneos:</strong> mostrar rondas y enfrentamientos presenciales, registrar resultados y
+                    calcular clasificaciones.</li>
+                <li><strong>Datos:</strong> conservar la información cuando se cierre la aplicación o se reinicien los
+                    servicios.</li>
+                <li><strong>Funcionamiento:</strong> desplegar los componentes que requiere cada funcionalidad y
+                    verificar su comunicación.</li>
+                <li><strong>Mantenimiento:</strong> disponer de documentación que permita reproducir el despliegue y
+                    diagnosticar incidencias.</li>
+            </ul>
+            <p>Podéis elegir los juegos y personalizar textos, imágenes y presentación visual. El nombre del cliente es
+                <strong>Punto de Juego</strong>. No se programarán partidas en línea ni emparejamientos automáticos en
+                el prototipo inicial.</p>
+        </section>
+        <section class="section">
+            <h2>Un despliegue que evoluciona con el proyecto</h2>
+            <p>No instalaremos todos los componentes a la vez. Cada nueva fase responde a una necesidad concreta del
+                cliente.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fase</th>
+                            <th>Necesidad</th>
+                            <th>Qué incorporamos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1 · Presencia web</td>
+                            <td>Darnos a conocer y publicar las primeras actividades.</td>
+                            <td>Portal estático servido por Apache.</td>
+                        </tr>
+                        <tr>
+                            <td>2 · Contenido dinámico</td>
+                            <td>Generar las páginas a partir de datos tratados en el servidor.</td>
+                            <td>PHP y su ejecución con el servidor web.</td>
+                        </tr>
+                        <tr>
+                            <td>3 · Persistencia</td>
+                            <td>Conservar actividades y resultados y consultar la clasificación.</td>
+                            <td>MariaDB, esquema, datos y conexión de la aplicación.</td>
+                        </tr>
+                        <tr>
+                            <td>4 · Aplicación Java</td>
+                            <td>Incorporar un servicio de torneos proporcionado como aplicación cerrada.</td>
+                            <td>Tomcat y despliegue de un WAR.</td>
+                        </tr>
+                        <tr>
+                            <td>5 · Entorno reproducible</td>
+                            <td>Arrancar los servicios con una configuración compartida.</td>
+                            <td>Contenedores, redes, volúmenes y Compose.</td>
+                        </tr>
+                        <tr>
+                            <td>6 · Despliegue remoto</td>
+                            <td>Trasladar y comprobar una parte del proyecto fuera del equipo local.</td>
+                            <td>Una máquina virtual en la nube y pruebas de acceso.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Los encargos concretarán el alcance de cada entrega. Las primeras actividades y clasificaciones serán
+                datos ficticios; no deberán presentarse como funciones de gestión reales hasta implementarlas.</p>
+            <!--p>En las siguientes AEA profundizaremos en seguridad, administración e integración de los servicios.
+                Publicar en Internet una portada estática no autoriza a exponer formularios de laboratorio sin
+                protección.</p-->
+        </section>
+        <section class="section tint">
+            <h2>Cómo vais a trabajar</h2>
+            <div class="cards two">
+                <article>
+                    <h3>Equipo de tres</h3>
+                    <p>Un repositorio compartido, decisiones coordinadas y una versión común de la aplicación.</p>
+                </article>
+                <article>
+                    <h3>Despliegue individual</h3>
+                    <p>Cada integrante instala los servicios, despliega la aplicación en su propio ordenador y verifica
+                        su funcionamiento.</p>
+                </article>
+            </div>
+            <p>El profesorado proporcionará el código base y parte de las funcionalidades. Vuestra responsabilidad
+                principal será analizar requisitos, preparar el entorno, configurar, desplegar, comprobar y documentar.
+            </p>
+            <p>Todos debéis practicar y comprender los servicios; no repartáis el curso de forma que una persona solo
+                haga diseño, otra instalación y otra documentación. Podéis compartir soluciones y revisar el trabajo,
+                pero cada uno debe demostrar su instalación.</p>
+            <p>Trabajaremos con explicaciones y demostraciones, consulta de documentación y construcción autónoma. Los
+                encargos indicarán <strong>qué conseguir y qué comprobar</strong>; vosotros debéis investigar cómo
+                hacerlo en vuestro sistema.</p>
+            <p>Si utilizáis IA, indicad su uso y añadid el prompt en la documentación. Revisad las propuestas y
+                comprobad su resultado.</p>
+        </section>
+        <section class="section">
+            <h2>Evidencias de vuestro trabajo</h2>
+            <p>El documento técnico se redacta en <strong>Markdown (.md)</strong>, utilizando lo aprendido en AEA1.</p>
+            <ul>
+                <li><strong>Repositorio de equipo:</strong> código, README de arranque, historial y aportaciones
+                    identificables.</li>
+                <li><strong>Documento individual:</strong> entorno, requisitos, procedimiento, configuraciones, pruebas
+                    e incidencias del propio ordenador.</li>
+                <li><strong>Aplicación desplegada:</strong> debe estar funcionando en el equipo de cada integrante y
+                    poder demostrarse.</li>
+                <li><strong>Explicación individual:</strong> justificar qué hace cada componente y cómo se comprueba.
+                </li>
+            </ul>
+            <p>Organizad las evidencias de cada integrante en una carpeta identificable, por ejemplo
+                <code>docs/evidencias/nombre/</code>. El README común enlazará las evidencias de los tres miembros.</p>
+            <p>Cada prueba debe incluir objetivo, pasos, resultado esperado, resultado obtenido y conclusión. Las
+                capturas acompañan la explicación; no la sustituyen. No subáis credenciales ni datos personales.</p>
+        </section>
+        <section class="section tint">
+            <h2>Evaluación y avance</h2>
+            <p>Se evaluarán el proyecto y las prácticas, la documentación y explicación individual, y un cuestionario
+                individual breve. Los <a href="index.html#ra1">criterios de RA1</a> orientan el trabajo; el docente
+                comunicará rúbricas, ponderaciones y fechas.</p>
+            <p>Avanzad cuando podáis demostrar el resultado de la fase. Si termináis antes, elegid una ampliación que
+                mejore el producto o su verificación. Las ampliaciones no sustituyen las evidencias básicas.</p>
+            <p><a class="button" href="encargo-1-estatica.html">Comenzar el encargo 1 · Página estática</a></p>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
+    </main>
+</body>
+
+</html>

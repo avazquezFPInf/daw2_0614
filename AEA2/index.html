@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Arquitecturas web · DAW2</title><link rel="stylesheet" href="../assets/styles.css"><link rel="stylesheet" href="style.css"><script src="app.js" defer></script></head>
+<body class="module-page lesson-page"><a class="skip-link" href="#contenido">Saltar al contenido</a><button class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del módulo</button>
+<aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a><p class="sidebar-title">Despliegue de Aplicaciones Web</p><nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea" href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" aria-current="page" href="index.html">AEA2 · Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory" href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory" href="03-http.html">HTTP y comunicación web</a><a class="sub nav-theory" href="04-contenidors.html">Fundamentos · Contenedores</a><span class="nav-label nav-label-assignment">Proyecto y encargos</span><a class="sub nav-assignment" href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment" href="encargo-1-estatica.html">Encargo 1 · Página estática</a></nav><p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p></aside>
+<main id="contenido"><section class="cover compact-cover"><p class="eyebrow">AEA2 · RA1</p><h1>Arquitecturas web</h1><p class="lead">De una carpeta con archivos a un portal publicado, comprensible y reproducible.</p></section><section class="section" id="objetivos">
+<p class="eyebrow">Qué vas a aprender</p><h2>Comprender, preparar y desplegar una aplicación web</h2>
+<p class="lead muted">Una aplicación necesita algo más que código para funcionar: servicios, configuración, datos y un entorno que permita ejecutarla. En esta AEA aprenderás a identificar esas piezas, ponerlas en marcha y comprobar que colaboran correctamente.</p>
+<div class="cards three"><article><h3>Analizar</h3><p>Comparar arquitecturas y reconocer qué componentes requiere cada funcionalidad.</p></article><article><h3>Implantar</h3><p>Instalar y configurar servicios web, de aplicaciones y entornos de virtualización.</p></article><article><h3>Verificar y documentar</h3><p>Probar el funcionamiento, interpretar errores y explicar cómo reproducir el despliegue.</p></article></div></section>
+<section class="section tint" id="contenidos"><p class="eyebrow">El recorrido de aprendizaje</p><h2>Qué trabajaremos y para qué sirve</h2>
+<p>Los bloques se conectan mediante un mismo proyecto. Incorporaremos cada componente cuando una nueva necesidad o funcionalidad lo justifique.</p>
+<div class="table-scroll"><table><thead><tr><th>Bloque</th><th>Qué aprenderás</th><th>Para qué lo utilizarás</th></tr></thead><tbody>
+<tr><td><a href="01-arquitectures.html">Arquitecturas web</a></td><td>Cliente-servidor, contenido estático y dinámico, capas, componentes, ventajas e inconvenientes.</td><td>Entender el recorrido de una petición y justificar la arquitectura que necesita la aplicación.</td></tr>
+<tr><td>Anatomía y despliegue de una aplicación</td><td>Código, recursos, configuración, dependencias, datos, requisitos y documentación.</td><td>Reconocer qué recibes en el repositorio y qué debes preparar para ponerlo en funcionamiento.</td></tr>
+<tr><td><a href="03-http.html">HTTP y comunicación web</a></td><td>URL, IP, puerto, peticiones, respuestas, métodos, cabeceras, estados y herramientas de inspección.</td><td>Comprobar cómo se comunica el navegador con el servidor y distinguir fallos de conexión y de respuesta.</td></tr>
+<tr><td>Apache y ejecución con PHP</td><td>Servicio, configuración básica, raíz documental, permisos, logs y ejecución dinámica.</td><td>Publicar el portal y ejecutar código en el servidor para generar contenido.</td></tr>
+<tr><td>Persistencia con MariaDB</td><td>Servidor de datos, esquema, usuario de aplicación, conexión y persistencia.</td><td>Conservar información entre ejecuciones y conectar la aplicación a sus datos.</td></tr>
+<tr><td>Servidores de aplicaciones y Tomcat</td><td>JVM, servidor web y de aplicaciones, WAR, contexto, puertos y logs.</td><td>Instalar un entorno Java y desplegar una aplicación proporcionada como artefacto cerrado.</td></tr>
+<tr><td><a href="04-contenidors.html">Virtualización, contenedores y nube</a></td><td>Máquinas virtuales, imágenes, contenedores, redes, volúmenes, Compose y despliegue remoto.</td><td>Aislar servicios, reproducir el entorno y trasladar el despliegue a otra máquina.</td></tr>
+</tbody></table></div></section>
+<section class="section"><p class="eyebrow">Metodología</p><h2>Aprender construyendo un despliegue</h2>
+<p>Trabajaremos con un proyecto común que podréis personalizar. Os organizaréis en <strong>equipos de tres</strong>: compartiréis código y repositorio, y cada integrante realizará su propio despliegue y conservará sus pruebas.</p>
+<p>El profesorado proporcionará parte del código y los recursos necesarios. Vuestra responsabilidad será comprender los requisitos, preparar los servicios, configurar las conexiones y verificar el resultado. La programación de nuevas funciones acompañará el trabajo cuando sea útil para ese aprendizaje.</p>
+<p>El despliegue crecerá de forma progresiva: partiremos de recursos estáticos e incorporaremos ejecución, datos y otros servicios según las funcionalidades del proyecto.</p>
+<p>Combinaremos explicaciones y demostraciones con trabajo práctico. Tendréis que consultar los materiales, tomar decisiones, probar y construir vuestra documentación; no bastará con copiar comandos.</p>
+<p>La descripción del producto, el código y las condiciones de entrega están en <a href="encarrec.html">Encargo y evidencias</a>.</p></section>
+<section class="section tint"><p class="eyebrow">Autonomía y ritmos</p><h2>Avanzar con resultados comprobados</h2>
+<p>Cada bloque incluye una comprobación de salida. Avanza cuando puedas demostrar el resultado y explicar cómo lo has conseguido. Las explicaciones del profesorado acompañarán el progreso de los equipos.</p>
+<div class="cards two"><article><h3>Si necesitas consolidar</h3><p>Repite las pruebas, revisa los errores y pide ayuda con una descripción concreta del problema y de lo que has comprobado.</p></article><article><h3>Si terminas antes</h3><p>Elige una ampliación: mejorar la web, su accesibilidad o documentación, investigar un comportamiento o revisar la reproducibilidad con otro equipo.</p></article></div>
+<p>Las ampliaciones tienen un objetivo y una prueba de resultado. Son opcionales y no sustituyen los requisitos básicos.</p></section>
+<section class="section" id="ra1"><p class="eyebrow">Resultado de aprendizaje</p><h2>RA1 · Implantar arquitecturas web</h2>
+<p class="lead muted">Implantar arquitecturas web analizando y aplicando criterios de funcionalidad.</p>
+<p>Estos son los criterios de evaluación de la RA1, expresados en español:</p>
+<div class="table-scroll"><table><thead><tr><th>Criterio</th><th>Qué debes demostrar</th></tr></thead><tbody>
+<tr><td>1.1</td><td>Analizar los aspectos generales de las arquitecturas web, sus características, ventajas e inconvenientes.</td></tr>
+<tr><td>1.2</td><td>Describir los fundamentos y protocolos en los que se basa el funcionamiento de un servidor web.</td></tr>
+<tr><td>1.3</td><td>Realizar la instalación y configuración básica de servidores web.</td></tr>
+<tr><td>1.4</td><td>Realizar la instalación y configuración básica de servidores de aplicaciones.</td></tr>
+<tr><td>1.5</td><td>Realizar la instalación y configuración básica de tecnologías de virtualización de servidores en la nube y en contenedores.</td></tr>
+<tr><td>1.6</td><td>Realizar pruebas de funcionamiento de servidores web, servidores de aplicaciones y tecnologías de virtualización.</td></tr>
+<tr><td>1.7</td><td>Analizar la estructura y los recursos que componen una aplicación web.</td></tr>
+<tr><td>1.8</td><td>Describir los requisitos del proceso de implantación de una aplicación web.</td></tr>
+<tr><td>1.9</td><td>Documentar los procesos de instalación y configuración realizados sobre servidores y tecnologías de virtualización.</td></tr>
+</tbody></table></div></section>
+<section class="section tint" id="evaluacion"><p class="eyebrow">Evaluación</p><h2>Cómo demostrarás lo aprendido</h2>
+<div class="cards three"><article><h3>Proyecto y prácticas</h3><p>Despliegues funcionales, configuraciones justificadas, pruebas y resolución de incidencias.</p></article><article><h3>Documentación y explicación individual</h3><p>Evidencias de tu entorno, instrucciones reproducibles y capacidad para explicar decisiones y resultados.</p></article><article><h3>Cuestionario individual breve</h3><p>Preguntas sobre arquitecturas, protocolos, función de los servicios y diagnóstico de situaciones de despliegue.</p></article></div>
+<p>El repositorio compartido mostrará el resultado del equipo; las pruebas, explicaciones y el cuestionario permitirán comprobar el aprendizaje individual. Se valorará el funcionamiento y la comprensión, además de la calidad de la documentación.</p>
+<p>Las rúbricas, ponderaciones y condiciones concretas de entrega se comunicarán en el encargo y en el aula virtual.</p></section>
+<footer>Institut Thos i Codina · Curso 2026–2027</footer></main></body></html>

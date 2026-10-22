@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Contenedores · DAW2</title><link rel="stylesheet" href="../assets/styles.css"><link rel="stylesheet" href="style.css"><script src="app.js" defer></script></head>
+<body class="module-page lesson-page"><a class="skip-link" href="#contenido">Saltar al contenido</a><button class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del módulo</button>
+<aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a><p class="sidebar-title">Despliegue de Aplicaciones Web</p><nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea" href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" href="index.html">AEA2 · Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory" href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory" href="03-http.html">HTTP y comunicación web</a><a class="sub nav-theory active" aria-current="page" href="04-contenidors.html">Fundamentos · Contenedores</a><span class="nav-label nav-label-assignment">Proyecto y encargos</span><a class="sub nav-assignment" href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment" href="encargo-1-estatica.html">Encargo 1 · Página estática</a></nav><p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p></aside>
+<main id="contenido"><section class="cover compact-cover"><p class="eyebrow">Fundamentos · Despliegue reproducible</p><div class="title-with-status"><h1>Contenedores</h1><img src="assets/en-construccion.png" alt="Contenido en elaboración" width="100" height="83"></div><p class="lead">Comprende imágenes, procesos, puertos y datos antes de reproducir el entorno.</p></section><section class="section"><h2>1. El problema</h2>
+<p>El mismo código necesita versiones compatibles de PHP, extensiones y configuración. Un contenedor ejecuta un proceso con un entorno de archivos y dependencias definido por una imagen, reduciendo diferencias entre instalaciones.</p>
+</section><section class="section tint"><h2>2. Conceptos esenciales</h2>
+<div class="table-scroll"><table>
+<tr>
+<th>Concepto</th>
+<th>Significado</th>
+<th>Ejemplo</th>
+</tr>
+<tr>
+<td>Imagen</td>
+<td>Plantilla de solo lectura, formada por capas; no está en ejecución.</td>
+<td>php:8.3-apache</td>
+</tr>
+<tr>
+<td>Contenedor</td>
+<td>Instancia ejecutable de una imagen, con configuración y capa de escritura propias.</td>
+<td>Servicio web.</td>
+</tr>
+<tr>
+<td>Volumen</td>
+<td>Almacenamiento con ciclo de vida independiente del contenedor.</td>
+<td>Archivos de MariaDB.</td>
+</tr>
+<tr>
+<td>Registro</td>
+<td>Servicio que distribuye imágenes.</td>
+<td>Docker Hub.</td>
+</tr>
+</table></div>
+<p>Una imagen puede originar varios contenedores. Detener un contenedor no lo elimina. Eliminarlo borra su capa de escritura, pero los datos de un volumen pueden conservarse.</p>
+</section><section class="section"><h2>3. Contenedor y máquina virtual</h2><pre>VM: hardware → hipervisor → sistema invitado con kernel → procesos
+Contenedores Linux: kernel Linux del entorno anfitrión → procesos aislados</pre><p>Los contenedores Linux comparten el kernel del entorno Linux que los ejecuta; no arrancan cada uno un sistema completo. En macOS y Windows, Docker Desktop suele usar una VM Linux: comparten su kernel, no el de macOS. También debe ser compatible la arquitectura CPU.</p>
+<p>El aislamiento no es invulnerable: los permisos excesivos y los montajes de carpetas pueden permitir acceder a recursos externos.</p>
+</section><section class="section tint"><h2>4. Nuestra plataforma</h2><pre>Navegador → 127.0.0.1:8081 del ordenador
+                 ↓ publicación de puerto
+          web:80 · Apache y PHP
+                 ↓ red interna, db:3306
+          db · MariaDB
+                 ↓
+          volumen dades</pre><p>
+<code>127.0.0.1:8081:80</code> publica el puerto 80 del contenedor en el 8081 de loopback del ordenador. Apache sigue escuchando en el 80 dentro del contenedor.</p>
+<p>Dentro de web, localhost apunta a web. PHP debe conectar a <code>db</code>, nombre del servicio que resuelve la red interna de Compose. El navegador no utiliza ese nombre interno.</p>
+</section><section class="section"><h2>5. Dockerfile, Compose y .env</h2>
+<p>
+<strong>Dockerfile:</strong> receta para construir la imagen web. Parte de PHP con Apache, habilita pdo_mysql y copia el código. Si cambia el código copiado, hay que reconstruir.</p>
+<p>
+<strong>Compose:</strong> define servicios, imágenes o construcción, variables, puertos, red y volúmenes. <strong>.env:</strong> proporciona valores que Compose sustituye donde se referencian; no se convierten automáticamente en variables de todos los contenedores. Aquí las pasamos explícitamente mediante environment.</p>
+</section><section class="section tint"><h2>6. Secuencia de arranque</h2>
+<ol>
+<li>Construir o descargar imágenes.</li>
+<li>Crear red, volumen y contenedores.</li>
+<li>MariaDB inicializa la base si el volumen es nuevo.</li>
+<li>El healthcheck espera que MariaDB esté preparada.</li>
+<li>Apache recibe una petición y ejecuta PHP.</li>
+<li>PHP consulta db y devuelve HTML.</li>
+</ol>
+<p>El orden de arranque no garantiza disponibilidad. El healthcheck ayuda, pero no demuestra que el esquema de tablas sea correcto: hay que hacer pruebas funcionales.</p>
+</section><section class="section"><h2>7. Comandos</h2>
+<div class="table-scroll"><table>
+<tr>
+<th>Comando</th>
+<th>Efecto</th>
+</tr>
+<tr>
+<td>docker compose config --quiet</td>
+<td>Valida sin imprimir secretos.</td>
+</tr>
+<tr>
+<td>docker compose up --build -d</td>
+<td>Construye y arranca en segundo plano.</td>
+</tr>
+<tr>
+<td>docker compose ps</td>
+<td>Muestra estados y puertos.</td>
+</tr>
+<tr>
+<td>docker compose logs web</td>
+<td>Muestra la salida del servicio web.</td>
+</tr>
+<tr>
+<td>docker compose down</td>
+<td>Elimina contenedores y red, conserva el volumen con nombre.</td>
+</tr>
+<tr>
+<td>docker compose down -v</td>
+<td>También elimina el volumen: destruye los datos.</td>
+</tr>
+</table></div>
+</section><section class="section tint"><h2>8. Experimentos</h2>
+<ol>
+<li>Cambia un resultado, ejecuta down y up: se conserva gracias al volumen.</li>
+<li>Detén db: observa el error controlado y los logs; vuelve a arrancarla.</li>
+<li>Cambia CSS y reconstruye web: COPY no sincroniza cambios automáticamente.</li>
+</ol>
+</section><section class="section"><h2>9. Errores frecuentes</h2>
+<ul>
+<li>Imagen no significa aplicación en ejecución.</li>
+<li>Persistencia no significa copia de seguridad.</li>
+<li>Los scripts SQL iniciales solo se ejecutan con un volumen nuevo.</li>
+<li>db es un nombre interno, no una URL para el navegador.</li>
+<li>La portabilidad depende también de arquitectura y configuración externa.</li>
+</ul>
+</section><section class="section tint"><h2>Referencias oficiales</h2>
+<ul>
+<li>
+<a href="https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-a-container/">Qué es un contenedor</a>
+</li>
+<li>
+<a href="https://docs.docker.com/compose/intro/compose-application-model/">Modelo de aplicación de Compose</a>
+</li>
+<li>
+<a href="https://docs.docker.com/engine/storage/volumes/">Volúmenes</a>
+</li>
+</ul>
+</section><section class="section"><h2>Llévalo al proyecto</h2><figure class="image-container"><img src="assets/contenedores.svg" alt="El navegador llega a web por el puerto publicado; PHP llega a db por la red interna y las tablas viven en un volumen." width="1100" height="440" loading="lazy"><figcaption>Las direcciones dependen del proceso que inicia la conexión.</figcaption></figure><div class="activity"><p class="activity-tag">Aplicación al proyecto</p><h3>Preparación y despliegue</h3><p>Este laboratorio requiere Docker con Compose disponible y el esquema SQL implementado. Puedes completar primero su lectura conceptual y volver a los comandos cuando tengas los requisitos.</p><ol><li>Lee el <a href="proyecto/03-bdd/MODEL-DADES.md">modelo de datos</a> y escribe los SQL.</li><li>Desde la copia local de <code>proyecto/05-contenidors/</code>, copia .env.example como .env y cambia ambas contraseñas.</li><li>Coloca tus SQL en <code>sql/01-esquema.sql</code> y <code>sql/02-dades.sql</code>. No incluyas CREATE DATABASE ni CREATE USER: la imagen los prepara.</li><li>Comprueba y arranca:</li></ol><pre><code>docker compose version
+docker compose config --quiet
+docker compose up --build -d
+docker compose ps
+docker compose logs web</code></pre><p>Visita <code>http://127.0.0.1:8081/</code>. Sigue las condiciones y advertencias del <a href="proyecto/05-contenidors/README.md">README del laboratorio</a>. El formulario de resultados es solo local y no tiene autenticación.</p><p class="checkpoint"><strong>Objetivo comprobable:</strong> explicas cada flecha del diagrama y verificas que un resultado persiste después de down/up. Conservar datos no equivale a disponer de un backup.</p></div><div class="activity"><p class="activity-tag">Ampliación opcional</p><h3>Comprueba una hipótesis</h3><p>Elige un experimento de la teoría: detener db, reconstruir CSS o recrear contenedores conservando el volumen. Predice el resultado, pruébalo y explica qué mecanismo lo causa. No borres volúmenes para comprobar persistencia.</p></div></section><footer>Institut Thos i Codina · Curso 2026–2027</footer></main></body></html>

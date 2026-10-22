@@ -159,13 +159,13 @@ h3 {
 h1 {
     max-width: 800px;
     margin: 0;
-    font-size: clamp(44px, 7vw, 86px);
+    font-size: clamp(44px, 6vw, 86px);
     letter-spacing: -.06em
 }
 
 h2 {
     margin: 0;
-    font-size: clamp(30px, 4vw, 50px);
+    font-size: clamp(30px, 3vw, 50px);
     letter-spacing: -.045em
 }
 
@@ -487,3 +487,47 @@ img.fullwidth {
     margin: 0 auto;
     object-fit: contain;
 }
+
+/* La categoría se reconoce por texto y color, también sin distinguir colores. */
+.sidebar nav .nav-label-theory { color: #d7baff; }
+.sidebar nav .nav-label-assignment { color: #89e4d2; }
+.sidebar nav .nav-theory { border-left: 3px solid #ac7de2; }
+.sidebar nav .nav-assignment { border-left: 3px solid #5ccdb7; color: #bbefe5; }
+.sidebar nav .nav-theory.active,
+.sidebar nav .nav-theory:hover { background: #6f32c9; color: #fff; }
+.sidebar nav .nav-assignment.active,
+.sidebar nav .nav-assignment:hover { background: #12665e; color: #fff; }
+.sidebar nav a[aria-current="page"] { font-weight: 850; }
+
+/* Encargos: identidad propia con los componentes del módulo. */
+.assignment-page .cover {
+    background: radial-gradient(circle at 85% 15%, #138b7b 0, transparent 35%),
+                linear-gradient(125deg, #0a303b, #095b58);
+    border-bottom: 6px solid #5ccdb7;
+}
+.assignment-page .cover .eyebrow { color: #a3f1dc; }
+.assignment-meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+.assignment-meta span { padding: 7px 12px; border: 1px solid #8fccc2; border-radius: 6px; color: #e7fff8; font-size: 13px; font-weight: 700; }
+.assignment-page main { background: #fffdf8; }
+.assignment-page .section:nth-of-type(even) { background: #f5f7f2; }
+.assignment-page .section.tint { background: #e9f5f0 !important; }
+.assignment-page main .eyebrow,
+.assignment-page main .activity-tag { color: #08665b; }
+.assignment-page .cover .eyebrow { color: #a3f1dc; }
+.assignment-page main a:not(.button) { color: #08665b; }
+.assignment-page main .button { background: #09675f; box-shadow: 4px 4px 0 #092f36; }
+.assignment-page main .button:hover { background: #074c47; }
+.assignment-page main .activity { border-color: #198b79; }
+.assignment-page main .cards article { border-top-color: #198b79; }
+.assignment-page main .cards article:nth-child(2n) { border-top-color: #bb6a32; }
+.assignment-page main th { background: #e2f0e9; color: #134c44; }
+
+/* En AEA1 los ejercicios conviven con la teoría y tienen accesos propios. */
+.sidebar { overflow-y: auto; }
+.sidebar .sidebar-footer { flex-shrink: 0; }
+.practice-section { background: #e9f5f0 !important; border-left: 4px solid #198b79; }
+.practice-section .activity { border-color: #198b79; }
+.practice-section .activity-tag,
+.practice-section > .eyebrow { color: #08665b; }
+.practice-section .button { background: #09675f; box-shadow: 4px 4px 0 #092f36; }
+.practice-section .button:hover { background: #074c47; }

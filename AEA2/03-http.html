@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HTTP y comunicación web · DAW2</title><link rel="stylesheet" href="../assets/styles.css"><link rel="stylesheet" href="style.css"><script src="app.js" defer></script></head>
+<body class="module-page lesson-page"><a class="skip-link" href="#contenido">Saltar al contenido</a><button class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del módulo</button>
+<aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a><p class="sidebar-title">Despliegue de Aplicaciones Web</p><nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea" href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" href="index.html">AEA2 · Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory" href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory active" aria-current="page" href="03-http.html">HTTP y comunicación web</a><a class="sub nav-theory" href="04-contenidors.html">Fundamentos · Contenedores</a><span class="nav-label nav-label-assignment">Proyecto y encargos</span><a class="sub nav-assignment" href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment" href="encargo-1-estatica.html">Encargo 1 · Página estática</a></nav><p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p></aside>
+<main id="contenido"><section class="cover compact-cover"><p class="eyebrow">AEA2 · Comunicación web</p><div class="title-with-status"><h1>HTTP y comunicación web</h1><img src="assets/en-construccion.png" alt="Contenido en elaboración" width="100" height="83"></div><p class="lead">Arranca el portal, sigue una petición y utiliza sus respuestas para diagnosticar problemas.</p></section><section class="section"><h2>1. Interpretar una URL</h2><pre>http://127.0.0.1:8000/torneig.html
+esquema  host      puerto ruta</pre><p>HTTP define el intercambio de peticiones y respuestas. 127.0.0.1 es una dirección de loopback: apunta al propio equipo. localhost es un nombre que habitualmente resuelve a loopback. Una IP literal no requiere consultar DNS para localizar ese host. El puerto distingue el servicio dentro del equipo.</p>
+<p>Los puertos predeterminados son 80 para HTTP y 443 para HTTPS. En el laboratorio usamos 8000. HTTPS protege la comunicación mediante TLS; lo configuraremos en RA2. HTTP/1.1 y HTTP/2 suelen usar TCP; HTTP/3 usa QUIC sobre UDP. No configuraremos esas variantes en esta práctica.</p>
+</section><section class="section tint"><h2>2. Petición</h2><pre>GET /torneig.html HTTP/1.1
+Host: 127.0.0.1:8000
+Accept: text/html</pre><p>Incluye método, recurso y cabeceras; puede incluir cuerpo. GET solicita una representación. HEAD solicita cabeceras sin cuerpo de respuesta. POST envía datos para procesarlos; no cifra por sí mismo la comunicación.</p>
+</section><section class="section"><h2>3. Respuesta</h2><pre>HTTP/1.0 200 OK
+Content-Type: text/html
+
+&lt;!doctype html&gt;...</pre><p>La versión depende del servidor: el de Python puede responder HTTP/1.0. Las cabeceras describen la respuesta y el cuerpo contiene el recurso. Content-Type ayuda a interpretarlo.</p>
+<div class="table-scroll"><table>
+<tr>
+<th>Estado</th>
+<th>Significado</th>
+</tr>
+<tr>
+<td>200</td>
+<td>Petición correcta.</td>
+</tr>
+<tr>
+<td>301 / 302 / 303</td>
+<td>Redirección, con semánticas diferentes.</td>
+</tr>
+<tr>
+<td>304</td>
+<td>Se puede reutilizar la copia en caché.</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Acceso rechazado.</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Recurso no encontrado.</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Error interno.</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Servicio temporalmente no disponible.</td>
+</tr>
+</table></div>
+</section><section class="section tint"><h2>4. Una página, varias peticiones</h2>
+<p>Tras obtener HTML, el navegador solicita los recursos referenciados, como CSS o imágenes. La portada puede responder 200 y verse sin estilos si el CSS devuelve 404. Hay que observar el recurso concreto.</p>
+</section><section class="section"><h2>5. Archivo local y HTTP</h2>
+<p>Con file:// se lee el documento desde el disco sin un servidor HTTP. No hay estado HTTP del documento. Al servir el mismo HTML con Python sí hay petición y respuesta. El contenido sigue siendo estático.</p>
+</section><section class="section tint"><h2>6. Observar y diagnosticar</h2>
+<p>Abre Network antes de recargar. Selecciona el documento y el CSS y revisa URL, método, estado, Headers y Response. Los registros del servidor complementan esta observación.</p><pre>curl -i http://127.0.0.1:8000/
+curl -I http://127.0.0.1:8000/style.css</pre><p>Un 404 demuestra que un servidor ha respondido. Connection refused indica que no se ha establecido la conexión: comprueba proceso, host y puerto antes de buscar errores de HTML.</p>
+</section><section class="section"><h2>Comprueba que lo entiendes</h2>
+<ol>
+<li>¿Por qué puede funcionar el HTML y fallar el CSS?</li>
+<li>¿Qué diferencia hay entre método y estado?</li>
+<li>Si detienes el servidor, ¿obtienes 404? Justifícalo con la prueba.</li>
+<li>¿Puede un compañero acceder a tu 127.0.0.1 desde su equipo?</li>
+</ol>
+<p>
+<a href="https://httpwg.org/specs/rfc9110.html">Referencia: RFC 9110, semántica HTTP.</a>
+</p>
+</section><section class="section"><h2>Configuración · Sirve tu portal localmente</h2><p>Para observar HTTP usaremos primero el servidor de demostración de Python. No sustituye la futura instalación de Apache y no es un servidor de producción.</p><div class="activity"><p class="activity-tag">Aplicación al proyecto</p><h3>Arranca desde la carpeta correcta</h3><ol><li>Entra en la carpeta portal/ de tu repositorio. Comprueba con <code>pwd</code> y <code>ls</code> que contiene index.html.</li><li>Ejecuta el comando y deja abierto el terminal:</li></ol><pre><code>python3 -m http.server 8000 --bind 127.0.0.1</code></pre><p>Visita <code>http://127.0.0.1:8000/</code>. El argumento bind limita la escucha a tu equipo. Otro alumno no puede llegar a ese loopback desde su ordenador.</p><p>Si el puerto está ocupado, usa 8005 y cambia todas las URL. No detengas procesos sin identificarlos. Detén tu servidor con Ctrl+C cuando termines.</p></div><figure class="image-container"><img src="assets/http.svg" alt="El navegador solicita HTML y CSS en peticiones diferentes; el servidor devuelve estado, cabeceras y cuerpo." width="1100" height="440" loading="lazy"><figcaption>El estado pertenece a cada respuesta, no a la página completa.</figcaption></figure></section><section class="section tint"><h2>Prueba e interpreta lo que ocurre</h2><div class="activity"><p class="activity-tag">Aplicación al proyecto</p><h3>Observa, provoca y diagnostica</h3><ol><li>Abre las herramientas del navegador, entra en Red/Network y desactiva la caché mientras estén abiertas.</li><li>Recarga la portada. Selecciona el documento: anota URL, método, estado, Content-Type y contenido.</li><li>Selecciona style.css y compara esa petición con la del HTML.</li><li>En otro terminal, ejecuta:</li></ol><pre><code>curl -i http://127.0.0.1:8000/
+curl -I http://127.0.0.1:8000/style.css
+curl -i http://127.0.0.1:8000/no-existeix.html</code></pre><p><code>-i</code> incluye cabeceras; <code>-I</code> envía HEAD y no solicita el cuerpo de respuesta. Espera 200, 200 y 404 respectivamente. La versión HTTP y algunas cabeceras pueden variar.</p><ol start="5"><li>Detén el servidor y repite curl: explica por qué el error de conexión no es un 404.</li><li>Arráncalo otra vez y verifica la recuperación.</li><li>Documenta resultados esperados, observados y conclusión.</li></ol><p class="checkpoint"><strong>Objetivo conseguido:</strong> puedes servir la web y diferenciar respuesta correcta, recurso inexistente y servicio detenido con pruebas propias.</p></div></section><section class="section"><h2>Diagnóstico y ampliaciones</h2><div class="table-scroll"><table><tr><th>Síntoma</th><th>Qué comprobar</th></tr><tr><td>Se muestra un listado de carpetas.</td><td>Directorio desde el que arrancaste y existencia de index.html.</td></tr><tr><td>Address already in use.</td><td>Puerto ocupado; elige otro para tu prueba.</td></tr><tr><td>Sin estilos.</td><td>Petición CSS, ruta y estado de respuesta.</td></tr><tr><td>Connection refused.</td><td>Servidor activo, IP y puerto correctos.</td></tr><tr><td>304 en lugar de 200.</td><td>Caché; recarga con ella desactivada para repetir el experimento.</td></tr></table></div><div class="activity"><p class="activity-tag">Ampliación opcional</p><h3>Investiga con hipótesis</h3><ul><li><strong>CSS roto:</strong> cambia temporalmente su ruta en una página. Predice el estado, observa Network, repara y verifica. No dejes el error en la entrega final.</li><li><strong>Dos servicios:</strong> sirve dos carpetas distintas en 8000 y 8005, ligados a loopback. Explica qué parte de la URL decide cuál responde.</li><li><strong>Caché:</strong> compara con y sin caché y explica lo observado. No todos los navegadores producirán el mismo estado.</li></ul><p><strong>Entrega adicional:</strong> hipótesis, prueba, resultado y explicación. Elige una investigación, no acumules capturas sin interpretar.</p></div><p>Referencia: <a href="https://docs.python.org/3/library/http.server.html">documentación oficial de http.server</a>.</p></section><footer>Institut Thos i Codina · Curso 2026–2027</footer></main></body></html>

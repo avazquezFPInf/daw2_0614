@@ -1,0 +1,32 @@
+services:
+  web:
+    build:
+      context: ..
+      dockerfile: 05-contenidors/Dockerfile
+    ports:
+      - "127.0.0.1:8081:80"
+    environment:
+      DB_HOST: db
+      DB_USER: puntdejoc
+      DB_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD en el archivo .env}
+      ALLOW_LAB_WRITE: "1"
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: mariadb:11.4
+    environment:
+      MARIADB_DATABASE: puntdejoc
+      MARIADB_USER: puntdejoc
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Define DB_ROOT_PASSWORD}
+    volumes:
+      - dades:/var/lib/mysql
+      - ./sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+volumes:
+  dades:

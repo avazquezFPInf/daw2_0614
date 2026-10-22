@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Encargo 1 · Página estática · DAW2</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page assignment-page"><a class="skip-link" href="#contenido">Saltar al contenido</a><button
+        class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del módulo</button>
+    <aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a>
+        <p class="sidebar-title">Despliegue de Aplicaciones Web</p>
+        <nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea" href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" href="index.html">AEA2 · Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory" href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory" href="03-http.html">HTTP y comunicación web</a><a class="sub nav-theory" href="04-contenidors.html">Fundamentos · Contenedores</a><span class="nav-label nav-label-assignment">Proyecto y encargos</span><a class="sub nav-assignment" href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment active" aria-current="page" href="encargo-1-estatica.html">Encargo 1 · Página estática</a></nav>
+        <p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p>
+    </aside>
+    <main id="contenido">
+        <section class="cover compact-cover">
+            <p class="eyebrow">Encargo práctico · Primera entrega</p>
+            <h1>Encargo 1 · Página estática</h1>
+            <p class="lead">Primera entrega: Punto de Juego necesita una web de presentación publicada con Apache HTTP Server.</p>
+        <div class="assignment-meta" aria-label="Características del encargo"><span>Entrega 1</span><span>Apache HTTP Server</span><span>Evidencias en Markdown</span></div></section>
+        <section class="section">
+            <h2>La primera necesidad del cliente</h2>
+            <p class="lead muted">«Antes de gestionar inscripciones y torneos, queremos que la gente nos encuentre y
+                conozca nuestras actividades. Necesitamos una primera web de Punto de Juego con presentación, encuentros
+                y un torneo de ejemplo».</p>
+            <p>Recibís un portal HTML/CSS mínimo para personalizarlo y desplegarlo. Los resultados del torneo son una
+                demostración estática: no hay formularios funcionales ni almacenamiento en base de datos.</p>
+            <p><a class="button" href="downloads/01-estatic.zip">Descargar la página web estática · ZIP</a></p>
+        </section>
+        <section class="section tint">
+            <h2>Resultado que debéis conseguir</h2>
+            <p>Un repositorio compartido por los tres miembros y <strong>tres despliegues individuales del mismo portal,
+                    uno en cada ordenador, servidos por Apache HTTP Server</strong>.</p>
+            <p>Abrir index.html desde el disco no acredita el despliegue. Un servidor de demostración de Python tampoco
+                sustituye Apache HTTP Server en esta entrega.</p>
+        </section>
+        <section class="section">
+            <h2>1 · Reconocer y organizar los archivos</h2>
+            <ol>
+                <li>Descargad el ZIP e identificad la función de cada archivo antes de modificarlo.</li>
+                <li>Organizad el proyecto con una carpeta para el portal y otra para la documentación.</li>
+                <li>Explicad qué recursos necesita esta versión y cuáles todavía no necesita: no instaléis PHP ni
+                    MariaDB para una web estática.</li>
+            </ol>
+        </section>
+        <section class="section tint">
+            <h2>2 · Crear el Git de trabajo compartido</h2>
+            <ol>
+                <li>Cread un repositorio de equipo en GitHub e incorporad los archivos del portal.</li>
+                <li>Añadid a los tres miembros como colaboradores y comprobad sus accesos.</li>
+                <li>Cada integrante clona el repositorio y trabaja con su identidad de autoría.</li>
+                <li>Acordad cómo repartir cambios y sincronizar el trabajo. Conservad commits pequeños y explicativos.
+                </li>
+                <li>Redactad un README común con descripción, integrantes, estructura e instrucciones de despliegue.
+                </li>
+                <li>Elegid un mimebro del equipo apra que sea el capitan, este deberá enviar un mail a la profesora con la información de los mimebros del equipo y enlace al git.
+                </li>
+            </ol>
+            <p>Recuperad los procedimientos de <a href="../AEA1/index.html">AEA1</a>. No creéis repositorios anidados ni
+                subáis archivos que contengan credenciales.</p>
+        </section>
+        <section class="section">
+            <h2>3 · Personalizar la presencia de Punto de Juego</h2>
+            <ol>
+                <li>Adaptad la marca visible a Punto de Juego y explicad su origen en Mataró y su expansión al Maresme.
+                </li>
+                <li>Elegid juegos y preparad actividades ficticias con información coherente.</li>
+                <li>Personalizad la presentación visual manteniendo una web sencilla, legible y navegable.</li>
+                <li>Verificad enlaces y recursos. Compartid los cambios para que las tres copias tengan la misma
+                    versión.</li>
+            </ol>
+            <p>Identificad claramente los resultados de demostración. No añadáis botones de inscripción que aparenten
+                funcionar si no existe esa funcionalidad.</p>
+        </section>
+        <section class="section tint">
+            <h2>4 · Instalar y preparar Apache HTTP Server en cada equipo</h2>
+            <p>En este encargo utilizamos <strong>Apache HTTP Server</strong>, el servidor web. <strong>No se instala Apache Tomcat</strong>, que incorporaremos cuando despleguemos la aplicación Java.</p>
+            <p>Consulta la <a href="https://httpd.apache.org/download.cgi">página oficial de Apache HTTP Server</a>. Sus archivos de descarga incluyen el código fuente; para esta práctica en Ubuntu instalaremos el paquete <code>apache2</code> desde los repositorios de la distribución, sin compilarlo manualmente. En Fedora el paquete y el servicio se denominan <code>httpd</code>.</p>
+            <p>Referencia de instalación: <a href="https://ubuntu.com/server/docs/how-to/web-services/install-apache2/">documentación oficial de Ubuntu</a>. Identifica y documenta los pasos que correspondan a tu sistema.</p>
+            <ol>
+                <li>Identificad vuestra distribución y comprobad si Apache HTTP Server ya está instalado o si otro proceso ocupa el
+                    puerto HTTP.</li>
+                <li>Consultad documentación de vuestra distribución e instalad el servidor web si es necesario.</li>
+                <li>Identificad nombre del servicio, archivos de configuración, raíz documental y registros. Ubuntu y
+                    Fedora pueden usar nombres y rutas diferentes.</li>
+                <li>Iniciad el servicio y comprobad su estado y la respuesta HTTP.</li>
+                <li>Desplegad el portal en una ubicación servida por Apache HTTP Server, conservando los archivos del repositorio
+                    como copia de trabajo.</li>
+                <li>Revisad permisos de lectura y acceso a directorios. Si Fedora utiliza SELinux, tened en cuenta sus
+                    contextos: no desactivéis mecanismos de protección para resolver la práctica.</li>
+                <li>Comprobad el portal mediante una URL HTTP de vuestro propio ordenador e identificad qué ruta del
+                    disco se está sirviendo.</li>
+            </ol>
+            <p>La entrega mínima se verifica desde el propio equipo. El acceso desde otros equipos no es obligatorio y
+                no requiere abrir servicios al exterior.</p>
+            <p>Documentad las decisiones y los comandos que realmente habéis utilizado, con una explicación breve de su
+                función. No se pide copiar una receta única.</p>
+        </section>
+        <section class="section">
+            <h2>5 · Verificar el despliegue y resolver incidencias</h2>
+            <ol>
+                <li>Recorred las páginas y comprobad que el contenido y el CSS se sirven correctamente.</li>
+                <li>Inspeccionad una petición del documento y otra de un recurso: anotad URL, estado y tipo de
+                    contenido.</li>
+                <li>Solicitad una ruta inexistente y explicad la respuesta. Consultad el registro de Apache HTTP Server relacionado
+                    con una petición de vuestra prueba.</li>
+                <li>Comprobad que está respondiendo vuestro Apache HTTP Server: relacionad servicio, configuración, ubicación de
+                    archivos y logs. No os baséis solo en una cabecera.</li>
+                <li>Reiniciad el servicio de forma controlada y verificad que el portal vuelve a responder.</li>
+                <li>Registrad una incidencia, real o provocada de forma reversible, con diagnóstico, solución y prueba
+                    de recuperación.</li>
+            </ol>
+            <!--p>El bloque de <a href="03-http.html">HTTP y comunicación web</a> explica cómo interpretar peticiones y
+                respuestas. Aplicad esas observaciones al servidor Apache HTTP Server de esta entrega.</p-->
+        </section>
+        <section class="section tint">
+            <h2>Qué debéis entregar</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Entrega de equipo</th>
+                            <th>Evidencia individual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>URL del repositorio, código personalizado y README reproducible.</td>
+                            <td>Documento Markdown propio con sistema y versiones, instalación, configuración, ubicación
+                                del portal y URL local.</td>
+                        </tr>
+                        <tr>
+                            <td>Historial con aportaciones de los tres miembros.</td>
+                            <td>Pruebas de Apache HTTP Server, páginas, recursos, error controlado, logs y recuperación.</td>
+                        </tr>
+                        <tr>
+                            <td>Versión común identificada para la entrega.</td>
+                            <td>Aplicación funcionando en el ordenador del alumno y capacidad para explicarla.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>No incluyáis únicamente capturas. Relacionad cada prueba con el resultado que demuestra. No es necesario
+                entregar una copia de todos los archivos del sistema.</p>
+            <div class="higthligth">
+                <p class="activity-tag">Encargo conseguido</p>
+                <p>Cualquier integrante puede mostrar su portal servido por Apache HTTP Server y explicar cómo otro compañero puede
+                    reproducirlo siguiendo la documentación.</p>
+            </div>
+            <p>Criterios principales: 1.2, 1.3, 1.6, 1.7, 1.8 y 1.9.</p>
+        </section>
+        <section class="section">
+            <h2>Si termináis antes</h2>
+            <p>Elegid una mejora acotada y verificable:</p>
+            <ul>
+                <li>Revisar accesibilidad con teclado, foco y estructura de títulos.</li>
+                <li>Mejorar la vista móvil y corregir desbordamientos.</li>
+                <li>Añadir una página de reglas o una actividad manteniendo la navegación.</li>
+                <li>Integrar una mejora mediante pull request revisada.</li>
+                <li>Intercambiar documentación con otro equipo y registrar qué pasos faltaban para reproducirla.</li>
+            </ul>
+            <p>Documentad el antes, el cambio y su comprobación. No incorporéis nuevas tecnologías solo para ampliar la
+                entrega.</p>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
+    </main>
+</body>
+
+</html>

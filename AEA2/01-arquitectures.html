@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>1. Arquitectura · DAW2</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page"><a class="skip-link" href="#contenido">Saltar al contenido</a><button
+        class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del módulo</button>
+    <aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a>
+        <p class="sidebar-title">Despliegue de Aplicaciones Web</p>
+        <nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea" href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" href="index.html">AEA2 · Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory active" aria-current="page" href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory" href="03-http.html">HTTP y comunicación web</a><a class="sub nav-theory" href="04-contenidors.html">Fundamentos · Contenedores</a><span class="nav-label nav-label-assignment">Proyecto y encargos</span><a class="sub nav-assignment" href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment" href="encargo-1-estatica.html">Encargo 1 · Página estática</a></nav>
+        <p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p>
+    </aside>
+    <main id="contenido">
+        <section class="cover compact-cover">
+            <p class="eyebrow">AEA2 · Comprender y decidir</p>
+            <h1>1. Arquitectura</h1>
+            <p class="lead">Comprende quién recibe la petición, quién genera el contenido y dónde se guardan los
+                resultados.</p>
+        </section>
+        <section class="section" id="ciclo-aplicacion">
+            <h2>1. El proceso de crear una aplicación web</h2>
+            <p>Una aplicación web pasa por distintas fases: entender una necesidad, diseñar una solución,
+                programarla, ponerla en funcionamiento y mantenerla. El despliegue forma parte de ese ciclo:
+                conecta el código desarrollado con el entorno en el que lo utilizarán las personas.</p>
+            <figure class="image-container"
+                style="max-width: 640px; padding: 16px; background: #fff; border-radius: 12px;">
+                <img src="assets/ciclo-desarrollo-aplicacion.png"
+                    alt="Ciclo de desarrollo de una aplicación web: planificación, estructura, diseño, programación, despliegue y mantenimiento."
+                    width="507" height="396">
+                <figcaption>El desarrollo es un ciclo: después de publicar una versión, el uso y el mantenimiento
+                    generan nuevas necesidades y mejoras.</figcaption>
+            </figure>
+            <ol>
+                <li><strong>Análisis y planificación:</strong> identificar a los usuarios, el problema que queremos
+                    resolver, los requisitos y el alcance.</li>
+                <li><strong>Estructura y prototipo:</strong> organizar la información, las pantallas y la navegación
+                    para comprobar cómo se utilizará la aplicación.</li>
+                <li><strong>Diseño de la interfaz:</strong> definir la presentación visual y la interacción,
+                    teniendo en cuenta la accesibilidad y los distintos dispositivos.</li>
+                <li><strong>Programación y pruebas:</strong> implementar las funcionalidades y comprobar que
+                    cumplen los requisitos. Las pruebas también acompañan las demás fases.</li>
+                <li><strong>Despliegue:</strong> preparar el entorno, instalar servicios y dependencias,
+                    configurar la aplicación y sus datos y verificar que se puede utilizar.</li>
+                <li><strong>Mantenimiento y evolución:</strong> observar el funcionamiento, corregir errores,
+                    actualizar componentes y desplegar nuevas versiones.</li>
+            </ol>
+            <div class="activity">
+                <p class="activity-tag">Dónde estamos nosotros</p>
+                <h3>Del código proporcionado a una aplicación que funciona</h3>
+                <p>En este módulo nos centramos en la <strong>fase 5: el despliegue</strong>, y en las tareas de
+                    comprobación y mantenimiento relacionadas. Recibiréis parte del código del proyecto y podréis
+                    personalizarlo; vuestra responsabilidad será preparar los servicios, configurar las conexiones,
+                    probar el resultado y documentar el proceso.</p>
+                <p>También analizaremos requisitos y arquitectura para decidir qué necesita cada funcionalidad.
+                    Empezaremos con el portal estático e incorporaremos ejecución en servidor, base de datos y
+                    otros servicios de forma progresiva.</p>
+                <p>Desplegar no significa necesariamente publicar por primera vez en Internet: también podemos
+                    desplegar en un entorno local de pruebas, en una red interna o actualizar una versión existente.</p>
+            </div>
+        </section>
+        <section class="section">
+            <h2>2. Fase de despliegue</h2>
+            <p>El despliegue de aplicaciones web es la acción que se conoce como <b>presentar o hacer pública</b> por
+                primera
+                vez una aplicación o página web a través de determinadas herramientas. Este término proviene del inglés
+                con la palabra <b>“deploy”</b>.</p>
+            <p>En palabras sencillas, es el proceso de publicar tu aplicación en internet o en un sistema corporativo
+                para que la gente realmente pueda usarla. Mientras programas, la aplicación solo existe en tu máquina;
+                al desplegarla, se "muda" a un servidor público.
+            </p>
+
+            <p>El despliegue de aplicaciones se refiere, por tanto, a trabajar con todo el código y las configuraciones
+                de la aplicación en un ordenador específico al que cualquiera pueda conectarse sin importar el lugar.
+                Esta tarea se puede realizar utilizando un servidor físico que está on-line y que se encuentra en
+                nuestras oficinas, o buscando soluciones en la nube utilizando servidores como AWS o Azure. Además, la
+                implementación deberá realizarse utilizando las herramientas, según el lenguaje de
+                programación que se empleó para desarrollar la aplicación. </p>
+            <p>Nuestra plataforma publicará actividades y clasificaciones. Debemos decidir quién prepara esa
+                información, dónde se conserva y cómo llega al navegador.</p>
+        </section>
+
+        <section class="section tint">
+            <h2>3. ¿Qué tareas incluye el despliegue?</h2>
+            <div class="deployment-layout">
+                <figure class="image-container">
+                    <a href="assets/etapas-implantacion-despliegue.svg"
+                        aria-label="Ampliar el esquema de etapas de implantación">
+                        <img src="assets/etapas-implantacion-despliegue.svg" loading="lazy"
+                            alt="Etapas previas, implementación y operaciones. El recuadro Implementación de despliegue aparece rodeado en rojo.">
+                    </a>
+                    <figcaption>El recuadro señalado sitúa las tareas de despliegue dentro del proceso de implantación.
+                        Pulsa para ampliar.</figcaption>
+                </figure>
+                <div>
+                    <ul>
+                        <li><b>Configuración del entorno:</b> Preparar los servidores virtuales o físicos (en la nube o
+                            locales)
+                            con el sistema operativo y las bases de datos correctas.</li>
+                        <li><b>Instalación de dependencias:</b> Descargar todas las herramientas, librerías y
+                            componentes
+                            adicionales que la aplicación necesita para funcionar.</li>
+                        <li><b>Pruebas finales:</b> Verificar en el servidor que todo responda de manera estable, segura
+                            y sin
+                            interrupciones.</li>
+                        <li><b>Asignación de dominio:</b> Conectar el servidor a una URL real (como miaplicacion.com)
+                            para que
+                            los usuarios puedan acceder a la aplicación web desplegada.</li>
+                    </ul>
+                    <p>El recuadro <strong>Implementación de despliegue</strong> reúne la preparación del entorno,
+                        la instalación, la configuración y la integración de componentes. En nuestro proyecto iremos
+                        realizando estas tareas a medida que incorporemos nuevos servicios y funcionalidades.</p>
+                </div>
+            </div>
+        </section>
+        <section class="section client-server-section">
+            <h2>4. Arquitectura cliente-servidor: del navegador al servidor</h2>
+            <figure class="image-container client-server-image">
+                <div class="client-server-crop"><img src="assets/modelo-cliente-servidor.png"
+                        alt="Modelo cliente-servidor: el cliente envía solicitudes a través de la red y el servidor las procesa y devuelve respuestas."
+                        width="479" height="640" loading="lazy"></div>
+                <figcaption>El cliente solicita recursos y el servidor responde a través de la red.
+                    En nuestro proyecto, el navegador se comunicará con el servidor web.</figcaption>
+            </figure>
+
+            <p>En AEA1 estudiamos el <strong>modelo cliente-servidor</strong>, uno de los fundamentos del funcionamiento
+                de las aplicaciones web. Ahora recuperamos este concepto para entender qué ocurre cuando accedemos a una
+                página web y cómo intervienen los distintos componentes durante el despliegue de una aplicación.</p>
+            <h3>¿Quién es el cliente y quién es el servidor?</h3>
+            <p>En una arquitectura cliente-servidor distinguimos dos roles principales:</p>
+            <ul>
+                <li><strong>Cliente:</strong> es quien solicita un recurso o servicio. Por ejemplo, cuando escribimos
+                    una dirección web o pulsamos un botón, el navegador puede enviar una petición HTTP al servidor. El
+                    navegador también se encarga de interpretar el HTML y el CSS y ejecutar el JavaScript que recibe.
+                </li>
+                <li><strong>Servidor:</strong> es quien recibe las peticiones, las procesa y devuelve una respuesta. Por
+                    ejemplo, puede enviar una página HTML, proporcionar datos en formato JSON o gestionar una solicitud
+                    de compra.</li>
+            </ul>
+            <!-- <p><strong>Ejemplo:</strong> cuando accedemos a una tienda online, nuestro navegador solicita la página al servidor. Este responde enviando los recursos necesarios para mostrarla. Si realizamos una compra, el navegador puede enviar una nueva petición para registrar el pedido.</p> -->
+            <h3>¿Un servidor es un programa o un ordenador?</h3>
+            <p>La palabra <em>servidor</em> se utiliza habitualmente con dos significados diferentes:</p>
+            <ul>
+                <li><strong>Servidor como software:</strong> es un programa o proceso que ofrece un servicio y escucha
+                    peticiones. Por ejemplo, Apache o Nginx pueden actuar como servidores web.</li>
+                <li><strong>Servidor como máquina:</strong> es el ordenador físico o virtual donde se ejecutan uno o
+                    varios de estos programas.</li>
+            </ul>
+            <p>Esto significa que <strong>no necesitamos un ordenador diferente para cada servicio</strong>.</p>
+            <p>Por ejemplo, en un único ordenador podemos ejecutar:</p>
+            <ul>
+                <li><strong>Apache:</strong> atiende las peticiones web, normalmente en los puertos 80 (HTTP) y 443
+                    (HTTPS).</li>
+                <li><strong>MariaDB:</strong> gestiona la base de datos, normalmente en el puerto 3306.</li>
+                <li><strong>Una aplicación Node.js:</strong> ejecuta la lógica de nuestra aplicación y puede escuchar,
+                    por ejemplo, en el puerto 3000.</li>
+            </ul>
+            <p>Los tres servicios pueden funcionar simultáneamente en la misma máquina, utilizando distintos puertos.
+            </p>
+            <h3>¿Todos los componentes deben estar en el mismo ordenador?</h3>
+            <p>No. Una aplicación puede desplegarse de diferentes maneras.</p>
+            <p>En un entorno de desarrollo podemos tener el servidor web, la aplicación y la base de datos ejecutándose
+                en nuestro propio ordenador.</p>
+            <p>En un entorno de producción, estos componentes pueden distribuirse entre diferentes máquinas o servicios
+                en la nube. Incluso podemos tener varias máquinas ejecutando el mismo servicio para atender más
+                usuarios.</p>
+            <div class="higthligth">
+                <p class="activity-tag">Idea clave</p>
+                <p>Cuando representamos una arquitectura mediante cajas y flechas, las cajas identifican componentes o
+                    responsabilidades, pero no necesariamente ordenadores físicos diferentes.</p>
+                <p>Por tanto, debemos distinguir tres conceptos:</p>
+                <ul>
+                    <li><strong>Máquina:</strong> dónde se ejecuta el software.</li>
+                    <li><strong>Servicio o proceso:</strong> qué programa realiza una función.</li>
+                    <li><strong>Puerto:</strong> por dónde se accede a un servicio de red dentro de una máquina.</li>
+                </ul>
+                <p>Comprender esta diferencia nos ayudará a configurar, desplegar y diagnosticar nuestras aplicaciones
+                    web.</p>
+            </div>
+
+
+        </section>
+        <section class="section">
+            <h2>5. Webs</h2>
+            <div class="cards two">
+                <article style="min-width: 0;">
+                    <h3>Web estática</h3>
+                    <p>El servidor lee un archivo preparado y envía su contenido. La clasificación del primer portal
+                        está
+                        escrita en HTML: cambiar una victoria no recalcula puntos. Estática no significa que no pueda
+                        contener
+                        animaciones ni JavaScript.</p>
+                    <pre>Navegador --petición HTTP--> servidor web
+Navegador <--respuesta HTTP-- servidor web</pre>
+                    <p>
+                        <strong>Ventajas:</strong> pocas dependencias, despliegue sencillo y poca generación de
+                        contenido en el
+                        servidor.
+                    </p>
+                    <p><strong>Limitaciones:</strong> actualización manual y ausencia de persistencia compartida
+                        proporcionada por el servidor.
+                    </p>
+
+                </article>
+                <article style="min-width: 0;">
+                    <h3>Web dinámica</h3>
+                    <p>El servidor ejecuta código para construir la respuesta. PHP puede consultar MariaDB, calcular la
+                        clasificación y generar HTML. El navegador recibe el resultado, no el código PHP. También
+                        existen
+                        modelos donde JavaScript consulta una API.</p>
+                    <pre>Navegador → Apache + PHP → MariaDB
+Navegador ← HTML generado ← datos consultados</pre>
+                    <p>
+                        <strong>Ventajas:</strong> datos compartidos, reglas y actualizaciones centralizadas.
+                        <strong>Costes:</strong> más configuración, credenciales, errores de conexión y componentes que
+                        mantener.
+                    </p>
+
+                </article>
+            </div>
+        </section>
+        <section class="section">
+            <h2>6. Capas lógicas</h2>
+            <p>Las <strong>capas lógicas de una aplicación web</strong> son la <strong>forma en que se organiza el
+                    código y las responsabilidades del software para que sea escalable, mantenible y seguro</strong>.
+            </p>
+            <p>En la arquitectura tradicional y más utilizada (la <strong>arquitectura de tres capas</strong>), una
+                aplicación web se divide en los siguientes niveles:</p>
+            <h3>1. Capa de Presentación (Front-end)</h3>
+            <p>Es la interfaz con la que interactúa el usuario directamente. Su objetivo principal es <strong>mostrar
+                    los datos y capturar las acciones</strong> del usuario.</p>
+            <ul>
+                <li><strong>Componentes:</strong> HTML, CSS, JavaScript, y frameworks como React, Angular o Vue.</li>
+                <li><strong>Función:</strong> Renderiza las pantallas, valida datos básicos en los formularios (como que
+                    un correo tenga una "@") y envía las peticiones del usuario hacia el servidor.</li>
+            </ul>
+            <h3>2. Capa de Negocio o Aplicación (Back-end)</h3>
+            <p>Es el "cerebro" de la aplicación. Aquí se procesa la información y se aplican las <strong>reglas de
+                    negocio</strong> que definen cómo funciona la aplicación.</p>
+            <ul>
+                <li><strong>Componentes:</strong> Servidores web (Node.js, Django, Spring Boot, .NET) y APIs.</li>
+                <li><strong>Función:</strong> Recibe las peticiones del front-end, verifica la identidad del usuario
+                    (autenticación), realiza cálculos, toma decisiones lógicas y decide qué información pedir o guardar
+                    en la base de datos.</li>
+            </ul>
+            <h3>3. Capa de Datos (Persistencia)</h3>
+            <p>Es el lugar donde la información se <strong>almacena de forma permanente</strong>.</p>
+            <ul>
+                <li><strong>Componentes:</strong> Bases de datos relacionales (PostgreSQL, MySQL) o no relacionales
+                    (MongoDB), y sistemas de almacenamiento de archivos.</li>
+                <li><strong>Función:</strong> Recibe órdenes de la capa de negocio para guardar, actualizar, borrar o
+                    consultar registros, asegurando que la información no se pierda al cerrar la aplicación.</li>
+            </ul>
+            <figure class="image-container">
+                <a href="assets/capas-logicas-ejemplo-compra.png"
+                    aria-label="Ampliar el ejemplo de las capas lógicas de una compra">
+                    <img src="assets/capas-logicas-ejemplo-compra.png" width="1774" height="887" loading="lazy"
+                        alt="Ejemplo de compra: el cliente solicita, la presentación gestiona la interacción, la lógica de negocio procesa la compra y la capa de datos guarda los cambios. El servidor devuelve la confirmación.">
+                </a>
+                <figcaption>Ejemplo del recorrido de una compra. El esquema muestra por separado al cliente
+                    y la presentación; en la explicación de tres capas, la interfaz que utiliza el cliente
+                    corresponde a la capa de presentación. Pulsa la imagen para ampliar.</figcaption>
+            </figure>
+        </section>
+        <!--section class="section tint">
+            <h2>7. Componentes del curso</h2>
+            <div class="table-scroll">
+                <table>
+                    <tr>
+                        <th>Componente</th>
+                        <th>Responsabilidad</th>
+                    </tr>
+                    <tr>
+                        <td>Apache</td>
+                        <td>Recibir HTTP, servir recursos y cooperar con la ejecución dinámica.</td>
+                    </tr>
+                    <tr>
+                        <td>PHP</td>
+                        <td>Ejecutar el código del portal; su integración con Apache depende de la configuración.</td>
+                    </tr>
+                    <tr>
+                        <td>Tomcat</td>
+                        <td>Ejecutar aplicaciones web Java; también puede responder HTTP directamente.</td>
+                    </tr>
+                    <tr>
+                        <td>MariaDB</td>
+                        <td>Conservar y consultar datos. El navegador no se conecta directamente a ella.</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <section class="section">
+            <h2>8. Elegir una arquitectura</h2>
+            <p>Un calendario que cambia una vez al mes puede publicarse con HTML estático. Una clasificación actualizada
+                por varios organizadores necesita persistencia y reglas compartidas. La elección depende de los
+                requisitos.</p>
+        </section>
+        <section class="section tint">
+            <h2>Comprueba que lo entiendes</h2>
+            <ol>
+                <li>¿Pueden ejecutarse tres servicios en un solo ordenador?</li>
+                <li>¿Por qué el navegador no debe conocer la contraseña de MariaDB?</li>
+                <li>¿Cómo se cambia la clasificación estática? ¿Y la dinámica?</li>
+                <li>Indica una ventaja y un coste de separar la base de datos en otra máquina.</li>
+            </ol>
+        </section>
+        <section class="section">
+            <h2>Aplicación · Diseñar una solución</h2>
+            <figure class="image-container"><img src="assets/arquitecturas.svg"
+                    alt="Comparación entre un navegador que recibe archivos y otro que recibe HTML generado a partir de datos."
+                    width="1100" height="440" loading="lazy">
+                <figcaption>Las capas son responsabilidades lógicas: pueden ejecutarse en una sola máquina.</figcaption>
+            </figure>
+            <div class="activity">
+                <p class="activity-tag">Aplicación al proyecto</p>
+                <h3>Dibuja antes de instalar</h3>
+                <ol>
+                    <li>Define en dos frases la asociación y qué información debe publicar.</li>
+                    <li>Dibuja el portal inicial: navegador, servidor y archivos HTML/CSS.</li>
+                    <li>Dibuja la evolución: ejecución PHP y MariaDB. Señala dónde se calculan los puntos y dónde se
+                        conservan los resultados.</li>
+                    <li>Etiqueta flechas y anota una ventaja, una limitación y un requisito de cada alternativa.</li>
+                </ol>
+                <p class="checkpoint"><strong>Objetivo conseguido:</strong> puedes seguir una petición y explicar el papel
+                    de cada componente sin confundir capas con ordenadores. Conserva ambos diagramas con una explicación
+                    individual.</p>
+            </div>
+            <div class="activity">
+                <p class="activity-tag">Ampliación opcional</p>
+                <h3>Explora una decisión de arquitectura</h3>
+                <p>Elige una:</p>
+                <ul>
+                    <li>Compara una base de datos local con una situada en otra máquina: dependencias, comunicación y
+                        errores posibles.</li>
+                    <li>Clasifica tres requisitos del cliente: cuáles se resuelven con HTML y cuáles necesitan ejecución
+                        o persistencia.</li>
+                </ul>
+                <p><strong>Entrega adicional:</strong> una decisión justificada y un diagrama actualizado, no una lista
+                    de tecnologías.</p>
+            </div>
+        </section-->
+        <section class="section tint"><h2>Del análisis al caso práctico</h2><p>Ahora que conoces los componentes de una arquitectura web, descubre qué necesita el cliente y cómo desplegaremos su proyecto.</p><p><a class="button" href="encarrec.html">Conocer el encargo de Punto de Juego</a></p></section><footer>Institut Thos i Codina · Curso 2026–2027</footer>
+    </main>
+</body>
+
+</html>
