@@ -1,68 +1,590 @@
 <!doctype html>
-<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HTTP y comunicación web · DAW2</title><link rel="stylesheet" href="../assets/styles.css"><link rel="stylesheet" href="style.css"><script src="app.js" defer></script></head>
-<body class="module-page lesson-page"><a class="skip-link" href="#contenido">Saltar al contenido</a><button class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del módulo</button>
-<aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a><p class="sidebar-title">Despliegue de Aplicaciones Web</p><nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea" href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" href="index.html">AEA2 · Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory" href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory active" aria-current="page" href="03-http.html">HTTP y comunicación web</a><a class="sub nav-theory" href="04-contenidors.html">Fundamentos · Contenedores</a><span class="nav-label nav-label-assignment">Proyecto y encargos</span><a class="sub nav-assignment" href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment" href="encargo-1-estatica.html">Encargo 1 · Página estática</a></nav><p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p></aside>
-<main id="contenido"><section class="cover compact-cover"><p class="eyebrow">AEA2 · Comunicación web</p><div class="title-with-status"><h1>HTTP y comunicación web</h1><img src="assets/en-construccion.png" alt="Contenido en elaboración" width="100" height="83"></div><p class="lead">Arranca el portal, sigue una petición y utiliza sus respuestas para diagnosticar problemas.</p></section><section class="section"><h2>1. Interpretar una URL</h2><pre>http://127.0.0.1:8000/torneig.html
-esquema  host      puerto ruta</pre><p>HTTP define el intercambio de peticiones y respuestas. 127.0.0.1 es una dirección de loopback: apunta al propio equipo. localhost es un nombre que habitualmente resuelve a loopback. Una IP literal no requiere consultar DNS para localizar ese host. El puerto distingue el servicio dentro del equipo.</p>
-<p>Los puertos predeterminados son 80 para HTTP y 443 para HTTPS. En el laboratorio usamos 8000. HTTPS protege la comunicación mediante TLS; lo configuraremos en RA2. HTTP/1.1 y HTTP/2 suelen usar TCP; HTTP/3 usa QUIC sobre UDP. No configuraremos esas variantes en esta práctica.</p>
-</section><section class="section tint"><h2>2. Petición</h2><pre>GET /torneig.html HTTP/1.1
-Host: 127.0.0.1:8000
-Accept: text/html</pre><p>Incluye método, recurso y cabeceras; puede incluir cuerpo. GET solicita una representación. HEAD solicita cabeceras sin cuerpo de respuesta. POST envía datos para procesarlos; no cifra por sí mismo la comunicación.</p>
-</section><section class="section"><h2>3. Respuesta</h2><pre>HTTP/1.0 200 OK
-Content-Type: text/html
+<html lang="es">
 
-&lt;!doctype html&gt;...</pre><p>La versión depende del servidor: el de Python puede responder HTTP/1.0. Las cabeceras describen la respuesta y el cuerpo contiene el recurso. Content-Type ayuda a interpretarlo.</p>
-<div class="table-scroll"><table>
-<tr>
-<th>Estado</th>
-<th>Significado</th>
-</tr>
-<tr>
-<td>200</td>
-<td>Petición correcta.</td>
-</tr>
-<tr>
-<td>301 / 302 / 303</td>
-<td>Redirección, con semánticas diferentes.</td>
-</tr>
-<tr>
-<td>304</td>
-<td>Se puede reutilizar la copia en caché.</td>
-</tr>
-<tr>
-<td>403</td>
-<td>Acceso rechazado.</td>
-</tr>
-<tr>
-<td>404</td>
-<td>Recurso no encontrado.</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Error interno.</td>
-</tr>
-<tr>
-<td>503</td>
-<td>Servicio temporalmente no disponible.</td>
-</tr>
-</table></div>
-</section><section class="section tint"><h2>4. Una página, varias peticiones</h2>
-<p>Tras obtener HTML, el navegador solicita los recursos referenciados, como CSS o imágenes. La portada puede responder 200 y verse sin estilos si el CSS devuelve 404. Hay que observar el recurso concreto.</p>
-</section><section class="section"><h2>5. Archivo local y HTTP</h2>
-<p>Con file:// se lee el documento desde el disco sin un servidor HTTP. No hay estado HTTP del documento. Al servir el mismo HTML con Python sí hay petición y respuesta. El contenido sigue siendo estático.</p>
-</section><section class="section tint"><h2>6. Observar y diagnosticar</h2>
-<p>Abre Network antes de recargar. Selecciona el documento y el CSS y revisa URL, método, estado, Headers y Response. Los registros del servidor complementan esta observación.</p><pre>curl -i http://127.0.0.1:8000/
-curl -I http://127.0.0.1:8000/style.css</pre><p>Un 404 demuestra que un servidor ha respondido. Connection refused indica que no se ha establecido la conexión: comprueba proceso, host y puerto antes de buscar errores de HTML.</p>
-</section><section class="section"><h2>Comprueba que lo entiendes</h2>
-<ol>
-<li>¿Por qué puede funcionar el HTML y fallar el CSS?</li>
-<li>¿Qué diferencia hay entre método y estado?</li>
-<li>Si detienes el servidor, ¿obtienes 404? Justifícalo con la prueba.</li>
-<li>¿Puede un compañero acceder a tu 127.0.0.1 desde su equipo?</li>
-</ol>
-<p>
-<a href="https://httpwg.org/specs/rfc9110.html">Referencia: RFC 9110, semántica HTTP.</a>
-</p>
-</section><section class="section"><h2>Configuración · Sirve tu portal localmente</h2><p>Para observar HTTP usaremos primero el servidor de demostración de Python. No sustituye la futura instalación de Apache y no es un servidor de producción.</p><div class="activity"><p class="activity-tag">Aplicación al proyecto</p><h3>Arranca desde la carpeta correcta</h3><ol><li>Entra en la carpeta portal/ de tu repositorio. Comprueba con <code>pwd</code> y <code>ls</code> que contiene index.html.</li><li>Ejecuta el comando y deja abierto el terminal:</li></ol><pre><code>python3 -m http.server 8000 --bind 127.0.0.1</code></pre><p>Visita <code>http://127.0.0.1:8000/</code>. El argumento bind limita la escucha a tu equipo. Otro alumno no puede llegar a ese loopback desde su ordenador.</p><p>Si el puerto está ocupado, usa 8005 y cambia todas las URL. No detengas procesos sin identificarlos. Detén tu servidor con Ctrl+C cuando termines.</p></div><figure class="image-container"><img src="assets/http.svg" alt="El navegador solicita HTML y CSS en peticiones diferentes; el servidor devuelve estado, cabeceras y cuerpo." width="1100" height="440" loading="lazy"><figcaption>El estado pertenece a cada respuesta, no a la página completa.</figcaption></figure></section><section class="section tint"><h2>Prueba e interpreta lo que ocurre</h2><div class="activity"><p class="activity-tag">Aplicación al proyecto</p><h3>Observa, provoca y diagnostica</h3><ol><li>Abre las herramientas del navegador, entra en Red/Network y desactiva la caché mientras estén abiertas.</li><li>Recarga la portada. Selecciona el documento: anota URL, método, estado, Content-Type y contenido.</li><li>Selecciona style.css y compara esa petición con la del HTML.</li><li>En otro terminal, ejecuta:</li></ol><pre><code>curl -i http://127.0.0.1:8000/
-curl -I http://127.0.0.1:8000/style.css
-curl -i http://127.0.0.1:8000/no-existeix.html</code></pre><p><code>-i</code> incluye cabeceras; <code>-I</code> envía HEAD y no solicita el cuerpo de respuesta. Espera 200, 200 y 404 respectivamente. La versión HTTP y algunas cabeceras pueden variar.</p><ol start="5"><li>Detén el servidor y repite curl: explica por qué el error de conexión no es un 404.</li><li>Arráncalo otra vez y verifica la recuperación.</li><li>Documenta resultados esperados, observados y conclusión.</li></ol><p class="checkpoint"><strong>Objetivo conseguido:</strong> puedes servir la web y diferenciar respuesta correcta, recurso inexistente y servicio detenido con pruebas propias.</p></div></section><section class="section"><h2>Diagnóstico y ampliaciones</h2><div class="table-scroll"><table><tr><th>Síntoma</th><th>Qué comprobar</th></tr><tr><td>Se muestra un listado de carpetas.</td><td>Directorio desde el que arrancaste y existencia de index.html.</td></tr><tr><td>Address already in use.</td><td>Puerto ocupado; elige otro para tu prueba.</td></tr><tr><td>Sin estilos.</td><td>Petición CSS, ruta y estado de respuesta.</td></tr><tr><td>Connection refused.</td><td>Servidor activo, IP y puerto correctos.</td></tr><tr><td>304 en lugar de 200.</td><td>Caché; recarga con ella desactivada para repetir el experimento.</td></tr></table></div><div class="activity"><p class="activity-tag">Ampliación opcional</p><h3>Investiga con hipótesis</h3><ul><li><strong>CSS roto:</strong> cambia temporalmente su ruta en una página. Predice el estado, observa Network, repara y verifica. No dejes el error en la entrega final.</li><li><strong>Dos servicios:</strong> sirve dos carpetas distintas en 8000 y 8005, ligados a loopback. Explica qué parte de la URL decide cuál responde.</li><li><strong>Caché:</strong> compara con y sin caché y explica lo observado. No todos los navegadores producirán el mismo estado.</li></ul><p><strong>Entrega adicional:</strong> hipótesis, prueba, resultado y explicación. Elige una investigación, no acumules capturas sin interpretar.</p></div><p>Referencia: <a href="https://docs.python.org/3/library/http.server.html">documentación oficial de http.server</a>.</p></section><footer>Institut Thos i Codina · Curso 2026–2027</footer></main></body></html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>2. HTTP y comunicación web · DAW2</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page http-lesson"><a class="skip-link" href="#contenido">Saltar al contenido</a><button
+        class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del módulo</button>
+    <aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a>
+        <p class="sidebar-title">Despliegue de Aplicaciones Web</p>
+        <nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea"
+                href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" href="index.html">AEA2 ·
+                Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory"
+                href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory active" aria-current="page"
+                href="03-http.html">2. HTTP y comunicación web</a><a class="sub nav-theory"
+                href="04-contenidors.html">Fundamentos · Contenedores</a><span
+                class="nav-label nav-label-assignment">Proyecto y encargos</span><a class="sub nav-assignment"
+                href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment"
+                href="encargo-1-estatica.html">Encargo 1 · Página estática</a></nav>
+        <p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p>
+    </aside>
+    <main id="contenido">
+        <section class="cover compact-cover">
+            <p class="eyebrow">AEA2 · Comunicación web</p>
+            <div class="title-with-status">
+                <h1>2. HTTP y comunicación web</h1><!--img src="assets/en-construccion.png" alt="Contenido en elaboración"
+                    width="100" height="83"-->
+            </div>
+            <p class="lead">Arranca el portal, sigue una petición y utiliza sus respuestas para diagnosticar problemas.
+            </p>
+        </section>
+
+        <nav class="lesson-outline" aria-label="Contenido de esta página">
+            <span>En esta página</span>
+            <a href="#url">1 · URL</a><a href="#peticiones">2 · Peticiones</a>
+            <!--a href="#get-head">GET y HEAD</a><a href="#respuestas">Respuestas</a-->
+            <a href="#diagnostico">3 · Diagnóstico</a>
+        </nav>
+        <section class="section" id="url">
+            <h2>1. Interpretar una URL</h2>
+            <p>En el lenguaje cotidiano, a una <strong>URL</strong> se le llama «dirección web» o «dirección del
+                enlace». Cuando copias un enlace y lo pegas en un mensaje, el texto que pegas es una URL. En plural se
+                suele escribir <strong>URLs</strong>.</p>
+            <div class="higthligth">
+                <p class="activity-tag">Recuerda</p>
+                <p><strong>Una URL es una dirección, no el recurso en sí.</strong> Una misma página puede ser accesible
+                    mediante varias URLs: con y sin <code>www</code>, con etiquetas de seguimiento o a través de un
+                    enlace corto. Esto depende de cómo esté configurado el sitio; las direcciones no son equivalentes
+                    automáticamente.</p>
+                <p>Una misma URL puede mostrar contenido distinto con el tiempo si quien administra el sitio modifica la
+                    página.</p>
+            </div>
+            <h3>Las partes de una URL</h3>
+            <p>Imagina que Punto de Juego permite consultar torneos y filtrar las actividades de Mataró. Una dirección
+                podría tener esta forma:</p>
+            <pre><code>https://torneos.puntodejuego.example:8443/torneos/ajedrez?municipio=mataro&amp;categoria=juvenil#clasificacion</code></pre>
+            <p>Es un <strong>ejemplo didáctico</strong>, no una web que debas visitar: <code>.example</code> se reserva
+                para ejemplos. La dirección reúne todas las partes que vamos a estudiar; la mayoría de las URLs solo
+                utilizan algunas.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Parte</th>
+                            <th scope="col">En el ejemplo</th>
+                            <th scope="col">Qué hace</th>
+                            <th scope="col">¿Obligatoria?</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Esquema</th>
+                            <td><code>https://</code></td>
+                            <td>Indica cómo se obtiene el recurso. El esquema es <code>https</code> y <code>://</code>
+                                lo separa del host. HTTPS utiliza HTTP protegido mediante TLS, encriptado. Otros esquemas son
+                                <code>http:</code>, <code>mailto:</code>, <code>tel:</code> y <code>file:</code>; no
+                                todos usan <code>//</code>.
+                            </td>
+                            <td>Sí, en una URL absoluta. Un enlace relativo puede omitirlo y tomarlo de la página que lo
+                                contiene.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Subdominio</th>
+                            <td><code>torneos.</code></td>
+                            <td>Prefijo opcional que permite organizar servicios o secciones. Aquí identifica la sección
+                                de torneos. <code>www</code> es otro ejemplo habitual.</td>
+                            <td>No.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Nombre de dominio</th>
+                            <td><code>puntodejuego</code></td>
+                            <td>Junto con el TLD forma el dominio base del ejemplo: <code>puntodejuego.example</code>.
+                            </td>
+                            <td>No si usamos una IP o un nombre local como <code>localhost</code>.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Dominio de nivel superior (TLD)</th>
+                            <td><code>.example</code></td>
+                            <td>Última etiqueta del nombre del host. En este caso está reservada para documentación.
+                                Otros TLD son <code>.com</code>, <code>.org</code> y los de código de país, como
+                                <code>.es</code>, <code>.uk</code> o <code>.ai</code> (Anguila).
+                            </td>
+                            <td>Forma parte de un nombre de dominio completo; no se utiliza en una IP ni es necesario
+                                con <code>localhost</code>.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Puerto</th>
+                            <td><code>:8443</code></td>
+                            <td>Identifica el puerto de red al que se conecta el navegador. Los valores predeterminados
+                                son 443 para HTTPS y 80 para HTTP.</td>
+                            <td>No si usamos el predeterminado. Sí debe indicarse si el servicio escucha en otro puerto,
+                                como 8443.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Ruta</th>
+                            <td><code>/torneos/ajedrez</code></td>
+                            <td>Identifica el recurso solicitado: aquí, los torneos de ajedrez. Puede parecer una
+                                estructura de carpetas, pero no tiene que coincidir con directorios o archivos físicos.
+                            </td>
+                            <td>Puede omitirse; para HTTP(S) se utiliza <code>/</code> como ruta inicial.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Cadena de consulta (query string)</th>
+                            <td><code>?municipio=mataro&amp;categoria=juvenil</code></td>
+                            <td>Proporciona parámetros, habitualmente pares <code>clave=valor</code> separados por
+                                <code>&amp;</code>. Aquí propone dos filtros: municipio y categoría. La aplicación debe
+                                estar preparada para interpretarlos.
+                            </td>
+                            <td>No.</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Fragmento (ancla)</th>
+                            <td><code>#clasificacion</code></td>
+                            <td>Identifica una sección de la página, si existe el ancla correspondiente. Lo gestiona el
+                                navegador y no se envía al servidor en la petición HTTP.</td>
+                            <td>No.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3>Cómo leer el ejemplo de Punto de Juego</h3>
+            <p>«Conecta mediante HTTPS al host <code>torneos.puntodejuego.example</code>, en el puerto
+                <code>8443</code>; solicita <code>/torneos/ajedrez</code> e incluye los parámetros
+                <code>municipio=mataro</code> y <code>categoria=juvenil</code>. Al recibir la página, sitúate en su
+                sección <code>clasificacion</code>».
+            </p>
+            <p>El host completo incluye el subdominio y el dominio base. Escribir un filtro o un fragmento no crea esa
+                funcionalidad: el servidor debe admitir el filtro y el documento debe tener la sección de destino.</p>
+            <h3>¿Y cuando trabajamos en nuestro ordenador?</h3>
+            <p>En el despliegue local también usamos URLs:</p>
+            <pre><code>http://localhost/portal/torneig.html
+http://127.0.0.1:8000/torneig.html</code></pre>
+            <p>La primera podría corresponder a Apache HTTP Server en el puerto 80 si hemos publicado el portal bajo
+                <code>/portal/</code>. La segunda correspondería a un servidor de pruebas escuchando en 8000 y sirviendo
+                directamente esa carpeta. La ruta concreta depende de vuestra configuración.
+            </p>
+            <p><code>127.0.0.1</code> es una dirección de <strong>loopback</strong>: apunta al propio equipo.
+                <code>localhost</code> es un nombre que normalmente resuelve a loopback. Una IP literal no necesita
+                consultar DNS para localizar ese host. Por eso una URL web puede funcionar sin un dominio público ni un
+                TLD.
+            </p>
+            <p>Referencia: <a
+                    href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Web_mechanics/What_is_a_URL">MDN
+                    · Qué es una URL y cuáles son sus partes</a>.</p>
+        </section>
+        <section class="section tint" id="peticiones">
+            <h2>2. ¿Qué es una petición HTTP?</h2>
+            <p>Una <strong>petición HTTP</strong> es el mensaje que un cliente, como el navegador, envía a un servidor
+                para solicitar un recurso o pedir que se procese una acción. El servidor la interpreta y devuelve una
+                respuesta.</p>
+            <p>En Punto de Juego, abrir el catálogo implica solicitar su página. Más adelante, guardar un resultado
+                supondrá enviar datos para que la aplicación los procese. El <strong>método</strong> de la petición
+                indica qué operación se solicita; el <strong>estado</strong> de la respuesta comunica qué ha ocurrido.
+                Son conceptos diferentes.</p>
+            <h3>Una página puede generar varias peticiones</h3>
+            <p>El navegador suele solicitar primero el documento HTML. Al interpretarlo, descubre otros recursos que
+                necesita y puede pedir el CSS, las imágenes y los scripts. Si la aplicación consulta datos mediante
+                JavaScript, también pueden aparecer peticiones a una API.</p>
+            <figure class="image-container http-diagram">
+                <a href="assets/http.svg" aria-label="Ampliar el esquema de peticiones HTTP"><img src="assets/http.svg"
+                        width="1100" height="440" loading="lazy"
+                        alt="El navegador solicita el HTML y después el CSS en peticiones independientes. Cada respuesta tiene su propio estado, cabeceras y cuerpo."></a>
+                <figcaption>Solicitar una página no equivale a descargar todos sus recursos en una única respuesta.
+                </figcaption>
+            </figure>
+            <div class="cards two">
+                <article>
+                    <h4>El HTML responde 200</h4>
+                    <p>El navegador recibe la estructura de la página y puede mostrar su contenido.</p>
+                </article>
+                <article>
+                    <h4>El CSS responde 404</h4>
+                    <p>El recurso de estilos no se encuentra. La página puede verse sin diseño aunque el HTML se haya
+                        descargado correctamente.</p>
+                </article>
+            </div>
+            <p>No siempre se descargan todos los recursos de nuevo: el navegador puede reutilizar su caché. Tampoco
+                existe un número fijo de peticiones por página.</p>
+            <h3>Qué contiene una petición</h3>
+            <pre><code>GET /portal/torneig.html HTTP/1.1
+Host: localhost
+Accept: text/html</code></pre>
+            <ul>
+                <li><strong>Método:</strong> <code>GET</code>, la operación solicitada.</li>
+                <li><strong>Destino:</strong> <code>/portal/torneig.html</code>, la ruta. Puede incluir parámetros de
+                    consulta; el fragmento <code>#...</code> no se envía.</li>
+                <li><strong>Versión:</strong> <code>HTTP/1.1</code> en este ejemplo.</li>
+                <li><strong>Cabeceras:</strong> información adicional, como el host solicitado y el tipo de contenido
+                    que el cliente acepta.</li>
+                <li><strong>Cuerpo:</strong> datos enviados cuando la operación los necesita. Los GET y HEAD de nuestros
+                    ejemplos no llevan cuerpo.</li>
+            </ul>
+            <p>La representación anterior corresponde a HTTP/1.1. Las herramientas del navegador permiten observar estos
+                conceptos aunque la comunicación use otra versión de HTTP.</p>
+        </section>
+        <section class="section" id="get-head">
+            <h3 class="numbered-heading"><span class="heading-number">2.1</span><span>Peticiones GET y HEAD</span></h3>
+            <div class="cards two">
+                <article>
+                    <h4>GET · Obtener el recurso</h4>
+                    <p>Solicita una representación del recurso. Si la petición tiene éxito y la respuesta incluye
+                        contenido, podemos recibir el HTML, el CSS, una imagen o datos.</p>
+                </article>
+                <article>
+                    <h4>HEAD · Consultar sin descargar el cuerpo</h4>
+                    <p>Solicita una respuesta como la de GET, pero sin su cuerpo. Permite consultar estado y metadatos
+                        del recurso.</p>
+                </article>
+            </div>
+            <p>Con HEAD puedes consultar, por ejemplo, el tipo de contenido y, <strong>si el servidor lo
+                    proporciona</strong>, el tamaño mediante <code>Content-Length</code>. Algunos metadatos pueden
+                omitirse. Una respuesta HEAD sin cuerpo no significa que el archivo esté vacío.</p>
+            <p>GET y HEAD se utilizan para consultar: no deberían emplearse para registrar una inscripción o modificar
+                resultados. Que el servidor registre la visita en un log no cambia el propósito de la operación.</p>
+            <h4>Comparar los dos métodos</h4>
+            <p>Si tu Apache publica el portal bajo <code>/portal/</code>, puedes observar la diferencia con estas
+                peticiones al mismo recurso. Adapta la URL a tu despliegue:</p>
+            <pre><code># GET: muestra las cabeceras y el cuerpo de la respuesta.
+curl -i http://localhost/portal/torneig.html
+
+# HEAD: muestra las cabeceras; no descarga el cuerpo.
+curl -I http://localhost/portal/torneig.html</code></pre>
+            <p><code>-i</code> es una i minúscula; <code>-I</code> es una i mayúscula. Son opciones distintas. Una
+                ejecución normal de curl obtiene el recurso indicado: no carga automáticamente el CSS y las imágenes
+                como hace un navegador al representar una página.</p>
+            <div class="higthligth">
+                <p class="activity-tag">Más adelante</p>
+                <p>Trabajaremos <strong>POST, PUT, PATCH, DELETE y OPTIONS</strong> cuando las funcionalidades de la
+                    aplicación lo requieran. Ahora nos centramos en GET y HEAD para comprobar el despliegue de la web
+                    estática.</p>
+            </div>
+            <p>Referencia de los métodos: <a href="https://httpwg.org/specs/rfc9110.html#GET">GET</a> y <a
+                    href="https://httpwg.org/specs/rfc9110.html#HEAD">HEAD</a> en RFC 9110.</p>
+        </section>
+        <section class="section tint" id="respuestas">
+            <h3 class="numbered-heading"><span class="heading-number">2.2</span><span>Respuestas HTTP</span></h3>
+            <p>La <strong>respuesta HTTP</strong> es el mensaje que devuelve un servidor tras recibir una petición.
+                Incluye un estado, cabeceras y, cuando corresponde, un cuerpo.</p>
+            <pre><code>HTTP/1.1 200 OK
+Content-Type: text/html; charset=UTF-8
+Content-Length: 67
+
+&lt;!doctype html&gt;&lt;html lang="es"&gt;&lt;title&gt;Punto de Juego&lt;/title&gt;&lt;/html&gt;</code></pre>
+            <p>Este ejemplo simplificado muestra una respuesta con HTML. La versión, las cabeceras y su orden pueden
+                variar. No todas las respuestas tienen cuerpo: HEAD y 304 son dos casos que encontrarás en las pruebas.
+            </p>
+            <h4>Cómo interpretar las cabeceras</h4>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Cabecera</th>
+                            <th scope="col">Qué observar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>Content-Type</code></td>
+                            <td>Tipo del contenido: por ejemplo, <code>text/html</code>, <code>text/css</code> o
+                                <code>application/json</code>.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>Content-Length</code></td>
+                            <td>Tamaño del cuerpo en bytes cuando se indica. En HEAD puede describir el que se enviaría
+                                con GET.</td>
+                        </tr>
+                        <tr>
+                            <td><code>Location</code></td>
+                            <td>Dirección de destino cuando se comunica una redirección.</td>
+                        </tr>
+                        <tr>
+                            <td><code>Cache-Control</code>, <code>ETag</code>, <code>Last-Modified</code></td>
+                            <td>Información que puede intervenir en la conservación y validación de copias en caché.
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><code>Server</code></td>
+                            <td>Puede identificar software del servidor, pero puede ocultarse o modificarse. No
+                                demuestra por sí sola qué servicio responde.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h4>Familias de códigos de estado</h4>
+            <p>El primer dígito orienta la interpretación: <strong>1xx</strong> informativos, <strong>2xx</strong>
+                éxito, <strong>3xx</strong> redirección o uso de caché, <strong>4xx</strong> problema con la solicitud o
+                el acceso, y <strong>5xx</strong> fallo del servidor o de sus servicios de apoyo.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Código</th>
+                            <th scope="col">Significado</th>
+                            <th scope="col">Ejemplo o comprobación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>200 OK</td>
+                            <td>La petición se ha atendido correctamente.</td>
+                            <td>El portal responde; revisa también que el contenido sea el esperado.</td>
+                        </tr>
+                        <tr>
+                            <td>301 / 302</td>
+                            <td>Redirección permanente / temporal.</td>
+                            <td>Comprueba <code>Location</code> y el destino. No son errores por sí mismos.</td>
+                        </tr>
+                        <tr>
+                            <td>304 Not Modified</td>
+                            <td>El cliente puede reutilizar una copia validada.</td>
+                            <td>Puede aparecer al recargar con caché; no es un fallo de descarga.</td>
+                        </tr>
+                        <tr>
+                            <td>403 Forbidden</td>
+                            <td>El servidor rechaza el acceso.</td>
+                            <td>Comprueba permisos, reglas de acceso y configuración; el código no identifica por sí
+                                solo la causa.</td>
+                        </tr>
+                        <tr>
+                            <td>404 Not Found</td>
+                            <td>No se encuentra el recurso solicitado.</td>
+                            <td>Revisa URL, mayúsculas y ubicación del archivo.</td>
+                        </tr>
+                        <tr>
+                            <td>405 Method Not Allowed</td>
+                            <td>El recurso no admite ese método.</td>
+                            <td>Comprueba qué operación se ha enviado y qué admite el servicio.</td>
+                        </tr>
+                        <tr>
+                            <td>500 Internal Server Error</td>
+                            <td>El servidor encuentra un fallo interno.</td>
+                            <td>Consulta sus registros y, si existe, los de la aplicación.</td>
+                        </tr>
+                        <tr>
+                            <td>502 / 503</td>
+                            <td>Fallo de un servidor intermediario / servicio no disponible.</td>
+                            <td>Investiga los componentes implicados y sus logs; los estudiaremos con la integración de
+                                servicios.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="higthligth">
+                <p class="activity-tag">Idea clave</p>
+                <p><strong>Un error HTTP implica que algún servidor ha respondido.</strong> Un fallo de resolución DNS,
+                    una conexión rechazada o un tiempo de espera agotado pueden impedir recibir respuesta HTTP. No deben
+                    etiquetarse automáticamente como 404 o 500.</p>
+            </div>
+            <p>Referencia: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status">códigos de
+                    estado HTTP en MDN</a>.</p>
+        </section>
+        <section class="section" id="diagnostico">
+            <h2>3. Observar y diagnosticar</h2>
+            <p>No basta con comprobar que la página «se ve». Debes relacionar lo que observa el navegador con el
+                servicio y los archivos que has desplegado. Trabaja sobre la <strong>URL real de tu Apache HTTP
+                    Server</strong>.</p>
+            <p>Los ejemplos usan <code>http://localhost/portal/</code>: esta ruta solo funcionará si has publicado ahí
+                el portal. Si lo sirves en la raíz, utiliza <code>http://localhost/</code>. No cambies el despliegue
+                solo para copiar una URL del apunte.</p>
+            <div class="diagnostic-step">
+                <h3 class="numbered-heading"><span class="heading-number">3.1</span><span>Sigue las peticiones con el
+                        navegador</span></h3>
+                <ol>
+                    <li>Abre las herramientas de desarrollo y selecciona <strong>Red / Network</strong> antes de
+                        recargar.
+                    </li>
+                    <li>Desactiva temporalmente la caché con las herramientas abiertas. Activa «conservar registro» si
+                        necesitas seguir una redirección.</li>
+                    <li>Recarga y localiza el <strong>documento HTML</strong>. Anota URL, método, estado y tipo de
+                        contenido.</li>
+                    <li>Abre <strong>Headers / Cabeceras</strong>: separa lo enviado en la petición de lo recibido en la
+                        respuesta.</li>
+                    <li>Revisa <strong>Response / Respuesta</strong> y, cuando exista, Preview / Vista previa. Comprueba
+                        si
+                        el HTML pertenece realmente a Punto de Juego.</li>
+                    <li>Localiza el CSS y las imágenes. Compara sus estados. Si no existe un tipo de recurso en tu
+                        portal,
+                        no tienes que inventar una petición.</li>
+                    <li>Observa <strong>Initiator / Iniciador</strong> y el tiempo de carga para relacionar cada recurso
+                        con
+                        quien lo solicita. El detalle depende del navegador.</li>
+                </ol>
+                <p>Que el HTML devuelva 200 no demuestra que todas las imágenes funcionen. Una página predeterminada de
+                    Apache también puede devolver 200 sin ser tu proyecto.</p>
+            </div>
+            <div class="diagnostic-step">
+                <h3 class="numbered-heading"><span class="heading-number">3.2</span><span>Aísla una petición con
+                        curl</span></h3>
+                <p>Estas comprobaciones permiten comparar una descarga GET, una consulta HEAD y un recurso que no
+                    existe:
+                </p>
+                <pre><code>curl --max-time 5 -i http://localhost/portal/
+curl --max-time 5 -I http://localhost/portal/style.css
+curl --max-time 5 -i http://localhost/portal/recurso-inexistente.html</code></pre>
+                <p><code>--max-time 5</code> limita la prueba a cinco segundos. Para observar el establecimiento de la
+                    conexión puedes usar <code>curl -v</code>; para seguir redirecciones, <code>curl -L</code>. Primero
+                    mira
+                    la respuesta inicial: seguirlas puede ocultar el paso que intentas diagnosticar.</p>
+                <p>Compara método, estado, cabeceras y cuerpo. <strong>El código de salida de curl no es el estado
+                        HTTP:</strong> sin opciones adicionales, curl puede terminar correctamente aunque haya recibido
+                    un
+                    404.</p>
+                <p>Referencia: <a href="https://curl.se/docs/manpage.html">manual oficial de curl</a>.</p>
+            </div>
+            <div class="diagnostic-step">
+                <h3 class="numbered-heading"><span class="heading-number">3.3</span><span>Relaciona las pruebas con
+                        Apache</span></h3>
+                <p>Consulta el estado del servicio, identifica el proceso que escucha el puerto utilizado y revisa los
+                    registros. Emplea los nombres y rutas de tu instalación.</p>
+                <div class="cards two">
+                    <article>
+                        <h4>Ubuntu</h4>
+                        <p>Habitualmente: servicio <code>apache2</code> y registros bajo <code>/var/log/apache2/</code>.
+                        </p>
+                    </article>
+                    <article>
+                        <h4>Fedora</h4>
+                        <p>Habitualmente: servicio <code>httpd</code> y registros bajo <code>/var/log/httpd/</code>.</p>
+                    </article>
+                </div>
+                <ul>
+                    <li><strong>Access log:</strong> busca una petición por su hora, ruta, método y estado. Su formato
+                        depende de la configuración.</li>
+                    <li><strong>Error log:</strong> busca información sobre fallos o restricciones. No todos los estados
+                        generan una entrada aquí.</li>
+                    <li><strong>Configuración y archivos:</strong> relaciona la URL con la raíz documental o el sitio
+                        configurado y comprueba permisos sin aplicar cambios globales a ciegas.</li>
+                </ul>
+                <p>Una respuesta puede venir de otro servidor o de un intermediario. Relaciona servicio, puerto,
+                    configuración y registro para demostrar que estás comprobando tu Apache. No desactives el
+                    cortafuegos,
+                    SELinux o los controles de acceso para intentar arreglar un síntoma sin diagnóstico.</p>
+                <p>Referencia: <a href="https://httpd.apache.org/docs/2.4/logs.html">registros de Apache HTTP
+                        Server</a>.
+                </p>
+            </div>
+            <div class="diagnostic-step">
+                <h3 class="numbered-heading"><span class="heading-number">3.4</span><span>Sigue un orden de
+                        diagnóstico</span></h3>
+                <div class="flow"><span>URL y destino</span><b>→</b><span>Conexión y
+                        servicio</span><b>→</b><span>Respuesta
+                        HTTP</span><b>→</b><span>Recurso y logs</span></div>
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Qué observas</th>
+                                <th scope="col">Qué puede indicar</th>
+                                <th scope="col">Siguiente comprobación</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>No se resuelve el nombre.</td>
+                                <td>Nombre mal escrito o problema de resolución. No hay respuesta HTTP.</td>
+                                <td>Revisa host y resolución. No cambies HTML.</td>
+                            </tr>
+                            <tr>
+                                <td>Connection refused.</td>
+                                <td>No hay un servicio aceptando la conexión en ese destino o se rechaza activamente.
+                                </td>
+                                <td>Comprueba IP, puerto, escucha y estado del proceso.</td>
+                            </tr>
+                            <tr>
+                                <td>Tiempo de espera agotado.</td>
+                                <td>El destino o la comunicación no responden dentro del plazo.</td>
+                                <td>Revisa conectividad, filtros y servicio; no deduzcas un código HTTP.</td>
+                            </tr>
+                            <tr>
+                                <td>Error TLS con HTTPS.</td>
+                                <td>Negociación o certificado no válidos para ese acceso.</td>
+                                <td>Comprueba esquema, nombre y configuración HTTPS. HTTP y HTTPS no son
+                                    intercambiables.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>200, pero aparece otra página.</td>
+                                <td>Otro sitio, raíz documental o servidor está respondiendo.</td>
+                                <td>Relaciona URL, configuración, contenido y logs.</td>
+                            </tr>
+                            <tr>
+                                <td>HTML 200, CSS 404.</td>
+                                <td>El estilo se pide en una ruta inexistente.</td>
+                                <td>Revisa href, ruta relativa y mayúsculas.</td>
+                            </tr>
+                            <tr>
+                                <td>403.</td>
+                                <td>Acceso denegado por alguna regla o condición.</td>
+                                <td>Consulta configuración, permisos y registros.</td>
+                            </tr>
+                            <tr>
+                                <td>404.</td>
+                                <td>Recurso no encontrado en ese destino.</td>
+                                <td>Comprueba URL y mapeo al archivo o a la aplicación.</td>
+                            </tr>
+                            <tr>
+                                <td>Listado de un directorio.</td>
+                                <td>Puede faltar el índice esperado y estar permitido el listado.</td>
+                                <td>Revisa el contenido y la configuración del directorio publicado.</td>
+                            </tr>
+                            <tr>
+                                <td>No ves el último cambio.</td>
+                                <td>Puede haber caché o una copia de despliegue desactualizada.</td>
+                                <td>Compara archivo servido, archivo del repositorio y respuesta con caché desactivada.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="diagnostic-step">
+                <h3 class="numbered-heading"><span class="heading-number">3.5</span><span>Comprueba y documenta</span>
+                </h3>
+                <div class="activity">
+                    <p class="activity-tag">Aplicación a Punto de Juego</p>
+                    <ol>
+                        <li>Obtén una respuesta correcta del portal y otra de su CSS. Explica qué recurso verifica cada
+                            prueba.</li>
+                        <li>Compara GET y HEAD sobre el mismo recurso, identificando qué cambia.</li>
+                        <li>Pide una ruta inexistente y relaciona su 404 con la entrada del registro de acceso.</li>
+                        <li>En una copia de pruebas, modifica temporalmente el enlace al CSS. Predice qué ocurrirá,
+                            compruébalo y restaura la ruta. Conserva la prueba de recuperación.</li>
+                        <li>Relaciona las observaciones con el servicio Apache y la ubicación publicada. Si el síntoma
+                            no
+                            coincide con tu hipótesis, revísala antes de modificar otra cosa.</li>
+                    </ol>
+                    <p>En tu Markdown indica <strong>objetivo, entorno, URL, método, resultado esperado, resultado
+                            observado
+                            y conclusión</strong>. Una captura debe permitir identificar el recurso y su estado;
+                        acompáñala
+                        de una explicación.</p>
+                </div>
+                <div class="activity">
+                    <p class="activity-tag">Ampliación opcional</p>
+                    <h3>Una hipótesis, una prueba</h3>
+                    <p>Compara la carga con caché activada y desactivada, sigue una redirección que exista en tu entorno
+                        o
+                        investiga un error reproducible. Documenta la hipótesis, las observaciones y la conclusión. No
+                        necesitas provocar errores en servicios de otras personas.</p>
+                </div>
+            </div>
+            <div class="diagnostic-step">
+                <h3>Comprueba que lo entiendes</h3>
+                <ol>
+                    <li>¿Por qué puede responder 200 el HTML y verse la página sin diseño?</li>
+                    <li>¿Qué diferencia hay entre el método HEAD y el estado 304?</li>
+                    <li>¿Por qué una conexión rechazada no es un 404?</li>
+                    <li>¿Qué pruebas demuestran que responde tu Apache y no otro servicio?</li>
+                    <li>¿Por qué una URL file:// no sirve para observar la respuesta HTTP del documento?</li>
+                </ol>
+                <p>Al abrir un archivo con <code>file://</code>, el navegador lee el documento del disco. Para estas
+                    pruebas
+                    debes acceder mediante <code>http://</code> o <code>https://</code> a un servicio configurado. Si
+                    usas
+                    una herramienta de comprobación externa, recuerda que no puede acceder a tu <code>localhost</code>.
+                </p>
+            </div>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
+    </main>
+</body>
+
+</html>
