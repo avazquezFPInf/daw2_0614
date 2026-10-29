@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>3. Apache y ejecución con PHP · DAW2</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page reading-lesson"><a class="skip-link" href="#contenido">Saltar al contenido</a><button
+        class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del módulo</button>
+    <aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a>
+        <p class="sidebar-title">Despliegue de Aplicaciones Web</p>
+        <nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea" href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" href="index.html">AEA2 · Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory" href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory" href="03-http.html">2. HTTP y comunicación web</a><a class="sub nav-theory active" aria-current="page" href="05-apache-php.html">3. Apache y ejecución con PHP</a><a class="sub nav-theory" href="04-contenidors.html">Fundamentos · Contenedores</a><span class="nav-label nav-label-assignment">Proyecto y encargos</span><a class="sub nav-assignment" href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment" href="encargo-1-estatica.html">Encargo 1 · Página estática</a><a class="sub nav-assignment" href="encargo-2-php.html">Encargo 2 · Portal dinámico con PHP</a></nav>
+        <p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p>
+    </aside>
+    <main id="contenido"><section class="cover compact-cover"><p class="eyebrow">AEA2 · Ejecución en servidor</p><h1>3. Apache y ejecución con PHP</h1><p class="lead">De servir archivos HTML a generar la respuesta en el servidor.</p></section><nav class="lesson-outline" aria-label="Contenido de esta página"><span>En esta página</span><a href="#necesidad">Por qué PHP</a><a href="#recorrido">Recorrido</a><a href="#leer-codigo">Leer el código</a><a href="#entorno">Entorno</a><a href="#comprobar">Comprobaciones</a></nav><section class="section" id="necesidad">
+<h2>1. Del archivo preparado al contenido generado</h2>
+<p>En el primer encargo, Apache HTTP Server lee los archivos HTML y los envía al navegador. La clasificación y las actividades están escritas en esos documentos. Ahora Punto de Juego quiere generar su listado de actividades a partir de una lista de datos, sin escribir a mano el HTML de cada una.</p>
+<div class="cards two"><article><h3>Portal estático</h3><p>El contenido está preparado en un archivo HTML. Cambiarlo exige editar ese contenido.</p></article><article><h3>Portal dinámico</h3><p>El servidor ejecuta un programa que construye el HTML utilizando datos y reglas.</p></article></div>
+<div class="higthligth"><p class="activity-tag">Idea clave</p><p><strong>Dinámico no significa animado ni implica tener una base de datos.</strong> En esta entrega, PHP generará la página con una lista definida en el propio código. MariaDB llegará cuando necesitemos persistencia.</p></div>
+</section>
+<section class="section tint" id="recorrido">
+<h2>2. Dos formas de ejecutar PHP con Apache</h2>
+<p>Apache HTTP Server ya recibe las peticiones del navegador y sirve HTML, CSS e imágenes. Para ejecutar un archivo PHP, necesitamos añadir un intérprete y decidir <strong>dónde se ejecutará</strong>.</p>
+<div class="higthligth"><p class="activity-tag">La diferencia principal</p><p>Podemos ejecutar PHP <strong>dentro de los procesos de Apache mediante un módulo</strong>, o utilizar <strong>un servicio separado, PHP-FPM, al que Apache encarga la ejecución</strong>. Las dos opciones pueden producir la misma página HTML.</p></div>
+<h3>2.1. Compara las dos opciones</h3>
+<div class="cards two">
+<article><h3>Opción A · PHP dentro de Apache</h3><p>Instalamos <strong>mod_php</strong>, un módulo que incorpora el intérprete PHP a los procesos de Apache.</p><pre><code>Navegador
+    ↓ HTTP
+Apache [mod_php ejecuta PHP]
+    ↓
+Respuesta HTML</code></pre><p>No hay un servicio PHP-FPM atendiendo estas peticiones: el código se ejecuta dentro de Apache.</p></article>
+<article><h3>Opción B · PHP separado de Apache</h3><p>Instalamos <strong>PHP-FPM</strong>, un servicio separado que gestiona los procesos encargados de ejecutar PHP.</p><pre><code>Navegador
+    ↓ HTTP
+Apache → PHP-FPM ejecuta PHP
+       ← HTML generado
+    ↓
+Respuesta HTML</code></pre><p>Apache y PHP-FPM son dos servicios distintos. Pueden ejecutarse en el mismo ordenador; separarlos no exige otra máquina.</p></article>
+</div>
+<div class="table-scroll"><table><thead><tr><th>Pregunta</th><th>mod_php</th><th>PHP-FPM</th></tr></thead><tbody>
+<tr><td>¿Dónde se ejecuta PHP?</td><td>Dentro de los procesos de Apache.</td><td>En procesos separados gestionados por PHP-FPM.</td></tr>
+<tr><td>¿Hay un servicio FPM independiente?</td><td>No es necesario.</td><td>Sí.</td></tr>
+<tr><td>¿Cómo obtiene Apache el resultado?</td><td>Mediante su módulo PHP.</td><td>Se comunica con FPM y recibe el resultado.</td></tr>
+<tr><td>¿Necesitamos instalar las dos opciones?</td><td colspan="2">No. Debemos elegir y configurar una integración para atender las peticiones PHP de este proyecto.</td></tr>
+</tbody></table></div>
+<h3>2.2. Nuestra elección: Apache + PHP-FPM</h3>
+<div class="activity"><p class="activity-tag">En este encargo</p><p><strong>Instalaremos un servicio separado de Apache que ejecutará PHP.</strong> Apache seguirá atendiendo las peticiones HTTP y le encargará la ejecución a PHP-FPM. No utilizaremos mod_php.</p></div>
+<p>Esto no significa que Apache no necesite módulos: utiliza <strong>proxy</strong> y <strong>proxy_fcgi</strong> para comunicarse con PHP-FPM. <strong>Estos módulos no interpretan PHP</strong>; permiten que Apache solicite el trabajo a otro servicio.</p>
+<figure class="image-container http-diagram"><a href="assets/apache-php-fpm.svg" aria-label="Ampliar el recorrido de una petición con PHP-FPM"><img src="assets/apache-php-fpm.svg" width="1000" height="380" loading="lazy" alt="Nuestra opción: el navegador pide index.php a Apache. Apache encarga la ejecución a PHP-FPM y devuelve al navegador el HTML generado."></a><figcaption>Dos servicios en el mismo ordenador: Apache recibe HTTP; los procesos gestionados por PHP-FPM ejecutan PHP.</figcaption></figure>
+<ol><li>El navegador solicita <code>index.php</code> mediante HTTP.</li><li>La configuración de Apache indica que esa petición debe pasar a PHP-FPM.</li><li>Apache se comunica con FPM mediante sus módulos y el punto de conexión configurado.</li><li>Un proceso PHP ejecuta el archivo: recorre las actividades y construye HTML.</li><li>Apache recibe el resultado y lo devuelve como respuesta HTTP.</li><li>El navegador interpreta ese HTML y solicita el CSS como otro recurso.</li></ol>
+<p>El navegador no necesita PHP instalado y no se conecta directamente a PHP-FPM. En una configuración correcta recibe el HTML generado, no el programa PHP original.</p>
+<h3>2.3. FastCGI y socket: cómo se comunican</h3>
+<div class="cards two"><article><h3>FastCGI · El protocolo</h3><p>Define cómo el servidor web encarga la ejecución y recibe el resultado del proceso de aplicación. En nuestro caso, es el protocolo que utiliza Apache para hablar con PHP-FPM.</p></article><article><h3>Socket · El punto de comunicación</h3><p>Es el punto por el que se comunican los procesos. Puede ser un socket Unix local o una conexión TCP identificada mediante dirección IP y puerto.</p></article></div>
+<ul><li><strong>Socket Unix:</strong> por ejemplo, <code>/run/php/php8.3-fpm.sock</code>. Es una ruta especial de comunicación local, no una página web. El nombre depende de la versión y de la distribución.</li><li><strong>Conexión TCP:</strong> por ejemplo, <code>127.0.0.1:9000</code>, si FPM está configurado para escuchar ahí. No se usa esa dirección como URL HTTP en el navegador.</li></ul>
+<p><strong>FastCGI define cómo se comunican; el socket proporciona el canal.</strong> En nuestro laboratorio mantendremos esta comunicación local, sin publicar PHP-FPM en la red.</p>
+</section>
+<section class="section" id="leer-codigo">
+<h2>3. Leer el PHP que recibes</h2>
+<p>El proyecto proporcionado tiene un archivo <code>public/index.php</code> y una hoja CSS. No hay framework, formulario, sesión ni conexión a una base de datos. Es suficiente entender estas piezas:</p>
+<h3>3.1. Una lista de actividades</h3>
+<pre><code>&lt;?php
+$activitats = [
+    ['titol' =&gt; 'Tarde de juegos', 'tipus' =&gt; 'Encuentro'],
+    ['titol' =&gt; 'Liga de demostración', 'tipus' =&gt; 'Torneo'],
+];
+?&gt;</code></pre>
+<p>Las variables empiezan por <code>$</code>. <code>$activitats</code> contiene una lista de elementos; cada uno tiene las claves <code>titol</code> y <code>tipus</code>. Sus nombres son identificadores del programa: no hace falta traducirlos para que el contenido visible esté en español.</p>
+<h3>3.2. Repetir HTML con un bucle</h3>
+<pre><code>&lt;?php foreach ($activitats as $activitat): ?&gt;
+    &lt;article&gt;
+        &lt;h2&gt;&lt;?= h($activitat['titol']) ?&gt;&lt;/h2&gt;
+        &lt;p&gt;&lt;?= h($activitat['tipus']) ?&gt;&lt;/p&gt;
+    &lt;/article&gt;
+&lt;?php endforeach; ?&gt;</code></pre>
+<p><code>foreach</code> recorre la lista. Por cada actividad genera un bloque HTML. <code>&lt;?= ... ?&gt;</code> escribe el resultado de una expresión. Al añadir un elemento a la lista, aparece otro bloque sin duplicar su estructura HTML.</p>
+<h3>3.3. Mostrar texto de forma segura</h3>
+<pre><code>function h(string $text): string {
+    return htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+}</code></pre>
+<p>La función <code>h()</code> convierte caracteres con significado en HTML para mostrarlos como texto. Por ejemplo, <code>&lt;</code> no debería interpretarse como el comienzo de una etiqueta si forma parte del título de una actividad. Este escapado es para texto en HTML y atributos entre comillas; no es una solución universal para JavaScript, URLs o consultas SQL.</p>
+<h3>3.4. Un dato calculado en el servidor</h3>
+<pre><code>&lt;p&gt;Respuesta generada en el servidor: &lt;?= date('H:i:s') ?&gt;&lt;/p&gt;</code></pre>
+<p><code>date()</code> devuelve una hora según la configuración del servidor. Espera unos segundos y recarga sin caché: la hora permite observar que se ha generado una nueva respuesta. No es un reloj actualizado automáticamente en el navegador ni prueba por sí sola toda la configuración.</p>
+</section>
+<section class="section tint" id="entorno">
+<h2>4. Preparar el entorno de ejecución</h2>
+<p>No basta con cambiar la extensión de HTML a PHP. En nuestra opción debemos preparar estas piezas, que tienen funciones diferentes:</p>
+<div class="cards two"><article><h3>PHP-FPM · Ejecutar para la web</h3><p>Es el servicio separado al que Apache encarga las peticiones PHP. Debemos comprobar su funcionamiento y la comunicación con Apache.</p></article><article><h3>PHP CLI · Ejecutar desde el terminal</h3><p>Permite ejecutar PHP sin Apache: por ejemplo, <code>php programa.php</code>. Lo usaremos como herramienta de apoyo para comprobar la versión y la sintaxis.</p></article></div>
+<p><strong>PHP CLI no sustituye a PHP-FPM.</strong> Son formas de ejecutar PHP en contextos diferentes. La integración Apache–PHP es la configuración que conecta el servidor web con el ejecutor elegido, no un tercer intérprete.</p>
+<div class="table-scroll"><table><thead><tr><th>Componente</th><th>Qué debes identificar</th><th>Qué demuestra su comprobación</th></tr></thead><tbody><tr><td>Apache HTTP Server</td><td>Servicio, sitio configurado, raíz documental y logs.</td><td>Que HTTP llega al servidor y a los archivos previstos.</td></tr><tr><td>PHP CLI</td><td>Intérprete utilizado desde el terminal.</td><td><code>php -v</code> muestra esa versión; <code>php -l</code> comprueba sintaxis. No prueban la integración web.</td></tr><tr><td>PHP-FPM</td><td>Versión, servicio, configuración y punto de escucha.</td><td>Que el proceso de ejecución está disponible para Apache.</td></tr><tr><td>Módulos de comunicación de Apache</td><td><code>proxy</code> y <code>proxy_fcgi</code>, habilitados según la distribución.</td><td>Que Apache puede comunicarse mediante FastCGI; no demuestra todavía que FPM sea accesible.</td></tr><tr><td>Configuración de integración</td><td>Qué peticiones pasan a FPM y qué socket utiliza Apache para comunicarse con él.</td><td>Que una petición web llega al servicio PHP correcto y devuelve HTML generado.</td></tr></tbody></table></div>
+<p>En Ubuntu y Fedora cambian los paquetes, servicios y rutas. Antes de actuar, averigua qué tienes instalado y qué configuración está activa. No mezcles instrucciones de diferentes versiones ni habilites simultáneamente dos manejadores sin comprender cuál responde.</p>
+<div class="higthligth"><p class="activity-tag">CLI y web son entornos distintos</p><p><strong>Que funcione <code>php -v</code> no significa que Apache ejecute PHP.</strong> Incluso pueden utilizar distintas versiones o configuraciones. La comprobación decisiva se realiza solicitando la página por HTTP y revisando el resultado y los registros.</p></div>
+<h3>El documento inicial y la carpeta pública</h3>
+<p>Si conviven <code>index.html</code> e <code>index.php</code>, la configuración del documento inicial puede hacer que sigas viendo el HTML. Solicita primero <code>index.php</code> explícitamente y comprueba después qué archivo sirve la URL del directorio.</p>
+<p>El ZIP contiene una carpeta <code>public/</code>. Publica su contenido o configura esa carpeta como raíz documental de esta versión; mantén el README y la documentación fuera de lo que necesitas servir. Conserva la versión estática para comparar y poder volver a ella.</p>
+</section>
+<section class="section" id="comprobar">
+<h2>5. Comprobar que se ejecuta</h2>
+<ol><li>Abre la URL HTTP del <code>index.php</code> desplegado mediante Apache.</li><li>Comprueba que aparecen las actividades y que el CSS se descarga correctamente.</li><li>Recarga tras unos segundos, con caché desactivada, y compara la hora generada.</li><li>Abre <strong>Ver código fuente</strong> o <strong>Network → Response</strong>: debe haber HTML, sin las instrucciones <code>foreach</code> ni el bloque PHP original.</li><li>Relaciona esa petición con los logs y la integración Apache–PHP-FPM.</li><li>Comprueba también el acceso mediante la URL del directorio, para verificar el documento inicial.</li></ol>
+<p>En el terminal puedes usar <code>php -l public/index.php</code> desde la carpeta del código para comprobar su sintaxis. Esta comprobación complementa la prueba HTTP, no la sustituye.</p>
+<div class="table-scroll"><table><thead><tr><th>Síntoma</th><th>Qué investigar</th></tr></thead><tbody><tr><td>Se descarga el PHP o se ve su código.</td><td>El archivo no está pasando por el manejador correcto. Retira ese acceso hasta corregirlo: el código fuente no debe exponerse.</td></tr><tr><td>Se sigue mostrando la página estática.</td><td>URL, copia publicada, orden de documentos iniciales y caché.</td></tr><tr><td>HTML sin estilos.</td><td>Ruta y estado HTTP del CSS; no presupongas un fallo de PHP.</td></tr><tr><td>500, 502, 503 o página vacía.</td><td>Error de programa, servicio FPM, socket o integración. El estado no determina por sí solo la causa: consulta los registros.</td></tr><tr><td>La hora no cambia.</td><td>Espera, desactiva caché y comprueba que recibes la versión y el servidor previstos.</td></tr></tbody></table></div>
+<p>No hace falta publicar un <code>phpinfo()</code> completo para esta prueba. Expone detalles del entorno que no necesitas mostrar al cliente.</p>
+</section>
+<section class="section tint" id="limites">
+<h2>6. Qué hemos conseguido y qué falta</h2>
+<p>Ahora el servidor puede generar una página. Los datos siguen definidos en el código: cambiar una actividad exige editarlo y desplegar el cambio. Todavía no hemos creado almacenamiento de inscripciones ni resultados.</p>
+<p>El siguiente paso será incorporar una base de datos. Antes debes poder explicar el recorrido navegador → Apache → PHP-FPM → HTML y demostrar que los estilos siguen sirviéndose como un recurso estático.</p>
+<p><a class="button" href="encargo-2-php.html">Abrir el encargo 2 · Portal dinámico con PHP</a></p>
+<h3>Referencias oficiales</h3>
+<ul><li><a href="https://ubuntu.com/server/docs/how-to/web-services/install-php/">PHP en Ubuntu</a>.</li><li><a href="https://www.php.net/manual/en/install.fpm.php">PHP-FPM</a>.</li><li><a href="https://www.php.net/manual/en/function.htmlspecialchars.php">htmlspecialchars()</a>.</li></ul>
+</section>
+<footer>Institut Thos i Codina · Curso 2026–2027</footer></main></body></html>
