@@ -9,7 +9,7 @@ MariaDB con utf8mb4. Base: puntdejoc. Mantened los nombres internos para que el 
 | rondes | id INT PK, activitat_id FK activitats, numero INT positivo, UNIQUE(activitat_id,numero) |
 | partides | id INT PK, ronda_id FK rondes, participant_a y participant_b FK inscripcions, resultat ENUM(A,B,E) admite NULL; CHECK participant_a <> participant_b |
 
-Todos los campos salvo resultat son NOT NULL. IDs explícitos en este prototipo. Sin borrado en cascada. Las claves foráneas no garantizan que las inscripciones pertenezcan al torneo ni que cada participante juegue una sola vez por ronda. Esa validación corresponde a la futura gestión Java. En RA1 las partidas ya están preparadas y solo se editan resultados.
+Todos los campos salvo resultat son NOT NULL. IDs explícitos en este prototipo. Sin borrado en cascada. Las claves foráneas no garantizan que las inscripciones pertenezcan al torneo ni que cada participante juegue una sola vez por ronda. Esas reglas necesitarían validación adicional en la aplicación o un diseño que las garantice. En RA1 las partidas ya están preparadas y solo se editan resultados.
 
 Valores internos: trobada = encuentro; torneig = torneo; oberta = inscripción abierta; en_curs = en curso; finalitzada = finalizada.
 
@@ -28,4 +28,3 @@ Valores internos: trobada = encuentro; torneig = torneo; oberta = inscripción a
 5. Comprobad que se rechazan una FK inexistente y una partida contra uno mismo.
 6. Explicad qué reglas no garantiza el esquema.
 
-Pista: `CREATE TABLE jocs (id INT PRIMARY KEY, nom VARCHAR(100) NOT NULL UNIQUE);`

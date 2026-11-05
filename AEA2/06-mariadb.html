@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>4. Persistencia y bases de datos · DAW2</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page reading-lesson"><a class="skip-link" href="#contenido">Saltar al
+        contenido</a><button class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del
+        módulo</button>
+    <aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a>
+        <p class="sidebar-title">Despliegue de Aplicaciones Web</p>
+        <nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea"
+                href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" href="index.html">AEA2 ·
+                Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory"
+                href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory" href="03-http.html">2. HTTP y
+                comunicación web</a><a class="sub nav-theory" href="05-apache-php.html">3. Apache y ejecución con
+                PHP</a><a class="sub nav-theory active" aria-current="page" href="06-mariadb.html">4. Persistencia y
+                bases de datos</a><a class="sub nav-theory" href="04-contenidors.html">Fundamentos ·
+                Contenedores</a><span class="nav-label nav-label-assignment">Proyecto y encargos</span><a
+                class="sub nav-assignment" href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment"
+                href="encargo-1-estatica.html">Encargo 1 · Página estática</a><a class="sub nav-assignment"
+                href="encargo-2-php.html">Encargo 2 · Portal dinámico con PHP</a><a class="sub nav-assignment"
+                href="encargo-3-mariadb.html">Encargo 3 · Datos y clasificación</a></nav>
+        <p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p>
+    </aside>
+    <main id="contenido">
+        <section class="cover compact-cover">
+            <p class="eyebrow">AEA2 · Capa de datos</p>
+            <h1>4. Persistencia y bases de datos</h1>
+            <p class="lead">Cómo conserva la información una aplicación web y cómo accede a ella desde el servidor.</p>
+        </section>
+        <nav class="lesson-outline" aria-label="Contenido de esta página"><span>En esta página</span><a
+                href="#persistencia">Persistencia</a><a href="#capas">Capas</a><a href="#arquitectura">Servicios</a><a
+                href="#acceso">PHP y API</a><a href="#conexion">Conexión</a><a href="#integridad">Integridad</a><a
+                href="#disponibilidad">Disponibilidad</a></nav>
+        <section class="section" id="persistencia">
+            <h2>1. ¿Por qué necesitamos una base de datos?</h2>
+            <p>Una aplicación maneja información que cambia: productos, pedidos, usuarios, reservas o resultados. Si
+                esos datos están escritos dentro del programa, cada cambio obliga a editar y desplegar código. Separar
+                <strong>código y datos</strong> permite actualizar la información sin reprogramar la aplicación.</p>
+            <div class="cards two">
+                <article>
+                    <h3>Código</h3>
+                    <p>Define el comportamiento: validar una operación, calcular un importe o presentar una lista.</p>
+                </article>
+                <article>
+                    <h3>Datos</h3>
+                    <p>Describen el estado actual: precios, existencias, reservas o resultados registrados.</p>
+                </article>
+            </div>
+            <p><strong>Persistencia</strong> significa conservar información más allá de una petición o de la ejecución
+                de un proceso. Un array en memoria desaparece al terminar ese proceso; un archivo guardado puede
+                persistir. Una base de datos añade mecanismos para consultar, relacionar y actualizar información de
+                forma controlada.</p>
+            <h3>¿Qué aporta un sistema gestor?</h3>
+            <ul>
+                <li><strong>Consultas:</strong> recuperar y combinar los datos que necesita cada operación.</li>
+                <li><strong>Integridad:</strong> aplicar restricciones para evitar estados no válidos.</li>
+                <li><strong>Concurrencia:</strong> coordinar operaciones de varios usuarios o procesos.</li>
+                <li><strong>Control de acceso:</strong> decidir qué puede consultar o modificar cada cuenta.</li>
+                <li><strong>Transacciones y recuperación:</strong> agrupar cambios y disponer de mecanismos para
+                    recuperar información.</li>
+            </ul>
+            <p>No toda web necesita una base de datos. Una página informativa puede funcionar con archivos estáticos. La
+                necesidad aparece cuando el volumen, las relaciones y las operaciones sobre la información lo
+                justifican.</p>
+            <div class="higthligth">
+                <p class="activity-tag">Idea clave</p>
+                <p>Los datos deben conservarse aunque termine la petición o reiniciemos los procesos de la aplicación.
+                    Esa persistencia no sustituye las copias de seguridad: un dato persistente también puede borrarse
+                    por error.</p>
+            </div>
+        </section>
+        <section class="section tint" id="capas">
+<h2>2. Cómo organizamos la aplicación: capas y MVC</h2>
+<p>Una aplicación web necesita <strong>mostrar información, procesar acciones y conservar datos</strong>. La arquitectura de tres capas organiza estas responsabilidades en presentación, negocio y persistencia. Al añadir una base de datos estamos incorporando la persistencia y conectándola con el resto de la aplicación.</p>
+<figure class="image-container layers-diagram"><a href="assets/arquitectura-tres-capas.png"
+                    aria-label="Ampliar el esquema de arquitectura de tres capas"><img
+                        src="assets/arquitectura-tres-capas.png" width="608" height="348" loading="lazy"
+                        alt="Esquema de presentación, proceso y datos: interfaz en el navegador, control y lógica en el servidor web y almacenamiento en servidores de datos."></a>
+                <figcaption>Presentación, proceso y datos: responsabilidades que pueden repartirse entre distintos componentes de la aplicación.</figcaption>
+            </figure>
+<p>Para organizar el código podemos utilizar <strong>MVC (Modelo–Vista–Controlador)</strong>: la <strong>vista</strong> presenta la información, el <strong>controlador</strong> recibe las acciones y coordina la respuesta, y el <strong>modelo</strong> representa los datos y las reglas del dominio, utilizando los componentes de acceso a la base de datos.</p>
+<div class="table-scroll"><table>
+<thead><tr><th>Responsabilidad / capa</th><th>Cómo interviene MVC</th><th>Ejemplo: realizar una reserva</th></tr></thead>
+<tbody>
+<tr><td><strong>Presentación</strong><br>Mostrar información y recoger acciones.</td><td>La <strong>vista</strong> muestra el formulario y el resultado; el <strong>controlador</strong> recibe la acción enviada por el usuario.</td><td>El usuario elige una fecha y unas plazas y pulsa «Reservar».</td></tr>
+<tr><td><strong>Negocio o aplicación</strong><br>Coordinar la operación y aplicar sus reglas.</td><td>El <strong>controlador</strong> encarga la operación al <strong>modelo</strong>, que aplica las reglas del dominio.</td><td>Comprobar disponibilidad y que no se supera el límite de plazas por usuario.</td></tr>
+<tr><td><strong>Datos o persistencia</strong><br>Guardar y consultar información, manteniendo restricciones.</td><td>El <strong>modelo</strong> utiliza el acceso a datos para leer o guardar. El gestor conserva la información y aplica las restricciones del esquema.</td><td>Guardar la reserva vinculada a su usuario y actividad.</td></tr>
+</tbody></table></div>
+<p><strong>No hay una equivalencia uno a uno:</strong> las capas describen responsabilidades generales; MVC organiza el código que las realiza. Por eso el controlador aparece en la interacción y coordinación, y el modelo participa en el negocio y en el acceso a los datos. El modelo no es solo la base de datos.</p>
+<h3>El recorrido completo</h3>
+<p>Al pulsar «Reservar», el <strong>controlador</strong> recibe la petición y solicita la operación al <strong>modelo</strong>. Este comprueba las reglas y guarda la reserva mediante el acceso a datos. Después, el controlador entrega el resultado a la <strong>vista</strong>, que genera la confirmación para el navegador.</p>
+<div class="higthligth"><p class="activity-tag">Idea clave</p><p>Separar responsabilidades ayuda a modificar la interfaz sin reescribir las reglas ni el almacenamiento. Esta organización del código no exige tres máquinas: los componentes pueden compartir ordenador o distribuirse entre varios servicios.</p></div>
+<p>Referencia: <a href="https://developer.mozilla.org/en-US/docs/Glossary/MVC">MDN · Modelo–Vista–Controlador</a>.</p>
+</section>
+<section class="section" id="arquitectura">
+            <h2>3. Qué componentes colaboran</h2>
+            <p>Un ejemplo habitual combina servidor web, entorno de ejecución y servidor de datos. Con Apache, PHP-FPM y
+                MariaDB, el recorrido es el siguiente:</p>
+            <figure class="image-container"><img src="assets/apache-php-mariadb.svg" width="1000" height="270"
+                    alt="Navegador, Apache, PHP-FPM y MariaDB intercambian HTTP, FastCGI y consultas de base de datos.">
+                <figcaption>Ejemplo de despliegue. Los servicios pueden compartir máquina; el navegador no accede
+                    directamente al servidor de datos.</figcaption>
+            </figure>
+            <ol>
+                <li>El navegador envía una petición HTTP al servidor web.</li>
+                <li>El servidor web encarga la ejecución al entorno de aplicación cuando corresponde.</li>
+                <li>El programa valida la petición y consulta o modifica la base de datos con una cuenta autorizada.
+                </li>
+                <li>El gestor devuelve los datos o el resultado de la operación.</li>
+                <li>La aplicación construye una respuesta y el servidor web la envía al cliente.</li>
+            </ol>
+            <h3>Servidor, cliente y controlador</h3>
+            <div class="cards two">
+                <article>
+                    <h3>Servidor de bases de datos</h3>
+                    <p>Es el servicio que gestiona el almacenamiento, ejecuta operaciones y controla permisos. MariaDB y
+                        PostgreSQL son ejemplos de gestores relacionales.</p>
+                </article>
+                <article>
+                    <h3>Cliente de bases de datos</h3>
+                    <p>Es el programa que se conecta al servidor. Puede ser una herramienta de terminal, una aplicación
+                        gráfica o el propio programa web.</p>
+                </article>
+            </div>
+            <p>Un <strong>controlador o driver</strong> permite que un lenguaje se comunique con un gestor. En PHP, PDO
+                proporciona una interfaz de acceso y necesita el controlador correspondiente; para MariaDB se utiliza
+                habitualmente <code>pdo_mysql</code>. PDO no es otro servidor ni convierte automáticamente el SQL entre
+                gestores.</p>
+            <div class="higthligth">
+                <p class="activity-tag">Dos roles a la vez</p>
+                <p>La aplicación actúa como servidor frente al navegador y como cliente frente a la base de datos. El
+                    rol depende de con quién se comunica.</p>
+            </div>
+        </section>
+        <section class="section tint" id="acceso">
+            <h2>4. Acceso desde PHP y acceso mediante una API</h2>
+            <p>Una aplicación puede generar una página completa o proporcionar datos para que otra interfaz los muestre.
+                En ambos casos hay código en el servidor que controla el acceso a la base de datos.</p>
+            <div class="cards two">
+                <article>
+                    <h3>4.1. PHP consulta y genera HTML</h3>
+                    <pre><code>Navegador → petición HTTP
+Servidor: PHP → base de datos
+Navegador ← respuesta HTML</code></pre>
+                    <p>El programa PHP consulta los datos y los combina con una plantilla. El navegador recibe la página
+                        ya generada.</p>
+                    <p><strong>Ejemplo:</strong> solicitar una página de catálogo y recibir su lista de productos en
+                        HTML.</p>
+                </article>
+                <article>
+                    <h3>4.2. Una API devuelve datos</h3>
+                    <pre><code>Interfaz → petición HTTP a una API
+Servidor: API → base de datos
+Interfaz ← respuesta JSON</code></pre>
+                    <p>La API ofrece operaciones mediante direcciones o <strong>endpoints</strong>. La interfaz consume
+                        la respuesta, frecuentemente en JSON, y construye o actualiza la vista.</p>
+                    <p><strong>Ejemplo:</strong> una web y una aplicación móvil consultan el mismo catálogo.</p>
+                </article>
+            </div>
+            <p>Una <strong>API web</strong> es una interfaz de comunicación: define qué operaciones pueden solicitar
+                otros programas y cómo intercambian información por HTTP. No es una base de datos ni implica
+                automáticamente REST, JSON o un servidor físico adicional.</p>
+            <h3>PHP también puede implementar una API</h3>
+            <p>No son tecnologías excluyentes: <strong>PHP puede consultar la base de datos y devolver HTML, o
+                    implementar una API que devuelva JSON</strong>. También puede consumir una API de otro servicio. La
+                diferencia está en cómo se expone la funcionalidad y quién construye la presentación.</p>
+            <p>Por ejemplo, una petición ilustrativa <code>GET /api/actividades</code> podría devolver:</p>
+            <pre><code>[
+  {"id": 1, "titulo": "Encuentro abierto", "plazas": 16}
+]</code></pre>
+            <p>La API recibe HTTP, ejecuta las reglas y consulta el gestor con su controlador. El navegador consume ese
+                resultado; no recibe las credenciales de la base de datos. Una respuesta JSON también puede generarse
+                sin consultar una base de datos.</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>HTML generado en servidor</th>
+                            <th>API consumida por una interfaz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Respuesta habitual</td>
+                            <td>Documento HTML.</td>
+                            <td>Datos, frecuentemente JSON.</td>
+                        </tr>
+                        <tr>
+                            <td>Construcción de la vista</td>
+                            <td>Plantillas del servidor; el navegador representa el HTML.</td>
+                            <td>La interfaz transforma datos en elementos visuales.</td>
+                        </tr>
+                        <tr>
+                            <td>Ventaja</td>
+                            <td>Flujo sencillo para páginas renderizadas en servidor.</td>
+                            <td>Una misma interfaz de datos puede servir a varios clientes.</td>
+                        </tr>
+                        <tr>
+                            <td>Coste</td>
+                            <td>El formato de respuesta está ligado a las páginas del portal.</td>
+                            <td>Hay que diseñar y mantener el contrato, sus errores, acceso y compatibilidad.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>También pueden combinarse ambas opciones en una misma aplicación. Añadir una API debe responder a una
+                necesidad; no es un requisito para que PHP trabaje con una base de datos.</p>
+        </section>
+        <section class="section" id="conexion">
+            <h2>5. Qué significa conectar una aplicación a sus datos</h2>
+            <p>La conexión requiere identificar un <strong>destino</strong>, una <strong>base</strong>, una
+                <strong>cuenta</strong> y un mecanismo de comunicación compatible.</p>
+            <ul>
+                <li><strong>Host y puerto, o socket local:</strong> dónde escucha el servicio y cómo llegar a él.</li>
+                <li><strong>Nombre de la base:</strong> conjunto de tablas que utilizará la aplicación.</li>
+                <li><strong>Identidad y permisos:</strong> qué cuenta se autentica y qué operaciones tiene autorizadas.
+                </li>
+                <li><strong>Controlador y configuración:</strong> componentes que necesita el entorno que ejecuta el
+                    programa.</li>
+            </ul>
+            <p>Una conexión local puede usar TCP por la interfaz de loopback o un socket Unix. Una conexión remota
+                necesita además considerar red, cifrado y control de acceso. Cambiar el destino no significa que debamos
+                publicar el gestor para todos los usuarios.</p>
+            <h3>Autenticación y autorización</h3>
+            <p><strong>Autenticarse</strong> es demostrar una identidad. <strong>Estar autorizado</strong> es tener
+                permiso para una operación. Una cuenta puede conectarse correctamente y aun así no poder modificar una
+                tabla.</p>
+            <p>La cuenta de la aplicación debe tener los permisos que necesita, no privilegios de administrador. Las
+                credenciales se configuran en el servidor y se mantienen fuera del código público y del repositorio. La
+                configuración de una terminal y la de un servicio pueden ser distintas: cada proceso debe recibir los
+                parámetros que realmente utiliza.</p>
+        </section>
+        <section class="section tint" id="integridad">
+            <h2>6. Integridad, concurrencia y transacciones</h2>
+            <p>El modelo relacional define tablas y relaciones. Las claves y restricciones permiten que el gestor
+                rechace determinados datos inválidos. No sustituyen todas las reglas de negocio: algunas requieren
+                conocer el contexto y deben comprobarse en la aplicación.</p>
+            <h3>Una operación puede necesitar varios cambios</h3>
+            <p>Confirmar una compra puede implicar registrar un pedido y descontar existencias. Una
+                <strong>transacción</strong> permite tratar esos cambios como una unidad: confirmarlos juntos o
+                deshacerlos si falla una parte. El diseño debe considerar también qué ocurre si dos usuarios compran
+                simultáneamente la última unidad.</p>
+            <p>Las consultas parametrizadas ayudan a separar instrucciones SQL de valores recibidos. El escapado HTML se
+                aplica al presentar datos: no reemplaza los parámetros SQL ni la validación de las reglas del negocio.
+            </p>
+        </section>
+        <section class="section" id="disponibilidad">
+            <h2>7. Disponibilidad y diagnóstico</h2>
+            <p>Que el servidor web responda no garantiza que el servidor de datos esté disponible. Para localizar un
+                fallo debemos distinguir los tramos de la comunicación:</p>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tramo</th>
+                            <th>Pregunta de diagnóstico</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Cliente → servidor web</td>
+                            <td>¿La petición llega al sitio y recurso previstos?</td>
+                        </tr>
+                        <tr>
+                            <td>Servidor web → aplicación</td>
+                            <td>¿El código se ejecuta en el entorno correcto?</td>
+                        </tr>
+                        <tr>
+                            <td>Aplicación → gestor</td>
+                            <td>¿El servicio es accesible y acepta la identidad y los permisos?</td>
+                        </tr>
+                        <tr>
+                            <td>Consulta → modelo</td>
+                            <td>¿Existen la base y las tablas esperadas? ¿Se cumplen las restricciones?</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p>Los registros ayudan a identificar la causa. El cliente debería recibir una respuesta comprensible sin
+                detalles internos ni secretos. Las copias de seguridad y las pruebas de restauración forman parte de la
+                conservación de datos; reiniciar un servicio solo comprueba una parte de su disponibilidad.</p>
+            <p><a class="button" href="encargo-3-mariadb.html">Aplicar estos conceptos · Encargo 3</a></p>
+            <h3>Referencias</h3>
+            <ul>
+                <li><a
+                        href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/First_steps/Client-Server_overview">MDN:
+                        recorrido cliente-servidor</a>.</li>
+                <li><a href="https://www.php.net/manual/en/intro.pdo.php">PHP: introducción a PDO</a>.</li>
+                <li><a href="https://mariadb.com/docs/server">Documentación de MariaDB</a>.</li>
+            </ul>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
+    </main>
+</body>
+
+</html>

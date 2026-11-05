@@ -1,20 +1,22 @@
-# Etapa 3 · PHP y MariaDB
-PHP 8.2+ con pdo_mysql. En Compose se utiliza MariaDB 11.4. Implementad el esquema y los datos siguiendo MODEL-DADES.md; el profesorado tiene una solución separada.
+# Etapa 3 · Punto de Juego con PHP y MariaDB
 
-Un administrador crea la base puntdejoc y la cuenta de aplicación con contraseña propia. La cuenta de aplicación solo necesita SELECT y UPDATE. El esquema lo crea una cuenta de prácticas con permisos DDL. PHP no debe conectarse como root.
+## Objetivo
+Desplegar el portal sobre Apache y PHP-FPM, con datos persistentes en MariaDB. La teoría explica las opciones de arquitectura; el encargo 3 define el trabajo y las evidencias. No es necesario construir una API en esta entrega.
 
-En Bash, desde esta carpeta:
+## Requisitos
+PHP 8.2+ con PDO_MYSQL, Apache con integración FPM funcional y MariaDB local. Debéis instalar, configurar y verificar las dependencias en vuestro entorno.
 
-```sh
-export DB_HOST=127.0.0.1
-export DB_USER=puntdejoc
-read -s DB_PASSWORD
-export DB_PASSWORD
-export ALLOW_LAB_WRITE=1
-php -S 127.0.0.1:8002 -t public
-```
-Introduce la contraseña tras read. Abre http://127.0.0.1:8002. Las variables del terminal llegan a sus procesos hijos; no configuran automáticamente el PHP ejecutado por Apache. Esa instalación necesita su configuración específica.
+## Estructura
+- `public/`: única carpeta que debe publicarse mediante HTTP.
+- `src/bootstrap.php`: conexión PDO, escapado y cálculo de clasificación.
+- `MODEL-DADES.md`: contrato relacional y datos que debéis construir mediante SQL.
+- `public/resultats.php`: ampliación futura; debe permanecer desactivada.
 
-index.php consulta y presenta. bootstrap.php conecta y calcula puntos. resultats.php valida y guarda un resultado. El alumnado no tiene que reprogramarlos.
+## Configuración requerida
+El código consulta la base `puntdejoc` y utiliza DB_HOST, DB_PORT, DB_USER y DB_PASSWORD del entorno de FPM. La cuenta web solo necesita SELECT. Mantened ALLOW_LAB_WRITE desactivado (valor 0). Configurad el servicio que ejecuta la aplicación, no únicamente una terminal. No guardéis secretos en Git.
 
-ALLOW_LAB_WRITE habilita un formulario sin autenticación: usar solo en el laboratorio local ligado a 127.0.0.1. El Compose también publica en loopback. No es una versión para Internet.
+## Contrato funcional
+Conservad los identificadores del modelo y el torneo ID 2. Las rondas ya están definidas: la aplicación calcula una clasificación, no genera emparejamientos. Victoria 3 puntos, empate 1, derrota 0; las pendientes no cuentan. Empates a puntos comparten posición y se muestran por alias. Son reglas didácticas, no un reglamento oficial de ajedrez.
+
+## Trabajo del equipo
+Elaborad esquema, carga y consultas SQL a partir del modelo, desplegad solo public/, preparad la conexión y realizad las pruebas del encargo. El código PHP se proporciona; la prioridad es el despliegue y su justificación. Cada integrante debe demostrar el resultado en su ordenador.
