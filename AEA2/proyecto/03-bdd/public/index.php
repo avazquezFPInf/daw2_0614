@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../src/bootstrap.php';
+require __DIR__ . '/../src/funciones.php';
 try {
     $pdo=db();
     $activitats=$pdo->query("SELECT id,titol,tipus,estat FROM activitats WHERE estat <> 'borrador' ORDER BY id")->fetchAll();

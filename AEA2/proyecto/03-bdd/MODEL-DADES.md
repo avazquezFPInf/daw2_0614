@@ -21,7 +21,7 @@ Valores internos: trobada = encuentro; torneig = torneo; oberta = inscripción a
 - Partidas (id,ronda,a,b,resultado): (1,1,1,2,A), (2,1,3,4,E), (3,2,1,3,NULL), (4,2,2,4,NULL), (5,3,1,4,NULL), (6,3,2,3,NULL).
 
 ## Ejercicios
-1. Escribid CREATE TABLE en orden de dependencias, con claves y restricciones.
+1. Revisad las sentencias CREATE TABLE del Markdown de apoyo disponible en el encargo, relacionadlas con el modelo y justificad su orden de dependencias.
 2. Cargad datos con INSERT y verificadlos con SELECT.
 3. Consultad participantes del torneo 2, partidas pendientes y actividades abiertas.
 4. Cambiad el resultado de la partida 3 con UPDATE y comprobad la clasificación en el navegador.

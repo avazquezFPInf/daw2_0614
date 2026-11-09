@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../src/bootstrap.php';
+require __DIR__ . '/../src/funciones.php';
 // Esta función se habilita explícitamente solo en el laboratorio; no es autenticación.
 if (getenv('ALLOW_LAB_WRITE') !== '1') { http_response_code(403); exit('Escritura desactivada. Solo disponible en el laboratorio local.'); }
 session_set_cookie_params(['httponly'=>true,'samesite'=>'Strict']); session_start();
