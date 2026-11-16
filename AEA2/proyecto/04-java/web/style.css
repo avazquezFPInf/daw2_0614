@@ -1,0 +1,5 @@
+body { font-family: system-ui, sans-serif; margin: 30px auto; padding: 0 20px; max-width: 1000px; line-height: 1.6; }
+article { border: 1px solid #ccc; margin: 18px 0; padding: 16px; }
+button, select { font: inherit; padding: 6px; max-width: 100%; }
+footer { margin-top: 30px; border-top: 1px solid #ccc; }
+button:focus-visible, select:focus-visible { outline: 3px solid #7635ba; outline-offset: 3px; }
