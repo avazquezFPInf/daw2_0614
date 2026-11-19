@@ -57,70 +57,20 @@
                 programaréis nuevas funciones ni desplegaréis la API.</p>
         </section>
         <section class="section tint">
-            <h2>1. Instalar Docker Engine en Ubuntu</h2>
-            <p>Este procedimiento está preparado para <strong>Ubuntu 24.04 LTS</strong>. Ejecuta los comandos en la
-                terminal del Ubuntu instalado en tu ordenador. Trabajaremos directamente sobre ese sistema, sin máquinas
-                virtuales. Instalaremos <strong>Docker Engine desde el repositorio oficial de Docker</strong> y el
-                <strong>plugin Compose</strong>; no hace falta instalar Docker Desktop.</p>
-            <h3>Antes de instalar: comprobar qué hay en el equipo</h3>
-            <p>Si Docker ya funciona, no repitas la instalación sin revisar primero su origen. Comprueba los paquetes
-                instalados:</p>
-            <pre><code>dpkg -l | grep -E '^ii[[:space:]]+(docker[^[:space:]]*|containerd[^[:space:]]*|runc|podman-docker)[[:space:]]'</code></pre>
-            <p>Si no aparece ninguna línea, no se han encontrado esos paquetes instalados mediante APT/dpkg; esto no
-                descarta una instalación mediante Snap u otro método.</p>
-            <ul>
-                <li><strong>docker-ce y docker-ce-cli:</strong> son los paquetes de Docker Engine y su cliente que
-                    utilizaremos. Si ya están instalados, comprueba las versiones y el funcionamiento antes de
-                    reinstalar.</li>
-                <li><strong>docker.io, docker-compose, docker-compose-v2, docker-doc, docker-buildx y
-                        podman-docker:</strong> la guía oficial los enumera como paquetes que deben retirarse antes de
-                    instalar esta distribución de Docker. <strong>Podman y podman-docker no son lo mismo:</strong> el
-                    segundo permite utilizar el comando docker para llamar a Podman.</li>
-                <li><strong>containerd y runc:</strong> son componentes de ejecución que pueden estar instalados por
-                    separado. Docker utiliza su propio paquete <code>containerd.io</code>, que los incluye; los paquetes
-                    separados deben retirarse antes de instalarlo. Tener <code>containerd.io</code> como parte de Docker
-                    es normal.</li>
-            </ul>
-            <p>Si aparecen paquetes que hay que sustituir, revisadlo con el docente antes de continuar: podrían estar
-                siendo utilizados por otros proyectos. La <a href="https://docs.docker.com/engine/install/ubuntu/">guía
-                    oficial de Ubuntu</a> detalla la sustitución. No es necesario borrar imágenes, contenedores ni
-                volúmenes para cambiar los paquetes.</p>
-            <h3>Comprobar el sistema</h3>
-            <pre><code>lsb_release -ds
-dpkg --print-architecture
-sudo ss -ltnp</code></pre>
-            <p>Con el equipo comprobado y sin paquetes incompatibles, ejecuta por bloques y comprueba su resultado:</p>
-            <pre><code>sudo apt update
-sudo apt install ca-certificates curl
-sudo install -m 0755 -d /etc/apt/keyrings
-sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-sudo chmod a+r /etc/apt/keyrings/docker.asc
-
-sudo tee /etc/apt/sources.list.d/docker.sources &lt;&lt;EOF
-Types: deb
-URIs: https://download.docker.com/linux/ubuntu
-Suites: $(. /etc/os-release &amp;&amp; echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
-Components: stable
-Architectures: $(dpkg --print-architecture)
-Signed-By: /etc/apt/keyrings/docker.asc
-EOF
-
-sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo systemctl enable --now docker</code></pre>
-            <p>Copiar <code>&lt;&lt;EOF</code> inicia el bloque de configuración del repositorio; la línea final
-                <code>EOF</code> lo cierra. No copies etiquetas HTML ni cambies la distribución por otra.</p>
-            <h3>Pruebas de instalación</h3>
-            <pre><code>sudo systemctl status docker --no-pager
-sudo docker version
-sudo docker compose version
-sudo docker run --rm hello-world</code></pre>
-            <p><code>hello-world</code> muestra un mensaje y termina: no es un servidor que deba quedarse activo. Docker
-                version debe mostrar cliente y servidor. Un error de permisos sin sudo no demuestra que Docker esté mal
-                instalado.</p>
-            <p>Usaremos <strong>sudo docker</strong>. Añadir una cuenta al grupo docker permite administrar el equipo
-                con privilegios equivalentes a root; no es un paso obligatorio de esta práctica. En Fedora consultad su
-                receta oficial, sin ejecutar estos comandos apt.</p>
+            <h2>1. Instalar Docker Engine, Compose y Portainer</h2>
+            <p>Partimos de un ordenador con <strong>Ubuntu 24.04 LTS sin Docker instalado</strong>. Instalaremos Docker Engine, el plugin Compose y la interfaz web Portainer directamente en Ubuntu, sin Docker Desktop ni máquinas virtuales.</p>
+            <p><a class="button" href="downloads/intalacionDockerCompose.sh" download>Descargar intalacionDockerCompose.sh</a></p>
+            <p>Guarda el fichero y ábrelo en el editor antes de ejecutarlo. Los comentarios explican cada bloque: herramientas necesarias, clave de firma, repositorio oficial, paquetes, arranque del servicio e instalación de Portainer.</p>
+            <p>Abre una terminal en la carpeta donde lo has guardado y ejecuta:</p>
+            <pre><code>sudo bash intalacionDockerCompose.sh</code></pre>
+            <p>El script necesita conexión a Internet y permisos de administración. Instala los paquetes desde el repositorio oficial de Docker y deja el servicio iniciado y preparado para arrancar al encender el ordenador. Si un comando falla, el script se detiene.</p>
+            <h3>Primer acceso a la interfaz gráfica</h3>
+            <ol><li>Abre <a href="https://localhost:9443">https://localhost:9443</a> en el navegador de tu ordenador. El primer arranque puede tardar unos segundos.</li><li>Portainer genera un certificado autofirmado: para esta dirección local, abre las opciones avanzadas del aviso del navegador y continúa.</li><li>Crea tu cuenta de administrador con una contraseña propia. No la incluyas en el repositorio ni en las capturas.</li><li>Entra en el entorno Docker local (puede aparecer como <strong>local</strong> o mediante <strong>Get Started</strong>). Localiza <strong>Containers</strong>, <strong>Images</strong>, <strong>Networks</strong> y <strong>Volumes</strong>. Los nombres pueden variar según la versión.</li></ol>
+            <p>Si has dejado pasar el plazo del primer acceso y Portainer bloquea la configuración inicial, ejecuta <code>sudo docker restart portainer</code> y vuelve a abrir la página.</p>
+            <p>Portainer administra el mismo Docker Engine que usamos desde la terminal. No crea otra máquina virtual. Su contenedor es una herramienta de administración, adicional a los cuatro servicios del proyecto. Tiene acceso al motor mediante su socket; por eso limitamos la interfaz a este ordenador.</p>
+            <p>Si ya ejecutaste el instalador antes de que incluyera Portainer, ejecuta <strong>solo el bloque 6</strong> del fichero actualizado con <code>sudo</code> delante de sus dos comandos docker. No repitas todo el script.</p>
+            <p>Crearemos el primer contenedor con el comando pautado y el entorno completo con Compose. Después utilizaremos Portainer para observarlos y administrarlos. Cuando usemos la terminal, será con <code>sudo docker</code>; no es necesario añadir vuestra cuenta al grupo docker.</p>
+            <p>Este script es para Ubuntu. Quienes utilicéis Fedora debéis seguir su procedimiento específico. Referencia: <a href="https://docs.docker.com/engine/install/ubuntu/">instalación oficial de Docker Engine en Ubuntu</a> e <a href="https://docs.portainer.io/start/install-ce/server/docker/linux">instalación oficial de Portainer CE</a>.</p>
         </section>
         <section class="section">
             <h2>2. Primer contenedor: la web estática</h2>
@@ -131,6 +81,7 @@ sudo docker run --rm hello-world</code></pre>
             <pre><code>sudo docker run -d --name aea2-apache -p 127.0.0.1:8081:80 --mount type=bind,source="$(pwd)/estatica",target=/usr/local/apache2/htdocs,readonly httpd:2.4
 sudo docker ps
 sudo docker logs aea2-apache</code></pre>
+            <p>En Portainer, abre <strong>Containers → aea2-apache</strong>. Identifica el estado, la imagen <code>httpd:2.4</code>, el puerto publicado y el montaje de la carpeta. Abre <strong>Logs</strong> para ver las peticiones que genera el navegador.</p>
             <h3>Comprobar que funciona como antes</h3>
             <p>No basta con ver la página de inicio. Abre vuestra web en el Apache nativo y en
                 <code>http://127.0.0.1:8081/</code> y recorre las mismas páginas en ambos despliegues. Utiliza la
@@ -154,8 +105,7 @@ sudo docker logs aea2-apache</code></pre>
             <ol>
                 <li>Confirma que el portal funciona desde <code>http://127.0.0.1:8081/</code> antes de continuar.</li>
                 <li>Modifica un texto en estatica/index.html y recarga. Explica el papel del montaje.</li>
-                <li>Detén y arranca el contenedor con <code>sudo docker stop aea2-apache</code> y
-                    <code>sudo docker start aea2-apache</code>. Comprueba que cambia la disponibilidad, no el archivo
+                <li>Desde <strong>Containers</strong> en Portainer, selecciona <code>aea2-apache</code> y utiliza <strong>Stop</strong> y después <strong>Start</strong>. Comprueba que cambia la disponibilidad, no el archivo
                     original.</li>
                 <li>Identifica imagen, nombre, puerto externo e interno. Conserva las pruebas antes de continuar.</li>
             </ol>
@@ -247,6 +197,10 @@ sudo docker compose logs web php db java</code></pre>
         </section>
         <section class="section">
             <h2>6. Entrega y cierre</h2>
+            <h3>Capturas que deben acompañar tu Markdown individual</h3>
+            <p>Numera las capturas y añade debajo una frase que explique qué has comprobado. Conserva las de la fase estática antes de retirar ese contenedor. No muestres contraseñas, archivos .env ni pantallas con variables de entorno.</p>
+            <ul><li><strong>Web estática:</strong> portal funcionando en el puerto 8081 y detalle de <code>aea2-apache</code> en Portainer, con imagen, estado y puertos.</li><li><strong>Servicios:</strong> listado de Containers con web, php, db y java en ejecución. Portainer aparecerá además como contenedor de administración.</li><li><strong>Conexiones:</strong> detalle de la red del proyecto donde se vean los cuatro servicios conectados, y detalle del volumen de MariaDB identificado con db. El volumen <code>portainer_data</code> pertenece a la interfaz, no a la base de datos.</li><li><strong>Logs:</strong> registros de Apache después de visitar el portal, explicando una petición y su estado HTTP.</li><li><strong>Funcionamiento y persistencia:</strong> resultado registrado desde Java y clasificación PHP actualizada, y la comprobación del mismo resultado después de recrear el entorno. Una captura de contenedores en ejecución no demuestra por sí sola que la aplicación funcione.</li></ul>
+            <p>Puedes consultar estados, logs, redes y volúmenes desde Portainer. Mantén los comandos Compose indicados para construir y recrear el proyecto; no hace falta importar el YAML como un Stack de Portainer.</p>
             <ul>
                 <li>Repositorio del equipo con configuración, código y guía común de despliegue, sin .env ni
                     contraseñas.</li>
