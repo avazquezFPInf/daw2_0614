@@ -31,3 +31,5 @@ Es un prototipo docente sin login: rechaza peticiones cuya dirección remota no 
 - THIRD-PARTY.md: procedencia y licencia del controlador JDBC.
 
 La configuración y los comandos completos de referencia los conserva el profesorado. El encargo pide tareas y evidencias, no reconstruir el programa.
+
+En el encargo de contenedores, el contexto proporcionado habilita explícitamente labContainerAccess para aceptar la conexión desde la red Docker. Solo debe usarse junto a la publicación del puerto en 127.0.0.1; el WAR nativo conserva su restricción por defecto.

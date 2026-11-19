@@ -1,0 +1,6 @@
+<Context>
+  <Environment name="jdbcUrl" value="jdbc:mariadb://db:3306/puntdejoc" type="java.lang.String" override="false"/>
+  <Environment name="jdbcUser" value="portal_java" type="java.lang.String" override="false"/>
+  <Environment name="jdbcPassword" value="${JAVA_DB_PASSWORD}" type="java.lang.String" override="false"/>
+  <Environment name="labContainerAccess" value="true" type="java.lang.Boolean" override="false"/>
+</Context>

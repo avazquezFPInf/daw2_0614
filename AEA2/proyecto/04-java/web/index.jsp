@@ -43,7 +43,11 @@
     response.setHeader("Content-Security-Policy", "default-src 'self'; form-action 'self'; frame-ancestors 'none'");
     // Prototipo de aula sin login: solo se admite acceso desde el propio equipo.
     String remote = request.getRemoteAddr();
-    if (!Set.of("127.0.0.1", "::1", "0:0:0:0:0:0:0:1").contains(remote)) {
+    boolean containerLab = false;
+    try {
+        containerLab = Boolean.TRUE.equals(new InitialContext().lookup("java:comp/env/labContainerAccess"));
+    } catch (NamingException ignored) { /* La instalación nativa mantiene acceso solo por loopback. */ }
+    if (!containerLab && !Set.of("127.0.0.1", "::1", "0:0:0:0:0:0:0:1").contains(remote)) {
         response.sendError(403, "Aplicación disponible únicamente en el laboratorio local."); return;
     }
     if (!Set.of("GET", "POST").contains(request.getMethod())) {

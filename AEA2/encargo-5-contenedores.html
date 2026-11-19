@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Encargo 5 · Despliegue en contenedores · DAW2</title>
+    <link rel="stylesheet" href="../assets/styles.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="app.js" defer></script>
+</head>
+
+<body class="module-page lesson-page assignment-page"><a class="skip-link" href="#contenido">Saltar al
+        contenido</a><button class="menu-button" type="button" aria-expanded="false" aria-controls="sidebar">Menú del
+        módulo</button>
+    <aside id="sidebar" class="sidebar"><a class="brand" href="../index.html"><b>0614</b> DAW2</a>
+        <p class="sidebar-title">Despliegue de Aplicaciones Web</p>
+        <nav aria-label="Navegación del módulo"><a href="../index.html">Inicio del módulo</a><a class="aea"
+                href="../AEA1/index.html">AEA1 · Git y documentación</a><a class="aea active" href="index.html">AEA2 ·
+                Arquitecturas web</a><span class="nav-label nav-label-theory">Teoría</span><a class="sub nav-theory"
+                href="01-arquitectures.html">1. Arquitectura</a><a class="sub nav-theory" href="03-http.html">2. HTTP y
+                comunicación web</a><a class="sub nav-theory" href="05-apache-php.html">3. Apache y ejecución con
+                PHP</a><a class="sub nav-theory" href="06-mariadb.html">4. Persistencia y bases de datos</a><a
+                class="sub nav-theory" href="07-java-tomcat.html">5. Java y Tomcat</a><a class="sub nav-theory"
+                href="04-contenidors.html">6. Contenedores y Docker</a><span
+                class="nav-label nav-label-assignment">Proyecto y encargos</span><a class="sub nav-assignment"
+                href="encarrec.html">Encargo y evidencias</a><a class="sub nav-assignment"
+                href="encargo-1-estatica.html">Encargo 1 · Página estática</a><a class="sub nav-assignment"
+                href="encargo-2-php.html">Encargo 2 · Portal dinámico con PHP</a><a class="sub nav-assignment"
+                href="encargo-3-mariadb.html">Encargo 3 · Datos y clasificación</a><a class="sub nav-assignment"
+                href="encargo-4-java.html">Encargo 4 · Aplicación Java</a><a class="sub nav-assignment active"
+                aria-current="page" href="encargo-5-contenedores.html">Encargo 5 · Contenedores</a></nav>
+        <p class="sidebar-footer">Curso 2026–2027<br>Institut Thos i Codina</p>
+    </aside>
+    <main id="contenido">
+        <section class="cover compact-cover">
+            <p class="eyebrow">Encargo práctico · Entorno reproducible</p>
+            <h1>Encargo 5 · Despliegue en contenedores</h1>
+            <p class="lead">Reproducir los servicios de Punto de Juego y comprobar qué cambia al ejecutarlos con Docker.
+            </p>
+            <div class="assignment-meta"><span>Equipos de tres</span><span>Despliegue individual</span><span>Cuatro
+                    servicios</span></div>
+        </section>
+        <section class="section">
+            <h2>La necesidad</h2>
+            <div class="activity">
+                <p class="activity-tag">Repetir el despliegue</p>
+                <p>«El portal y la gestión ya funcionan. Queremos preparar un entorno que podamos recrear en otros
+                    equipos y trasladar después a un servidor, con versiones, conexiones y almacenamiento definidos».
+                </p>
+            </div>
+            <p>Trabajad por fases: primero Apache y la web estática; después web, PHP y datos; finalmente Java. No
+                necesitáis terminarlo todo en la primera clase. Conservad el despliegue nativo para comparar.</p>
+            <p><a class="button" href="downloads/05-contenidors.zip">Descargar laboratorio completo · ZIP</a></p>
+            <p>Incluye código, WAR, SQL inicial y configuración. Leed la <a href="04-contenidors.html">teoría de
+                    contenedores</a> y el <a href="proyecto/05-contenidors/README.md">README del laboratorio</a>. No
+                programaréis nuevas funciones ni desplegaréis la API.</p>
+        </section>
+        <section class="section tint">
+            <h2>1. Instalar Docker Engine en Ubuntu</h2>
+            <p>Este procedimiento está preparado para <strong>Ubuntu 24.04 LTS</strong>. Ejecuta los comandos en la
+                terminal del Ubuntu instalado en tu ordenador. Trabajaremos directamente sobre ese sistema, sin máquinas
+                virtuales. Instalaremos <strong>Docker Engine desde el repositorio oficial de Docker</strong> y el
+                <strong>plugin Compose</strong>; no hace falta instalar Docker Desktop.</p>
+            <h3>Antes de instalar: comprobar qué hay en el equipo</h3>
+            <p>Si Docker ya funciona, no repitas la instalación sin revisar primero su origen. Comprueba los paquetes
+                instalados:</p>
+            <pre><code>dpkg -l | grep -E '^ii[[:space:]]+(docker[^[:space:]]*|containerd[^[:space:]]*|runc|podman-docker)[[:space:]]'</code></pre>
+            <p>Si no aparece ninguna línea, no se han encontrado esos paquetes instalados mediante APT/dpkg; esto no
+                descarta una instalación mediante Snap u otro método.</p>
+            <ul>
+                <li><strong>docker-ce y docker-ce-cli:</strong> son los paquetes de Docker Engine y su cliente que
+                    utilizaremos. Si ya están instalados, comprueba las versiones y el funcionamiento antes de
+                    reinstalar.</li>
+                <li><strong>docker.io, docker-compose, docker-compose-v2, docker-doc, docker-buildx y
+                        podman-docker:</strong> la guía oficial los enumera como paquetes que deben retirarse antes de
+                    instalar esta distribución de Docker. <strong>Podman y podman-docker no son lo mismo:</strong> el
+                    segundo permite utilizar el comando docker para llamar a Podman.</li>
+                <li><strong>containerd y runc:</strong> son componentes de ejecución que pueden estar instalados por
+                    separado. Docker utiliza su propio paquete <code>containerd.io</code>, que los incluye; los paquetes
+                    separados deben retirarse antes de instalarlo. Tener <code>containerd.io</code> como parte de Docker
+                    es normal.</li>
+            </ul>
+            <p>Si aparecen paquetes que hay que sustituir, revisadlo con el docente antes de continuar: podrían estar
+                siendo utilizados por otros proyectos. La <a href="https://docs.docker.com/engine/install/ubuntu/">guía
+                    oficial de Ubuntu</a> detalla la sustitución. No es necesario borrar imágenes, contenedores ni
+                volúmenes para cambiar los paquetes.</p>
+            <h3>Comprobar el sistema</h3>
+            <pre><code>lsb_release -ds
+dpkg --print-architecture
+sudo ss -ltnp</code></pre>
+            <p>Con el equipo comprobado y sin paquetes incompatibles, ejecuta por bloques y comprueba su resultado:</p>
+            <pre><code>sudo apt update
+sudo apt install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+sudo tee /etc/apt/sources.list.d/docker.sources &lt;&lt;EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $(. /etc/os-release &amp;&amp; echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}")
+Components: stable
+Architectures: $(dpkg --print-architecture)
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo systemctl enable --now docker</code></pre>
+            <p>Copiar <code>&lt;&lt;EOF</code> inicia el bloque de configuración del repositorio; la línea final
+                <code>EOF</code> lo cierra. No copies etiquetas HTML ni cambies la distribución por otra.</p>
+            <h3>Pruebas de instalación</h3>
+            <pre><code>sudo systemctl status docker --no-pager
+sudo docker version
+sudo docker compose version
+sudo docker run --rm hello-world</code></pre>
+            <p><code>hello-world</code> muestra un mensaje y termina: no es un servidor que deba quedarse activo. Docker
+                version debe mostrar cliente y servidor. Un error de permisos sin sudo no demuestra que Docker esté mal
+                instalado.</p>
+            <p>Usaremos <strong>sudo docker</strong>. Añadir una cuenta al grupo docker permite administrar el equipo
+                con privilegios equivalentes a root; no es un paso obligatorio de esta práctica. En Fedora consultad su
+                receta oficial, sin ejecutar estos comandos apt.</p>
+        </section>
+        <section class="section">
+            <h2>2. Primer contenedor: la web estática</h2>
+            <p>Descomprime el ZIP y abre una terminal en su carpeta, donde están compose.yaml y estatica/. Para comparar
+                el mismo portal, coloca en <code>estatica/</code> una copia de vuestra web estática ya personalizada,
+                con sus páginas, estilos, imágenes y demás recursos, conservando sus rutas relativas. Mantén también la
+                versión del Apache nativo. Asegúrate de que 8081 está libre.</p>
+            <pre><code>sudo docker run -d --name aea2-apache -p 127.0.0.1:8081:80 --mount type=bind,source="$(pwd)/estatica",target=/usr/local/apache2/htdocs,readonly httpd:2.4
+sudo docker ps
+sudo docker logs aea2-apache</code></pre>
+            <h3>Comprobar que funciona como antes</h3>
+            <p>No basta con ver la página de inicio. Abre vuestra web en el Apache nativo y en
+                <code>http://127.0.0.1:8081/</code> y recorre las mismas páginas en ambos despliegues. Utiliza la
+                dirección habitual de la instalación nativa, incluida su subcarpeta si la tiene.</p>
+            <ul>
+                <li><strong>Contenido y aspecto:</strong> se mantienen los textos, la personalización, los estilos y las
+                    imágenes.</li>
+                <li><strong>Navegación:</strong> funcionan los enlaces del menú, las páginas interiores y la vuelta al
+                    inicio. Comprueba que los enlaces del contenedor siguen en el puerto 8081 y no te llevan por error
+                    al Apache nativo.</li>
+                <li><strong>Recursos:</strong> en la pestaña Red del navegador, recarga y revisa que no falten CSS,
+                    imágenes o JavaScript ni aparezcan errores inesperados. Si hay JavaScript, comprueba también su
+                    comportamiento y la consola.</li>
+                <li><strong>Acceso directo:</strong> abre una página interior por su URL y recárgala. Solicita después
+                    una ruta inexistente y comprueba la respuesta 404.</li>
+            </ul>
+            <p>Registra en tu Markdown una tabla breve con <strong>prueba, resultado en Apache nativo y resultado en el
+                    contenedor</strong>, las incidencias corregidas y capturas con la URL visible. Si esta versión es
+                estática, verifica las funciones que ya tenía: todavía no estamos probando PHP ni acceso a datos.</p>
+            <h3>Comprobar el comportamiento del contenedor</h3>
+            <ol>
+                <li>Confirma que el portal funciona desde <code>http://127.0.0.1:8081/</code> antes de continuar.</li>
+                <li>Modifica un texto en estatica/index.html y recarga. Explica el papel del montaje.</li>
+                <li>Detén y arranca el contenedor con <code>sudo docker stop aea2-apache</code> y
+                    <code>sudo docker start aea2-apache</code>. Comprueba que cambia la disponibilidad, no el archivo
+                    original.</li>
+                <li>Identifica imagen, nombre, puerto externo e interno. Conserva las pruebas antes de continuar.</li>
+            </ol>
+            <p>Al terminar esta fase, libera el puerto para Compose:</p>
+            <pre><code>sudo docker stop aea2-apache
+sudo docker rm aea2-apache</code></pre>
+            <p>Esta fase es el primer resultado que debes poder demostrar. Si hoy solo llegas aquí con la instalación
+                documentada, continúa desde la fase 3 en la siguiente clase.</p>
+        </section>
+        <section class="section tint">
+            <h2>3. Preparar el entorno de cuatro servicios</h2>
+            <ol>
+                <li>Revisa compose.yaml y relaciona web, php, db y java con la arquitectura. Localiza imágenes,
+                    Dockerfile, puertos, red, volumen y dependencias.</li>
+                <li>Copia .env.example como .env. Genera tres claves distintas con <code>openssl rand -hex 16</code> y
+                    completa DB_ROOT_PASSWORD, PHP_DB_PASSWORD y JAVA_DB_PASSWORD. No publiques estos valores.</li>
+                <li>Revisa sql/: ya incluye creación y carga compatibles con el modelo, y el ajuste de cuentas. Se
+                    ejecuta solo en una base nueva. No lo mezcles con el directorio de datos de MariaDB instalado en
+                    Ubuntu.</li>
+                <li>Comprueba que .env no se incorpora a Git y que 8081 y 8082 están libres.</li>
+            </ol>
+            <pre><code>cp .env.example .env
+chmod 600 .env
+sudo docker compose config --quiet</code></pre>
+            <p>Edita .env antes de validar. Utilizamos config --quiet para validar sin volcar las contraseñas. Las
+                cuentas se crean dentro del nuevo MariaDB, independientemente de las cuentas del servidor nativo.</p>
+        </section>
+        <section class="section">
+            <h2>4. Desplegar los servicios y entender sus conexiones</h2>
+            <div class="table-scroll">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servicio</th>
+                            <th>Acción</th>
+                            <th>Prueba</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Base de datos</td>
+                            <td><code>sudo docker compose up --build -d db</code></td>
+                            <td>En ps, db pasa a healthy. Revisa logs y comprende el volumen y la carga inicial.</td>
+                        </tr>
+                        <tr>
+                            <td>PHP-FPM y web</td>
+                            <td><code>sudo docker compose up --build -d web</code></td>
+                            <td>También arranca php por dependencia. En http://127.0.0.1:8081/ aparecen actividades y
+                                clasificación.</td>
+                        </tr>
+                        <tr>
+                            <td>Java</td>
+                            <td><code>sudo docker compose up --build -d java</code></td>
+                            <td>http://127.0.0.1:8082/tornejos/ muestra rondas y permite registrar resultados.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <pre><code>sudo docker compose ps
+sudo docker compose logs web php db java</code></pre>
+            <p>Explica las direcciones: navegador → 8081/8082 del ordenador; Apache → php:9000; PHP y Java → db:3306. No
+                se publica 9000 ni 3306 al anfitrión. No uses localhost desde PHP para conectar con otro contenedor.</p>
+            <p>La configuración de Apache y FPM usa /var/www/html en ambas imágenes para localizar los scripts. La
+                carpeta src queda fuera de la raíz pública. Tomcat recibe su configuración JNDI desde el entorno y el
+                WAR sigue cerrado. El formulario PHP resultats.php permanece desactivado: los cambios se registran desde
+                Java.</p>
+        </section>
+        <section class="section tint">
+            <h2>5. Pruebas de colaboración, persistencia y recuperación</h2>
+            <ol>
+                <li>Demuestra los cuatro servicios y ambos portales. Si el volumen es nuevo, la partida 3 está pendiente
+                    y la clasificación inicial es Aina 3, Cris y Dani 1, Biel 0.</li>
+                <li>Registra desde Java victoria B en la partida 3 y recarga PHP: Cris pasa a 4 puntos. Confirma que
+                    estás comparando los dos portales de contenedores, no uno nativo.</li>
+                <li>Ejecuta <code>sudo docker compose down</code> y después <code>sudo docker compose up -d</code>.
+                    Comprueba que el resultado sigue guardado.</li>
+                <li>Detén solo db mediante <code>sudo docker compose stop db</code>. Observa el fallo, consulta logs,
+                    recupérala con <code>sudo docker compose start db</code> y vuelve a probar.</li>
+                <li>Comprueba que el MariaDB nativo no ha recibido estos cambios: son dos bases independientes. Explica
+                    dónde conserva sus datos cada una.</li>
+            </ol>
+            <div class="higthligth">
+                <p class="activity-tag">Conservar los datos</p>
+                <p>No utilices <strong>down -v</strong> ni prune para probar persistencia: pueden eliminar datos.
+                    Reiniciar tampoco vuelve a aplicar los SQL ni cambia automáticamente las contraseñas existentes.</p>
+            </div>
+            <p>Si editas código que se copia con COPY, reconstruye el servicio afectado. Para cambios compartidos en
+                php/public, reconstruye web y php. No confundirlo con el montaje de carpeta de la fase estática.</p>
+        </section>
+        <section class="section">
+            <h2>6. Entrega y cierre</h2>
+            <ul>
+                <li>Repositorio del equipo con configuración, código y guía común de despliegue, sin .env ni
+                    contraseñas.</li>
+                <li>Markdown individual con instalación de Docker, versiones, diagrama, explicación de
+                    puertos/red/volumen, pruebas y una incidencia o decisión propia.</li>
+                <li>Demostración individual: web estática inicial y entorno completo colaborando, con persistencia
+                    comprobada.</li>
+            </ul>
+            <p>La revisión utiliza los mismos bloques: trabajo en Git, MD individual, guía común, funcionamiento y
+                explicación. Criterios principales: RA1 1.5, 1.6, 1.7, 1.8 y 1.9.</p>
+           <!-- La parte de nube de 1.5 requiere
+                además evidencia de despliegue remoto, no solo Docker local. </p> <p><strong>Si terminas antes:</strong> reproduce la carpeta en otro equipo o servidor autorizado, revisa el
+                procedimiento con otro grupo o investiga qué cambia al reconstruir una imagen conservando el volumen. No
+                publiques los servicios de gestión sin autenticación.</p>
+            <details>
+                <summary>Traslado a un servidor Linux autorizado</summary>
+                <p>Con el servidor facilitado por el centro, registra sistema y versiones, copia el proyecto sin
+                    publicar secretos, prepara .env allí y repite la validación y el arranque. Conserva los puertos de
+                    las aplicaciones en loopback. Desde tu equipo puedes acceder con un túnel SSH, adaptando usuario y
+                    servidor:</p>
+                <pre><code>ssh -L 18081:127.0.0.1:8081 -L 18082:127.0.0.1:8082 USUARIO@SERVIDOR</code></pre>
+                <p>Después abre http://127.0.0.1:18081/ y http://127.0.0.1:18082/tornejos/. Comprueba servicio remoto y
+                    persistencia y documenta diferencias. Hace falta un servidor y acceso autorizados: esta fase no
+                    queda realizada por leerla.</p>
+            </details>-->
+            <h3>Referencias</h3>
+            <p><a href="https://docs.docker.com/engine/install/ubuntu/">Instalación oficial en Ubuntu</a> · <a
+                    href="https://docs.docker.com/engine/install/linux-postinstall/">Permisos de Docker</a> · <a
+                    href="https://docs.docker.com/compose/">Docker Compose</a>.</p>
+        </section>
+        <footer>Institut Thos i Codina · Curso 2026–2027</footer>
+    </main>
+</body>
+
+</html>

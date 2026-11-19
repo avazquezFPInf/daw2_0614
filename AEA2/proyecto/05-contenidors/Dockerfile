@@ -1,4 +1,5 @@
-FROM php:8.3-apache
+FROM php:8.3-fpm
 RUN docker-php-ext-install pdo_mysql
-COPY 03-bdd/src /var/www/src
-COPY 03-bdd/public/ /var/www/html/
+COPY php/public/ /var/www/html/
+COPY php/src/ /var/www/src/
+COPY php/zz-app.conf /usr/local/etc/php-fpm.d/zz-app.conf

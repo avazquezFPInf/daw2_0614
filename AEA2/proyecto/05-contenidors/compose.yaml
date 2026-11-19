@@ -1,32 +1,61 @@
+name: aea2-contenedores
 services:
   web:
     build:
-      context: ..
-      dockerfile: 05-contenidors/Dockerfile
+      context: .
+      dockerfile: web/Dockerfile
     ports:
       - "127.0.0.1:8081:80"
+    depends_on:
+      - php
+    networks: [aplicacion]
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
     environment:
       DB_HOST: db
-      DB_USER: puntdejoc
-      DB_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD en el archivo .env}
-      ALLOW_LAB_WRITE: "1"
+      DB_PORT: "3306"
+      DB_USER: portal_lectura
+      DB_PASSWORD: ${PHP_DB_PASSWORD:?Completa PHP_DB_PASSWORD en .env}
+      ALLOW_LAB_WRITE: "0"
     depends_on:
       db:
         condition: service_healthy
+    networks: [aplicacion]
   db:
-    image: mariadb:11.4
+    build:
+      context: .
+      dockerfile: db/Dockerfile
     environment:
       MARIADB_DATABASE: puntdejoc
-      MARIADB_USER: puntdejoc
-      MARIADB_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD}
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Define DB_ROOT_PASSWORD}
+      MARIADB_USER: portal_lectura
+      MARIADB_PASSWORD: ${PHP_DB_PASSWORD:?Completa PHP_DB_PASSWORD en .env}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Completa DB_ROOT_PASSWORD en .env}
+      JAVA_DB_PASSWORD: ${JAVA_DB_PASSWORD:?Completa JAVA_DB_PASSWORD en .env}
     volumes:
       - dades:/var/lib/mysql
-      - ./sql:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 5s
       timeout: 5s
+      start_period: 20s
       retries: 20
+    networks: [aplicacion]
+  java:
+    build:
+      context: .
+      dockerfile: java/Dockerfile
+    ports:
+      - "127.0.0.1:8082:8080"
+    environment:
+      JAVA_DB_PASSWORD: ${JAVA_DB_PASSWORD:?Completa JAVA_DB_PASSWORD en .env}
+      CATALINA_OPTS: -Dorg.apache.tomcat.util.digester.PROPERTY_SOURCE=org.apache.tomcat.util.digester.EnvironmentPropertySource
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [aplicacion]
+networks:
+  aplicacion:
 volumes:
   dades:
